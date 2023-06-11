@@ -12,23 +12,32 @@ import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldedit.util.nbt.BinaryTag;
+import com.sk89q.worldedit.util.nbt.BinaryTagType;
+import com.sk89q.worldedit.util.nbt.BinaryTagTypes;
+import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import de.eldoria.schematicsanitizer.sanitizer.filter.BlockFilter;
 import de.eldoria.schematicsanitizer.sanitizer.filter.EntityFilter;
 import de.eldoria.schematicsanitizer.sanitizer.report.Report;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.BlockRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.EntityRemovalCause;
+import de.eldoria.schematicsanitizer.sanitizer.report.builder.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.RemovedBlock;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.RemovedEntity;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.ReportBuilder;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 import org.bukkit.entity.Creature;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.Set;
 import java.util.UUID;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class SanitizerExtent extends MemoryOptimizedClipboard {
+    private static final Logger log = getLogger(SanitizerExtent.class);
 
     private final Settings settings;
     private final ReportBuilder report = new ReportBuilder();
@@ -45,7 +54,7 @@ public class SanitizerExtent extends MemoryOptimizedClipboard {
 
     @Override
     public <B extends BlockStateHolder<B>> boolean setBlock(int x, int y, int z, B block) {
-        return allowedBlock(x, y, z, block) && setBlock(getIndex(x, y, z), cleanBlockData(block));
+        return allowedBlock(x, y, z, block) && setBlock(getIndex(x, y, z), cleanBlockData(BlockVector3.at(x, y, z), block));
     }
 
     private <B extends BlockStateHolder<B>> boolean allowedBlock(int x, int y, int z, B block) {
@@ -57,21 +66,22 @@ public class SanitizerExtent extends MemoryOptimizedClipboard {
         return true;
     }
 
-    private <B extends BlockStateHolder<B>> B cleanBlockData(B block) {
-        // todo: remove illegal items and tags from block data
+    private <B extends BlockStateHolder<B>> B cleanBlockData(BlockVector3 vector3, B block) {
+        CompoundBinaryTag nbt = block.getNbt();
+        if (nbt != null) cleanNbt(vector3, block, nbt);
         return block;
     }
 
     @Nullable
     @Override
     public Entity createEntity(Location location, BaseEntity entity) {
-        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(entity)) : null;
+        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(location, entity)) : null;
     }
 
     @Nullable
     @Override
     public Entity createEntity(Location location, BaseEntity entity, UUID uuid) {
-        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(entity), uuid) : null;
+        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(location, entity), uuid) : null;
     }
 
     private boolean allowedEntity(Location location, BaseEntity entity) {
@@ -98,8 +108,59 @@ public class SanitizerExtent extends MemoryOptimizedClipboard {
         return true;
     }
 
-    private BaseEntity cleanEntity(BaseEntity entity) {
-        // todo: remove illegal items from entity
+    public <B extends BlockStateHolder<B>> void cleanNbt(BlockVector3 vector3, B block, CompoundBinaryTag nbt) {
+        for (String key : nbt.keySet()) {
+            if (settings.filter().nbtBlacklist().contains(key)) {
+                nbt.remove(key);
+                report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, key);
+                continue;
+            }
+            BinaryTagType<? extends BinaryTag> nextType = nbt.get(key).type();
+            if (nextType.test(BinaryTagTypes.COMPOUND)) {
+                cleanNbt(vector3, block, nbt.getCompound(key));
+                continue;
+            }
+
+            if (nextType.test(BinaryTagTypes.STRING)) {
+                String text = nbt.getString(key);
+                for (String e : settings.filter().textBlacklist()) {
+                    if (text.contains(e)) {
+                        nbt.remove(key);
+                        report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, text);
+                    }
+                }
+            }
+        }
+    }
+
+    public <B extends BlockStateHolder<B>> void cleanNbt(Location location, BaseEntity entity, CompoundBinaryTag nbt) {
+        for (String key : nbt.keySet()) {
+            if (settings.filter().nbtBlacklist().contains(key)) {
+                nbt.remove(key);
+                report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, key);
+                continue;
+            }
+            BinaryTagType<? extends BinaryTag> nextType = nbt.get(key).type();
+            if (nextType.test(BinaryTagTypes.COMPOUND)) {
+                cleanNbt(location, entity, nbt.getCompound(key));
+                continue;
+            }
+
+            if (nextType.test(BinaryTagTypes.STRING)) {
+                String text = nbt.getString(key);
+                for (String e : settings.filter().textBlacklist()) {
+                    if (text.contains(e)) {
+                        nbt.remove(key);
+                        report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, key, text);
+                    }
+                }
+            }
+        }
+    }
+
+    private BaseEntity cleanEntity(Location location, BaseEntity entity) {
+        CompoundBinaryTag nbt = entity.getNbt();
+        if (nbt != null) cleanNbt(location, entity, nbt);
         return entity;
     }
 

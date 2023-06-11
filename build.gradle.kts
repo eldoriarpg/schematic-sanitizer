@@ -1,6 +1,8 @@
+import java.util.*
+
 plugins {
     java
-    id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("net.minecrell.plugin-yml.bukkit") version "0.5.3"
 
 }
 
@@ -23,13 +25,17 @@ dependencies {
 
 tasks {
     register<Copy>("copyToServer") {
-        val path = project.property("targetDir") ?: ""
-        if (path.toString().isEmpty()) {
+        val props = Properties()
+        val propFile = file("build.properties")
+        if (!propFile.exists()) propFile.createNewFile()
+        file("build.properties").reader().let { props.load(it) }
+        val path = props.getProperty("targetDir") ?: ""
+        if (path.isEmpty()) {
             println("targetDir is not set in gradle properties")
             return@register
         }
         from(jar)
-        destinationDir = File(path.toString())
+        destinationDir = File(path)
     }
     test {
         useJUnitPlatform()
@@ -41,7 +47,9 @@ tasks {
 
 bukkit {
     name = "SchematicSanitizer"
-    main = "de.eldoria.schematicsanitizer.Sanitizer"
+    main = "de.eldoria.schematicsanitizer.SanitizerPlugin"
+    apiVersion = "1.16"
+
 
     commands {
         register("sanpaste")

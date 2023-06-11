@@ -5,6 +5,9 @@ import de.eldoria.schematicsanitizer.sanitizer.report.Report;
 public class ReportBuilder {
     EntityReportBuilder entityReport =  new EntityReportBuilder();
     BlockReportBuilder blockReport =  new BlockReportBuilder();
+    BlockNbtReportBuilder blockNbtReport =  new BlockNbtReportBuilder();
+    EntityNbtReportBuilder entityNbtReport =  new EntityNbtReportBuilder();
+
     public Report build() {
         return new Report();
     }
@@ -14,6 +17,14 @@ public class ReportBuilder {
     }
 
     public BlockReportBuilder block() {
-        return null;
+        return blockReport;
+    }
+
+    public BlockNbtReportBuilder blockNbt() {
+        return blockNbtReport;
+    }
+
+    public EntityNbtReportBuilder entityNbt() {
+        return entityNbtReport;
     }
 }

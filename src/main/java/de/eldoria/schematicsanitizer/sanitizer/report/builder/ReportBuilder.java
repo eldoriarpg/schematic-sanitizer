@@ -3,14 +3,10 @@ package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 import de.eldoria.schematicsanitizer.sanitizer.report.Report;
 
 public class ReportBuilder {
-    EntityReportBuilder entityReport =  new EntityReportBuilder();
-    BlockReportBuilder blockReport =  new BlockReportBuilder();
-    BlockNbtReportBuilder blockNbtReport =  new BlockNbtReportBuilder();
-    EntityNbtReportBuilder entityNbtReport =  new EntityNbtReportBuilder();
-
-    public Report build() {
-        return new Report();
-    }
+    private final EntityReportBuilder entityReport = new EntityReportBuilder();
+    private final BlockReportBuilder blockReport = new BlockReportBuilder();
+    private final BlockNbtReportBuilder blockNbtReport = new BlockNbtReportBuilder();
+    private final EntityNbtReportBuilder entityNbtReport = new EntityNbtReportBuilder();
 
     public EntityReportBuilder entity() {
         return entityReport;
@@ -26,5 +22,9 @@ public class ReportBuilder {
 
     public EntityNbtReportBuilder entityNbt() {
         return entityNbtReport;
+    }
+
+    public Report build() {
+        return new Report(entityReport.build(), blockReport.build(), entityNbtReport.build(), blockNbtReport.build());
     }
 }

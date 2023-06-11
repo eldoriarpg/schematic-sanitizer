@@ -52,6 +52,8 @@ bukkit {
 
 
     commands {
-        register("sanpaste")
+        register("sanpaste"){
+            usage = "sanpaste fix|check <schematic> [new file]"
+        }
     }
 }

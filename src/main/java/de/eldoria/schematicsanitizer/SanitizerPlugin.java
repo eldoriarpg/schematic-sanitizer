@@ -1,23 +1,23 @@
 package de.eldoria.schematicsanitizer;
 
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.math.BlockVector3;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
+import de.eldoria.schematicsanitizer.sanitizer.report.Report;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 
 public class SanitizerPlugin extends JavaPlugin {
@@ -43,15 +43,36 @@ public class SanitizerPlugin extends JavaPlugin {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Sanitizer sanitizer = null;
         try {
-            sanitizer = Sanitizer.create(worldEdit.getSchematicsFolderPath().resolve(args[0]), Settings.DEFAULT);
+            sanitizer = Sanitizer.create(worldEdit.getSchematicsFolderPath().resolve(args[1]), Settings.DEFAULT);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return false;
         }
         try {
-            sanitizer.check();
+            Report report;
+            if (args[0].equals("check")) {
+                report = sanitizer.check();
+            } else if (args[0].equals("fix")) {
+                report = args.length > 2 ? sanitizer.fix(args[2]) : sanitizer.fix();
+            }else {
+                return false;
+            }
+            sender.sendMessage(report.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            getLogger().log(Level.SEVERE, "ups", e);
+            return false;
         }
         return true;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1) {
+            return List.of("fix", "check");
+        }
+
+        if (args.length == 2) {
+            return Arrays.stream(worldEdit.getSchematicsFolderPath().toFile().listFiles(File::isFile)).map(File::getName).filter(name -> name.startsWith(args[1])).toList();
+        }
+        return Collections.emptyList();
     }
 }

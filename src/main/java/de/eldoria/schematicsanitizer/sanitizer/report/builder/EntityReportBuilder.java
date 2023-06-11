@@ -1,13 +1,10 @@
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.eldoria.schematicsanitizer.sanitizer.report.EntityReport;
+import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 
-public class EntityReportBuilder {
-    private final List<RemovedEntity> removed = new ArrayList<>();
-
-
-    public void removed(RemovedEntity removedEntity) {
-        this.removed.add(removedEntity);
+public class EntityReportBuilder extends BaseReportBuilder<RemovedEntity> {
+    public EntityReport build() {
+        return new EntityReport(removed());
     }
 }

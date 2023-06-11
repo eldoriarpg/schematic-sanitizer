@@ -1,13 +1,11 @@
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.eldoria.schematicsanitizer.sanitizer.report.BlockReport;
+import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
 
-public class BlockReportBuilder {
-    private final List<RemovedBlock> removed = new ArrayList<>();
+public class BlockReportBuilder extends BaseReportBuilder<RemovedBlock> {
 
-
-    public void removed(RemovedBlock removedEntity) {
-        this.removed.add(removedEntity);
+    public BlockReport build() {
+        return new BlockReport(removed());
     }
 }

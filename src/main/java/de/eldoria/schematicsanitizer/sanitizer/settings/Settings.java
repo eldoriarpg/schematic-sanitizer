@@ -1,5 +1,6 @@
 package de.eldoria.schematicsanitizer.sanitizer.settings;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sk89q.worldedit.world.entity.EntityTypes;
 import de.eldoria.schematicsanitizer.sanitizer.filter.Filter;
 import de.eldoria.schematicsanitizer.sanitizer.limit.Limit;

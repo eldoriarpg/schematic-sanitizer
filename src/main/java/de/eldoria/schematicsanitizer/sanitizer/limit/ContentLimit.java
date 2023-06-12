@@ -1,4 +1,6 @@
 package de.eldoria.schematicsanitizer.sanitizer.limit;
 
-public record ContentLimit(int blocks, int creatures, int nonCreatures) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record ContentLimit(int blocks, @JsonProperty(defaultValue = "1000") int nonAirBlocks, int creatures, int nonCreatures) {
 }

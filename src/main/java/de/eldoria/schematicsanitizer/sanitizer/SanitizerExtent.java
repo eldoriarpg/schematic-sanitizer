@@ -3,7 +3,6 @@ package de.eldoria.schematicsanitizer.sanitizer;
 import com.sk89q.jnbt.CompoundTag;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.entity.Entity;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
@@ -18,9 +17,12 @@ import com.sk89q.worldedit.util.nbt.BinaryTagTypes;
 import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
+import com.sk89q.worldedit.world.block.BlockTypes;
 import de.eldoria.schematicsanitizer.sanitizer.filter.BlockFilter;
 import de.eldoria.schematicsanitizer.sanitizer.filter.EntityFilter;
-import de.eldoria.schematicsanitizer.sanitizer.report.Report;
+import de.eldoria.schematicsanitizer.sanitizer.limit.ContentLimit;
+import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
+import de.eldoria.schematicsanitizer.sanitizer.report.builder.ContentReportBuilder;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.ReportBuilder;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.BlockRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.EntityRemovalCause;
@@ -28,33 +30,33 @@ import de.eldoria.schematicsanitizer.sanitizer.report.cause.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
-import org.bukkit.entity.Creature;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.Set;
 import java.util.UUID;
-
-import static org.slf4j.LoggerFactory.getLogger;
+import java.util.function.Supplier;
 
 public class SanitizerExtent extends BlockArrayClipboard {
-    private static final Logger log = getLogger(SanitizerExtent.class);
-
     private final Settings settings;
     private final ReportBuilder report = new ReportBuilder();
 
-    public SanitizerExtent(Clipboard oldClipboard, Settings settings) {
-        super(oldClipboard.getRegion());
+    public SanitizerExtent(Clipboard base, Settings settings) {
+        super(base.getRegion());
         this.settings = settings;
+        report.limit().maxSize(Math.max(Math.max(base.getHeight(), base.getWidth()), base.getLength()));
     }
 
     @Override
     public boolean setTile(int x, int y, int z, CompoundTag tag) {
+        //TODO not sure what to do here
         return super.setTile(x, y, z, tag);
     }
 
     @Override
     public <B extends BlockStateHolder<B>> boolean setBlock(int x, int y, int z, B block) {
+        report.limit().content().countBlock();
+        if (block.getBlockType() != BlockTypes.AIR) report.limit().content().countNonAirBlock();
         return allowedBlock(x, y, z, block) && super.setBlock(x, y, z, cleanBlockData(BlockVector3.at(x, y, z), block));
     }
 
@@ -77,25 +79,41 @@ public class SanitizerExtent extends BlockArrayClipboard {
     @Nullable
     @Override
     public Entity createEntity(Location location, BaseEntity entity) {
-        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(location, entity)) : null;
+        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity)));
     }
 
     @Nullable
     @Override
     public Entity createEntity(Location location, BaseEntity entity, UUID uuid) {
-        return allowedEntity(location, entity) ? super.createEntity(location, cleanEntity(location, entity), uuid) : null;
+        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity), uuid));
+    }
+
+    private Entity createEntity(Location location, BaseEntity entity, Supplier<Entity> ifValid) {
+        CreatureType type = CreatureType.getType(entity);
+        ContentReportBuilder content = report.limit().content();
+        ContentLimit contentLimit = settings.limit().contentLimit();
+        content.countTotalEntity(type);
+        if (allowedEntity(location, entity)) {
+            content.countEntity(type);
+            return switch (type) {
+                case CREATURE -> content.creatures() <= contentLimit.creatures() ? ifValid.get() : null;
+                case NON_CREATURE -> content.nonCreatures() <= contentLimit.nonCreatures() ? ifValid.get() : null;
+                case UNKNOWN -> null;
+            };
+        }
+        return null;
     }
 
     private boolean allowedEntity(Location location, BaseEntity entity) {
         EntityFilter filter = settings.filter().entityFilter();
-        Class<? extends org.bukkit.entity.Entity> entityClass = BukkitAdapter.adapt(entity.getType()).getEntityClass();
+        CreatureType type = CreatureType.getType(entity);
 
-        if (entityClass == null) {
+        if (type == CreatureType.UNKNOWN) {
             report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.UNKNOWN_TYPE));
             return false;
         }
 
-        if (Creature.class.isAssignableFrom(entityClass) && filter.removeCreature()) {
+        if (type == CreatureType.CREATURE && filter.removeCreature()) {
             report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.CREATURE));
             return false;
         } else if (filter.removeNonCreatures()) {
@@ -190,7 +208,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return super.setBlock(position, block);
     }
 
-    public Report report() {
+    public SanitizerReport report() {
         return report.build();
     }
 }

@@ -33,7 +33,7 @@ dependencies {
     implementation("de.eldoria.util", "jackson-configuration", "2.0.0-DEV")
     implementation("de.eldoria.jacksonbukkit", "jackson-bukkit", "1.2.0")
 
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.9.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 

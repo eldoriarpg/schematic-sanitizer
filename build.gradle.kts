@@ -23,8 +23,8 @@ java {
 
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.6.3-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.3-SNAPSHOT")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.6.4")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.4")
 
     implementation("net.kyori:adventure-platform-bukkit:4.3.0")
     implementation("de.eldoria.util", "plugin", "2.0.0-DEV"){

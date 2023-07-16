@@ -1,5 +1,6 @@
 package de.eldoria.schematicsanitizer;
 
+import com.sk89q.worldedit.world.entity.EntityTypes;
 import de.eldoria.eldoutilities.config.template.PluginBaseConfiguration;
 import de.eldoria.eldoutilities.localization.ILocalizer;
 import de.eldoria.eldoutilities.localization.Localizer;
@@ -7,13 +8,27 @@ import de.eldoria.eldoutilities.messages.MessageSender;
 import de.eldoria.eldoutilities.plugin.EldoPlugin;
 import de.eldoria.schematicsanitizer.command.SchematicSaniziter;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
+import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
+import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
+import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
+import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
+import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.Tag;
+import org.bukkit.Material;
 
+import java.nio.file.Path;
 import java.util.logging.Level;
 
-import static de.eldoria.schematicsanitizer.util.Colors.*;
+import static de.eldoria.schematicsanitizer.util.Colors.BAD;
+import static de.eldoria.schematicsanitizer.util.Colors.GOOD;
+import static de.eldoria.schematicsanitizer.util.Colors.HEADER;
+import static de.eldoria.schematicsanitizer.util.Colors.INACTIVE;
+import static de.eldoria.schematicsanitizer.util.Colors.INTERACT;
+import static de.eldoria.schematicsanitizer.util.Colors.NAME;
+import static de.eldoria.schematicsanitizer.util.Colors.SECTION;
+import static de.eldoria.schematicsanitizer.util.Colors.VALUE;
 
 @SuppressWarnings("unused")
 public class SanitizerPlugin extends EldoPlugin {

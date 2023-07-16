@@ -100,4 +100,8 @@ public record Settings(Filter filter, Limit limit) {
                     )
             )
             .build();
+
+    public static SettingsBuilder builder() {
+        return new SettingsBuilder();
+    }
 }

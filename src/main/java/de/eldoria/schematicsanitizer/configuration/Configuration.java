@@ -23,6 +23,7 @@ public class Configuration extends JacksonConfig<ConfigFile> {
         return secondary(SETTINGS);
     }
 
+
     @Override
     protected List<Module> additionalModules() {
         return List.of(new CustomModule());

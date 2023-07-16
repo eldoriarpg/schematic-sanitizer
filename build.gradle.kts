@@ -10,6 +10,7 @@ group = "de.eldoria"
 version = "1.0.0"
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://eldonexus.de/repository/maven-public/")
     maven("https://eldonexus.de/repository/maven-proxies/")
@@ -27,10 +28,10 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.3-SNAPSHOT")
 
     implementation("net.kyori:adventure-platform-bukkit:4.3.0")
-    implementation("de.eldoria.util", "plugin", "2.0.0-DEV"){
+    implementation("de.eldoria.util", "plugin", "2.0.1-DEV"){
         exclude("net.kyori")
     }
-    implementation("de.eldoria.util", "jackson-configuration", "2.0.0-DEV")
+    implementation("de.eldoria.util", "jackson-configuration", "2.0.1-DEV")
     implementation("de.eldoria.jacksonbukkit", "jackson-bukkit", "1.2.0")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

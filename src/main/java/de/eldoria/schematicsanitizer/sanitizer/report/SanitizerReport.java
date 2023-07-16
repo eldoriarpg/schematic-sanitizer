@@ -11,6 +11,7 @@ import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Function;
 
 import static de.eldoria.schematicsanitizer.util.Text.numbers;
@@ -62,6 +63,23 @@ public final class SanitizerReport {
                 .formatted(limits.summary(settings), summary().indent(2));
     }
 
+    public String shortComponent(Settings settings) {
+        List<String> errors = limits.errors(settings);
+        if (!blocks.isEmpty()) {
+            errors.add("%s<default> illegal blocks found".formatted(numbers(blocks)));
+        }
+        if (!blocksNbt.isEmpty()) {
+            errors.add("%s<default> illegal NBT entries on blocks found".formatted(numbers(blocksNbt)));
+        }
+        if (!entities.isEmpty()) {
+            errors.add("%s<default> illegal entities found".formatted(numbers(entities)));
+        }
+        if (!entitiesNbt.isEmpty()) {
+            errors.add("%s<default> illegal NBT entries on entities found".formatted(numbers(entitiesNbt)));
+        }
+        return errors.isEmpty() ? "<good>No problems found!" : String.join("\n", errors);
+    }
+
     /**
      * Returns a page of a subcomponent, which has to be a {@link SizedReport}
      *
@@ -105,11 +123,11 @@ public final class SanitizerReport {
                 %s<default> illegal blocks found %s
                 %s<default> illegal NBT entries on blocks found %s
                 %s<default> illegal entities found %s
-                %s<default> illegal NBT entries on entities found %s
-                """.formatted(numbers(blocks), blocks.isEmpty() ? "" : showButton("blocks"),
-                numbers(blocksNbt), blocksNbt.isEmpty() ? "" : showButton("blocks_nbt"),
-                numbers(entities), entities.isEmpty() ? "" : showButton("entities"),
-                numbers(entitiesNbt), entitiesNbt.isEmpty() ? "" : showButton("entities_nbt"));
+                %s<default> illegal NBT entries on entities found %s"""
+                .formatted(numbers(blocks), blocks.isEmpty() ? "" : showButton("blocks"),
+                        numbers(blocksNbt), blocksNbt.isEmpty() ? "" : showButton("blocks_nbt"),
+                        numbers(entities), entities.isEmpty() ? "" : showButton("entities"),
+                        numbers(entitiesNbt), entitiesNbt.isEmpty() ? "" : showButton("entities_nbt"));
     }
 
     private String showButton(String subCommand) {

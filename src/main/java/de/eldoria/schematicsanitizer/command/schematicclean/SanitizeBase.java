@@ -15,6 +15,7 @@ import de.eldoria.eldoutilities.commands.executor.ITabExecutor;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
+import de.eldoria.schematicsanitizer.util.Text;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -41,9 +42,13 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+        Path path = worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
+        if (!path.toFile().exists()) throw CommandException.message("Unknown file");
+        if (path.toFile().isDirectory()) throw CommandException.message("Only single files can be processed.");
+
         Sanitizer sanitizer;
         try {
-            sanitizer = Sanitizer.create(worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " ")), configuration.settings());
+            sanitizer = Sanitizer.create(path, configuration.settings());
         } catch (IOException e) {
             plugin().getLogger().log(Level.SEVERE, "Could not load schematic.", e);
             throw CommandException.message("Could not load schematic.");
@@ -54,7 +59,7 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
                 this.report.register(sender, report);
             } catch (IOException e) {
                 plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
-                throw CommandException.message("Something went wrong. Please check the console");
+                handleCommandError(sender, CommandException.message("Something went wrong. Please check the console"));
             }
         });
     }
@@ -83,10 +88,12 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
 
     private List<String> complete(Path base, Path path) {
+        if (!path.toAbsolutePath().startsWith(base.toAbsolutePath())) return Collections.emptyList();
         try (var stream = Files.list(path)) {
             return stream
                     .map(p -> p.toFile().isDirectory() ? p + "/" : p.toString())
-                    .map(p -> p.replace(base.toString() + "/", ""))
+                    .map(p -> p.replace(base + "/", ""))
+                    .map(Text::unifyPath)
                     .map(p -> p.replace(" ", "\\_"))
                     .filter(p -> !p.isBlank())
                     .toList();

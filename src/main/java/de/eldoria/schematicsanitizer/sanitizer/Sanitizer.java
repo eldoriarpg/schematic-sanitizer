@@ -10,10 +10,13 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
+import de.eldoria.eldoutilities.commands.command.util.CommandAssertions;
 import de.eldoria.schematicsanitizer.WorldEditUtil;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
+import org.bukkit.command.CommandException;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,6 +39,7 @@ public class Sanitizer {
      * @throws IOException if an I/O error occurs while creating the Sanitizer instance
      */
     public static Sanitizer create(Path path, Settings settings) throws IOException {
+        if (!path.toFile().exists()) throw new FileNotFoundException("File not found: " + path);
         return new Sanitizer(path, settings);
     }
 

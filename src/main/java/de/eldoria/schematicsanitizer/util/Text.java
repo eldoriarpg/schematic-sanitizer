@@ -19,7 +19,7 @@ public class Text {
      *
      * @param value the value to compare
      * @param max the maximum value to compare against
-     * @return the color limit ("<good>" or "<bad>")
+     * @return the color limit ({@code <good>} or {@code <bad>})
      */
     public static String limitColor(int value, int max) {
         return value <= max ? "<good>" : "<bad>";

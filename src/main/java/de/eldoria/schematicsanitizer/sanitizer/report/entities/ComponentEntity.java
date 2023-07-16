@@ -7,7 +7,7 @@ import net.kyori.adventure.translation.Translatable;
 
 /**
  * The ComponentEntity interface defines methods for interacting with a component entity.
- *
+ * <p>
  * This interface provides methods for retrieving component, coordinates, name, cause, and meta of an entity.
  */
 
@@ -23,8 +23,8 @@ public interface ComponentEntity {
      * Converts the given BlockVector3 into a string representation of its coordinates.
      *
      * @param vec the BlockVector3 to convert
-     * @return the string representation of the coordinates in the format "<#8f8c8c>%d %d %d", where %d represents
-     *         the block X, Y, and Z coordinates respectively
+     * @return the string representation of the coordinates in the format {@code <#8f8c8c>%d %d %d}, where %d represents
+     * the block X, Y, and Z coordinates respectively
      */
     default String coords(BlockVector3 vec) {
         return "<#8f8c8c>%d %d %d".formatted(vec.getBlockX(), vec.getBlockY(), vec.getBlockZ());

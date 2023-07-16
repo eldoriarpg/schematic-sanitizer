@@ -39,7 +39,7 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
         SanitizerReport sanitizerReport = report.get(sender);
         String component = sanitizerReport.pageComponent(map, page, SIZE);
         component = """
-                <bold>Schematic Report</bold>
+                <header>Schematic Report</header>
                 %s
                 %s
                 """.stripIndent()
@@ -52,7 +52,7 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
         String currentPage = " <default>%s/%s ".formatted(page + 1, report.pages(SIZE));
         String rightButton = page + 1 == report.pages(SIZE) ? "<inactive>❯❯❯" : pageCommand(page + 1, "<interact>❯❯❯");
         String backButton = "<click:run_command:/schematicsanitizer report><interact>[Back]</click>";
-        return "%s %s %s%n%s".formatted(leftButton, currentPage, rightButton, backButton);
+        return "%s %s %s\n%s".formatted(leftButton, currentPage, rightButton, backButton);
     }
 
     private String pageCommand(int page, String arrow) {

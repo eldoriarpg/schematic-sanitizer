@@ -8,6 +8,8 @@ package de.eldoria.schematicsanitizer.util;
 
 import de.eldoria.schematicsanitizer.sanitizer.report.SizedReport;
 
+import java.io.File;
+
 public class Text {
     /**
      * Formats the given value and maximum value into a string with color limit.
@@ -53,4 +55,7 @@ public class Text {
         return "<hover:show_text:'<default>%s'>%s</hover>".formatted(hoverText, text);
     }
 
+    public static String unifyPath(String string) {
+        return string.replace(File.separator, "/");
+    }
 }

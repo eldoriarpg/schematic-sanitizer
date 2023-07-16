@@ -27,7 +27,7 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.4")
 
     implementation("net.kyori:adventure-platform-bukkit:4.3.0")
-    implementation("de.eldoria.util", "plugin", "2.0.0-DEV"){
+    implementation("de.eldoria.util", "plugin", "2.0.0-SNAPSHOT"){
         exclude("net.kyori")
     }
     implementation("de.eldoria.util", "jackson-configuration", "2.0.0-DEV")

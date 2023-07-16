@@ -41,6 +41,15 @@ What it won't do:
 - Change the size of the schematic in any way
 - Remove any blocks once the limit is exceeded
 
+### Batch processing
+
+Instead of just fixing a single schematic you can fix a whole directory with `/schematicsanitizer fixbatch <directory>`.
+
+This will fix all schematics directly inside this directory. Schematics will be saved suffixed with `_new`.
+Adding the `-o` flag will override the original files.
+
+You will receive a short report of every single schematic telling you the problems if there were some.
+
 ## Usage as an api
 
 Get the path of your schematic

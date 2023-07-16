@@ -47,6 +47,7 @@ public class SanitizerPlugin extends EldoPlugin {
     @Override
     public void onPluginEnable() {
         ILocalizer localizer = Localizer.create(this, "en_US");
+        localizer.setLocale("en_US");
         MessageSender.builder(this)
                 .localizer(localizer)
                 .prefix("<#009dff>[<#ff7300>SC<#009dff>]")

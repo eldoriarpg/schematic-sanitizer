@@ -42,12 +42,14 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
     }
 
     private String getPageFooter(int page, SizedReport<?> report) {
-        return (page == 0 ? "❮❮❮" : pageCommand(page - 1, "❮❮❮"))
-                + " %s/%s ".formatted(page + 1, report.pages(SIZE))
-                + (page + 1 == report.pages(SIZE) ? "❯❯❯" : pageCommand(page + 1, "❯❯❯"));
+        String leftButton = page == 0 ? "<inactive>❮❮❮" : pageCommand(page - 1, "<interact>❮❮❮");
+        String currentPage = " <default>%s/%s ".formatted(page + 1, report.pages(SIZE));
+        String rightButton = page + 1 == report.pages(SIZE) ? "<inactive>❯❯❯" : pageCommand(page + 1, "<interact>❯❯❯");
+        String backButton = "<click:run_command:/schematicsanitizer report><interact>[Back]</click>";
+        return "%s %s %s%n%s".formatted(leftButton, currentPage, rightButton, backButton);
     }
 
     private String pageCommand(int page, String arrow) {
-        return "<click:run_command:/schematicclean report showpage %s %d>%s</click>".formatted(meta().name(), page, arrow);
+        return "<click:run_command:/schematicsanitizer report page %s %d>%s</click>".formatted(meta().name(), page, arrow);
     }
 }

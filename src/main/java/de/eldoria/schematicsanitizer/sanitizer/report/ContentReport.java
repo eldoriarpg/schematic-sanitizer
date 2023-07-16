@@ -3,6 +3,7 @@ package de.eldoria.schematicsanitizer.sanitizer.report;
 import de.eldoria.schematicsanitizer.sanitizer.limit.ContentLimit;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 
+import static de.eldoria.schematicsanitizer.util.Text.hovered;
 import static de.eldoria.schematicsanitizer.util.Text.numbers;
 
 public record ContentReport(int blocks, int nonAirBlocks, int totalCreatures, int totalNonCreatures,
@@ -10,16 +11,17 @@ public record ContentReport(int blocks, int nonAirBlocks, int totalCreatures, in
     public String summary(Settings settings) {
         ContentLimit contentLimit = settings.limit().contentLimit();
         return """
-                <default>Blocks: %s
-                <default>Non Air Blocks: %s
-                <default>Total Creatures: %s
-                <default>Total Non Creatures: %s
-                <default>Creatures: %s
-                <default>Non Creatures: %s""".formatted(numbers(blocks, contentLimit.blocks()),
-                numbers(nonAirBlocks, contentLimit.nonAirBlocks()),
-                numbers(totalCreatures, contentLimit.creatures()),
-                numbers(totalNonCreatures, contentLimit.nonCreatures()),
-                numbers(creatures, contentLimit.creatures()),
-                numbers(nonCreatures, contentLimit.nonCreatures()));
+                <name>%s: %s
+                <name>%s: %s
+                <name>%s: %s
+                <name>%s: %s
+                <name>%s: %s
+                <name>%s: %s""".formatted(
+                hovered("Blocks", "The total amount of blocks (L*W*H)"), numbers(blocks, contentLimit.blocks()),
+                hovered("Non Air Blocks", "The amount of non air blocks"), numbers(nonAirBlocks, contentLimit.nonAirBlocks()),
+                hovered("Total Creatures","The total amount of creatures. Including blacklisted"), numbers(totalCreatures, contentLimit.creatures()),
+                hovered("Total Non Creatures","The total amount of non creatures. Including blacklisted"), numbers(totalNonCreatures, contentLimit.nonCreatures()),
+                hovered("Creatures","The amount of creatures that are not blacklisted"), numbers(creatures, contentLimit.creatures()),
+                hovered("Non Creatures","The amount of non creatures that are not blacklisted"), numbers(nonCreatures, contentLimit.nonCreatures()));
     }
 }

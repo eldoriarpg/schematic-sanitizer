@@ -14,9 +14,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,18 +37,20 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         Sanitizer sanitizer;
         try {
-            sanitizer = Sanitizer.create(worldEdit.getSchematicsFolderPath().resolve(args.asString(0)), configuration.settings());
+            sanitizer = Sanitizer.create(worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " ")), configuration.settings());
         } catch (IOException e) {
             plugin().getLogger().log(Level.SEVERE, "Could not load schematic.", e);
             throw CommandException.message("Could not load schematic.");
         }
-        try {
-            SanitizerReport report = report(sanitizer, args);
-            this.report.register(sender, report);
-        } catch (IOException e) {
-            plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
-            throw CommandException.message("Something went wrong. Please check the console");
-        }
+        plugin().getServer().getScheduler().runTaskAsynchronously(plugin(), () -> {
+            try {
+                SanitizerReport report = report(sanitizer, args);
+                this.report.register(sender, report);
+            } catch (IOException e) {
+                plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
+                throw CommandException.message("Something went wrong. Please check the console");
+            }
+        });
     }
 
     protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
@@ -56,11 +58,34 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
-            return Arrays.stream(worldEdit.getSchematicsFolderPath().toFile().listFiles(File::isFile))
-                    .map(File::getName)
-                    .filter(name -> name.startsWith(args.asString(0)))
-                    .toList();
+            Path schem = worldEdit.getSchematicsFolderPath();
+            String arg = args.asString(0);
+            if (arg.isBlank()) return complete(schem, schem);
+            String path = arg.replace("\\_", " ");
+            if (path.contains("..")) return Collections.singletonList("No stepping out c:");
+            if (path.endsWith("/")) {
+                // list all files and directories in directory
+                return complete(schem, schem.resolve(path));
+            }
+            if (path.contains("/")) {
+                path = arg.replace("/.+?", "");
+                return complete(schem, schem.resolve(path)).stream().filter(p -> p.startsWith(arg)).toList();
+            }
+            return complete(schem, schem).stream().filter(p -> p.startsWith(arg)).toList();
         }
         return Collections.emptyList();
+    }
+
+    private List<String> complete(Path base, Path path) {
+        try (var stream = Files.list(path)) {
+            return stream
+                    .map(p -> p.toFile().isDirectory() ? p + "/" : p.toString())
+                    .map(p -> p.replace(base.toString() + "/", ""))
+                    .map(p -> p.replace(" ", "\\_"))
+                    .filter(p -> !p.isBlank())
+                    .toList();
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
     }
 }

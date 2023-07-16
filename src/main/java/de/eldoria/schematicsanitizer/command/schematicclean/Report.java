@@ -41,7 +41,7 @@ public class Report extends AdvancedCommand {
     }
 
     public SanitizerReport get(CommandSender sender) {
-        SanitizerReport report = reports.get(getSenderUUID(sender));
+        SanitizerReport report = (SanitizerReport) reports.get(getSenderUUID(sender));
         CommandAssertions.isTrue(report != null, "No report registered.");
         return report;
     }

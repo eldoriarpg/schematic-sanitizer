@@ -77,9 +77,9 @@ bukkit {
 
 
     commands {
-        register("schematiccleaner") {
-            usage = "schemcleaner fix|check <schematic> [new file]"
-            aliases = listOf("schemclean")
+        register("schematicsanitizer") {
+            usage = "schemsan fix|check <schematic> [new file]"
+            aliases = listOf("schemsan", "sanitizer")
         }
     }
 }

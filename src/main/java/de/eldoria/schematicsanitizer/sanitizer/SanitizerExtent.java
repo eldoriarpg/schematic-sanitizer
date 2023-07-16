@@ -60,6 +60,49 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return allowedBlock(x, y, z, block) && super.setBlock(x, y, z, cleanBlockData(BlockVector3.at(x, y, z), block));
     }
 
+    @Nullable
+    @Override
+    public Entity createEntity(Location location, BaseEntity entity) {
+        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity)));
+    }
+
+    @Nullable
+    @Override
+    public Entity createEntity(Location location, BaseEntity entity, UUID uuid) {
+        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity), uuid));
+    }
+
+    @Override
+    public <B extends BlockStateHolder<B>> int setBlocks(Region region, B block) throws MaxChangedBlocksException {
+        return super.setBlocks(region, block);
+    }
+
+    @Override
+    public int setBlocks(Region region, Pattern pattern) throws MaxChangedBlocksException {
+        // Should not happen inside a schematic copy
+        throw new UnsupportedOperationException("Operation not supported");
+    }
+
+    @Override
+    public int setBlocks(Set<BlockVector3> vset, Pattern pattern) {
+        // Should not happen inside a schematic copy
+        throw new UnsupportedOperationException("Operation not supported");
+    }
+
+    @Override
+    public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 position, T block) throws WorldEditException {
+        return setBlock(position.getBlockX(), position.getBlockY(), position.getBlockZ(), block);
+    }
+
+    public SanitizerReport report(Path newPath) {
+        report.newPath(newPath);
+        return report.build();
+    }
+
+    public SanitizerReport report() {
+        return report.build();
+    }
+
     /**
      * Checks if a block is allowed based on the given {@link Settings}.
      *
@@ -92,18 +135,6 @@ public class SanitizerExtent extends BlockArrayClipboard {
         CompoundBinaryTag nbt = block.getNbt();
         if (nbt != null) nbt = cleanBlockNBT(vector3, block, nbt);
         return (B) block.toBaseBlock(nbt);
-    }
-
-    @Nullable
-    @Override
-    public Entity createEntity(Location location, BaseEntity entity) {
-        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity)));
-    }
-
-    @Nullable
-    @Override
-    public Entity createEntity(Location location, BaseEntity entity, UUID uuid) {
-        return createEntity(location, entity, () -> super.createEntity(location, cleanEntity(location, entity), uuid));
     }
 
     private Entity createEntity(Location location, BaseEntity entity, Supplier<Entity> ifValid) {
@@ -206,36 +237,5 @@ public class SanitizerExtent extends BlockArrayClipboard {
         CompoundBinaryTag nbt = entity.getNbt();
         if (nbt != null) entity.setNbt(cleanEntityNBT(location, entity, nbt));
         return entity;
-    }
-
-    @Override
-    public <B extends BlockStateHolder<B>> int setBlocks(Region region, B block) throws MaxChangedBlocksException {
-        return super.setBlocks(region, block);
-    }
-
-    @Override
-    public int setBlocks(Region region, Pattern pattern) throws MaxChangedBlocksException {
-        // Should not happen inside a schematic copy
-        throw new UnsupportedOperationException("Operation not supported");
-    }
-
-    @Override
-    public int setBlocks(Set<BlockVector3> vset, Pattern pattern) {
-        // Should not happen inside a schematic copy
-        throw new UnsupportedOperationException("Operation not supported");
-    }
-
-    @Override
-    public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 position, T block) throws WorldEditException {
-        return setBlock(position.getBlockX(), position.getBlockY(), position.getBlockZ(), block);
-    }
-
-    public SanitizerReport report(Path newPath) {
-        report.newPath(newPath);
-        return report.build();
-    }
-
-    public SanitizerReport report() {
-        return report.build();
     }
 }

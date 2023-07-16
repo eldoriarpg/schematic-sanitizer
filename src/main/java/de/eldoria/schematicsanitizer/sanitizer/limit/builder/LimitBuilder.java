@@ -10,8 +10,8 @@ import java.util.function.Consumer;
  */
 
 public class LimitBuilder {
+    private final ContentLimitBuilder contentLimit = new ContentLimitBuilder();
     private int size = 600;
-    private final ContentLimitBuilder contentLimit= new ContentLimitBuilder();
 
     /**
      * Sets the size of the LimitBuilder.
@@ -31,7 +31,7 @@ public class LimitBuilder {
      * @param limit The consumer function to set the content limit using the {@link ContentLimitBuilder}.
      * @return This LimitBuilder instance.
      */
-    public LimitBuilder contentLimit(Consumer<ContentLimitBuilder> limit){
+    public LimitBuilder contentLimit(Consumer<ContentLimitBuilder> limit) {
         limit.accept(contentLimit);
         return this;
     }
@@ -41,7 +41,7 @@ public class LimitBuilder {
      *
      * @return A {@link Limit} object with the specified size and content limit.
      */
-    public Limit build(){
+    public Limit build() {
         return new Limit(size, contentLimit.build());
     }
 }

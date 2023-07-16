@@ -56,22 +56,6 @@ public final class SanitizerReport {
                 .formatted(limits.summary(settings), summary().indent(2));
     }
 
-    private String summary() {
-        return """
-                %s<default> illegal blocks found %s
-                %s<default> illegal NBT entries on blocks found %s
-                %s<default> illegal entities found %s
-                %s<default> illegal NBT entries on entities found %s
-                """.formatted(numbers(blocks), blocks.isEmpty() ? "" : showButton("blocks"),
-                numbers(blocksNbt), blocksNbt.isEmpty() ? "" : showButton("blocks_nbt"),
-                numbers(entities), entities.isEmpty() ? "" : showButton("entities"),
-                numbers(entitiesNbt), entitiesNbt.isEmpty() ? "" : showButton("entities_nbt"));
-    }
-
-    private String showButton(String subCommand) {
-        return "<click:run_command:/schematicsanitizer report page %s 0><interact><hover:show_text:'<default>Click me'>[Show]</hover><default></click>".formatted(subCommand);
-    }
-
     /**
      * Returns a page of a subcomponent, which has to be a {@link SizedReport}
      *
@@ -108,5 +92,21 @@ public final class SanitizerReport {
 
     public LimitReport limits() {
         return limits;
+    }
+
+    private String summary() {
+        return """
+                %s<default> illegal blocks found %s
+                %s<default> illegal NBT entries on blocks found %s
+                %s<default> illegal entities found %s
+                %s<default> illegal NBT entries on entities found %s
+                """.formatted(numbers(blocks), blocks.isEmpty() ? "" : showButton("blocks"),
+                numbers(blocksNbt), blocksNbt.isEmpty() ? "" : showButton("blocks_nbt"),
+                numbers(entities), entities.isEmpty() ? "" : showButton("entities"),
+                numbers(entitiesNbt), entitiesNbt.isEmpty() ? "" : showButton("entities_nbt"));
+    }
+
+    private String showButton(String subCommand) {
+        return "<click:run_command:/schematicsanitizer report page %s 0><interact><hover:show_text:'<default>Click me'>[Show]</hover><default></click>".formatted(subCommand);
     }
 }

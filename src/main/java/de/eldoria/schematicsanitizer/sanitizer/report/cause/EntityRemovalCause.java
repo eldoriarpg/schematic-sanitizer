@@ -2,7 +2,7 @@ package de.eldoria.schematicsanitizer.sanitizer.report.cause;
 
 /**
  * The EntityRemovalCause class represents the cause for the removal of an entity.
- *
+ * <p>
  * This class extends the Cause class and provides several predefined instances
  * representing common removal causes, such as being in a blacklist, not being a creature,
  * being a creature, or having an unknown type.

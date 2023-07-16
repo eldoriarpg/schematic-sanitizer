@@ -7,8 +7,8 @@ import de.eldoria.schematicsanitizer.sanitizer.report.LimitReport;
  */
 
 public class LimitReportBuilder {
-    private int maxSize;
     private final ContentReportBuilder content = new ContentReportBuilder();
+    private int maxSize;
 
     /**
      * Sets the maximum size.

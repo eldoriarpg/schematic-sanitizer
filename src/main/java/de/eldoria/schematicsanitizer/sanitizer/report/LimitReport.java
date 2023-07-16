@@ -10,10 +10,10 @@ public record LimitReport(int maxSize, ContentReport content) {
         return """
                 <section>Limits:<default>
                   <name>%s: %s
-                
+                                
                 <section>Content:<default>
                 %s""".formatted(
-                        hovered("Max Size", "The longest side of the schematic"),
+                hovered("Max Size", "The longest side of the schematic"),
                 numbers(maxSize, settings.limit().size()),
                 content.summary(settings).indent(2));
     }

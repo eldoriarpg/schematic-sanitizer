@@ -14,9 +14,9 @@ import java.util.Set;
  */
 
 public class EntityFilterBuilder {
+    private final Set<EntityType> entityBlacklist = new HashSet<>();
     private boolean removeCreature = false;
     private boolean removeNonCreatures = false;
-    private final Set<EntityType> entityBlacklist = new HashSet<>();
 
     /**
      * Set whether to remove creatures from the EntityFilterBuilder.

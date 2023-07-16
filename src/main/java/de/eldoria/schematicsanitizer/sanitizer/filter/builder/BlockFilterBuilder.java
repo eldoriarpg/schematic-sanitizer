@@ -42,7 +42,7 @@ public class BlockFilterBuilder {
      *
      * @return A BlockFilter object with the specified material blacklist
      */
-    public BlockFilter build(){
+    public BlockFilter build() {
         return new BlockFilter(materialBlacklist);
     }
 }

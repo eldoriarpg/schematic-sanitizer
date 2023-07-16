@@ -16,10 +16,10 @@ public class EntityNbtReportBuilder extends BaseReportBuilder<RemovedEntityNbt> 
      * Logs removal of a specific NBT key and its associated text from an entity at a certain location.
      *
      * @param location the location where the entity is located
-     * @param entity the entity from which the NBT key and text should be removed
-     * @param cause the cause of the removal
-     * @param key the NBT key to be removed
-     * @param text the associated text to be removed
+     * @param entity   the entity from which the NBT key and text should be removed
+     * @param cause    the cause of the removal
+     * @param key      the NBT key to be removed
+     * @param text     the associated text to be removed
      */
     public void removed(Location location, BaseEntity entity, NbtRemovalCause cause, String key, String text) {
         removed(new RemovedEntityNbt(location, entity, cause, key, text));
@@ -29,9 +29,9 @@ public class EntityNbtReportBuilder extends BaseReportBuilder<RemovedEntityNbt> 
      * Logs removal of a key from the NBT data of a specific entity at a given location.
      *
      * @param location the location at which the entity is present
-     * @param entity the entity whose NBT data needs to be modified
-     * @param cause the cause of the removal
-     * @param key the key to be removed from the NBT data
+     * @param entity   the entity whose NBT data needs to be modified
+     * @param cause    the cause of the removal
+     * @param key      the key to be removed from the NBT data
      */
     public void removed(Location location, BaseEntity entity, NbtRemovalCause cause, String key) {
         removed(location, entity, cause, key, null);

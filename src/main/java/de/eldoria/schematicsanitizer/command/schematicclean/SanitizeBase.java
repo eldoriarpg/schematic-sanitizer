@@ -53,8 +53,6 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
         });
     }
 
-    protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
-
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
@@ -75,6 +73,8 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
         }
         return Collections.emptyList();
     }
+
+    protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
 
     private List<String> complete(Path base, Path path) {
         try (var stream = Files.list(path)) {

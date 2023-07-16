@@ -14,11 +14,11 @@ public class BlockNbtReportBuilder extends BaseReportBuilder<RemovedBlockNbt> {
     /**
      * Logs removal of a block with the specified details.
      *
-     * @param vector3 The coordinates of the block to be removed.
+     * @param vector3   The coordinates of the block to be removed.
      * @param blockType The type of the block to be removed.
-     * @param cause The cause of the removal.
-     * @param key The key associated with the removal.
-     * @param text The additional text related to the removal.
+     * @param cause     The cause of the removal.
+     * @param key       The key associated with the removal.
+     * @param text      The additional text related to the removal.
      */
     public void removed(BlockVector3 vector3, BlockType blockType, NbtRemovalCause cause, String key, String text) {
         removed(new RemovedBlockNbt(vector3, blockType, cause, key, text));
@@ -27,10 +27,10 @@ public class BlockNbtReportBuilder extends BaseReportBuilder<RemovedBlockNbt> {
     /**
      * Logs removal of a block with the specified parameters.
      *
-     * @param vector3 the position of the block in BlockVector3 format
+     * @param vector3   the position of the block in BlockVector3 format
      * @param blockType the type of the block to be removed
-     * @param cause the cause of the block removal
-     * @param key the key associated with the block (optional)
+     * @param cause     the cause of the block removal
+     * @param key       the key associated with the block (optional)
      */
     public void removed(BlockVector3 vector3, BlockType blockType, NbtRemovalCause cause, String key) {
         removed(vector3, blockType, cause, key, null);

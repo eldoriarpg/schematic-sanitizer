@@ -16,7 +16,7 @@ public class CustomModule extends Module {
 
     @Override
     public Version version() {
-        return new Version(1,0,0,"", "de.eldoria", "schematic-sanitizer");
+        return new Version(1, 0, 0, "", "de.eldoria", "schematic-sanitizer");
     }
 
     @Override

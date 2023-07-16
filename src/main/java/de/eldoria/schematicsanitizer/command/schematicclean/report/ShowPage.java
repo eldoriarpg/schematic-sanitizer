@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 
 public class ShowPage extends AdvancedCommand implements ITabExecutor {
+    private static final int SIZE = 10;
     private final Report report;
     private final Function<SanitizerReport, SizedReport<?>> map;
-    private static final int SIZE = 10;
 
     public ShowPage(Plugin plugin, String name, Report report, Function<SanitizerReport, SizedReport<?>> map) {
         super(plugin, CommandMeta.builder(name)

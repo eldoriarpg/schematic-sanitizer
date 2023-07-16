@@ -24,7 +24,7 @@ public class Sanitizer {
     /**
      * Creates a new Sanitizer instance with the given path and settings.
      *
-     * @param path the path to the file to be sanitized
+     * @param path     the path to the file to be sanitized
      * @param settings the settings to be used for sanitizing the file
      * @return a new Sanitizer instance
      * @throws IOException if an I/O error occurs while creating the Sanitizer instance
@@ -79,15 +79,6 @@ public class Sanitizer {
         return sanitize.report(newPath);
     }
 
-    private SanitizerExtent sanitize() throws IOException {
-        try (Clipboard clipboard = WorldEditUtil.loadSchematic(path)) {
-            SanitizerExtent sanitizerExtent = new SanitizerExtent(clipboard, settings);
-            ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
-            Operations.completeBlindly(copy);
-            return sanitizerExtent;
-        }
-    }
-
     /**
      * Returns the name of the file without the file extension.
      *
@@ -95,5 +86,14 @@ public class Sanitizer {
      */
     public String name() {
         return path.toFile().getName().split("\\.")[0];
+    }
+
+    private SanitizerExtent sanitize() throws IOException {
+        try (Clipboard clipboard = WorldEditUtil.loadSchematic(path)) {
+            SanitizerExtent sanitizerExtent = new SanitizerExtent(clipboard, settings);
+            ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
+            Operations.completeBlindly(copy);
+            return sanitizerExtent;
+        }
     }
 }

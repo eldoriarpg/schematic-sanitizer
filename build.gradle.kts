@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
+    `maven-publish`
 }
 
 group = "de.eldoria"
@@ -30,6 +31,33 @@ publishData {
     addBuildData()
     useEldoNexusRepos()
     publishComponent("java")
+}
+
+publishing {
+    publications.create<MavenPublication>("maven") {
+        publishData.configurePublication(this)
+    }
+
+    repositories {
+        maven {
+            authentication {
+                credentials(PasswordCredentials::class) {
+                    username = System.getenv("NEXUS_USERNAME")
+                    password = System.getenv("NEXUS_PASSWORD")
+                }
+            }
+
+            setUrl(publishData.getRepository())
+            name = "EldoNexus"
+        }
+    }
+}
+
+spotless {
+    java {
+        licenseHeaderFile(rootProject.file("HEADER.txt"))
+        target("**/*.java")
+    }
 }
 
 dependencies {

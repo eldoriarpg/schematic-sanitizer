@@ -10,6 +10,7 @@ import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
 import de.eldoria.schematicsanitizer.command.schematicclean.Check;
 import de.eldoria.schematicsanitizer.command.schematicclean.Fix;
+import de.eldoria.schematicsanitizer.command.schematicclean.FixBatch;
 import de.eldoria.schematicsanitizer.command.schematicclean.Report;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +22,7 @@ public class SchematicSaniziter extends AdvancedCommand {
         meta(CommandMeta.builder("schematicsanitizer")
                 .withSubCommand(new Check(plugin, report, configuration))
                 .withSubCommand(new Fix(plugin, report, configuration))
+                .withSubCommand(new FixBatch(plugin, configuration))
                 .withSubCommand(report)
                 .build());
     }

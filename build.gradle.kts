@@ -30,7 +30,7 @@ dependencies {
     implementation("de.eldoria.util", "plugin", "2.0.0-DEV"){
         exclude("net.kyori")
     }
-    implementation("de.eldoria.util", "jackson-configuration", "2.0.0-DEV")
+    implementation("de.eldoria.util", "jackson-configuration", "2.0.0-SNAPSHOT")
     implementation("de.eldoria.jacksonbukkit", "jackson-bukkit", "1.2.0")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

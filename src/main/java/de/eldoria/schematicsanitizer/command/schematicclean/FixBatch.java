@@ -94,38 +94,10 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
-            Path schem = worldEdit.getSchematicsFolderPath();
-            String arg = args.asString(0);
-            if (arg.isBlank()) return complete(schem, schem);
-            String path = arg.replace("\\_", " ");
-            if (path.contains("..")) return Collections.singletonList("No stepping out c:");
-            if (path.endsWith("/")) {
-                // list all files and directories in directory
-                return complete(schem, schem.resolve(path));
-            }
-            if (path.contains("/")) {
-                path = arg.replace("/.+?", "");
-                return complete(schem, schem.resolve(path)).stream().filter(p -> p.startsWith(arg)).toList();
-            }
-            return complete(schem, schem).stream().filter(p -> p.startsWith(arg)).toList();
+            return Completion.completeDirectories(worldEdit.getSchematicsFolderPath(), args.asString(0));
         }
         return Collections.emptyList();
     }
-
-    private List<String> complete(Path base, Path path) {
-        if (!path.toAbsolutePath().startsWith(base.toAbsolutePath())) return Collections.emptyList();
-        try (var stream = Files.list(path)) {
-            return stream
-                    .filter(p -> p.toFile().isDirectory())
-                    .map(p -> p + "/")
-                    .map(p -> p.replace(base + "/", ""))
-                    .map(Text::unifyPath)
-                    .map(p -> p.replace(" ", "\\_"))
-                    .filter(p -> !p.isBlank())
-                    .toList();
-        } catch (IOException e) {
-            return Collections.emptyList();
-        }
-    }
+}
 
 }

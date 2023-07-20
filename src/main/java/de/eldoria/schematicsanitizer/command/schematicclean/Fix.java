@@ -26,6 +26,9 @@ public class Fix extends SanitizeBase {
 
     @Override
     protected SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException {
-        return sanitizer.fix(args.asString(1, args.asString(0, args.flags().has("o") ? sanitizer.name() : sanitizer.name() + "_clean")));
+        if (args.flags().has("o")) {
+            return sanitizer.fix();
+        }
+        return sanitizer.fix(sanitizer.name() + "_new");
     }
 }

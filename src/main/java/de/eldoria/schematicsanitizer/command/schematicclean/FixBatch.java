@@ -15,13 +15,14 @@ import de.eldoria.eldoutilities.commands.executor.ITabExecutor;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
-import de.eldoria.schematicsanitizer.util.Text;
+import de.eldoria.schematicsanitizer.util.Completion;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -50,6 +51,17 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
         if (!path.toFile().exists()) throw CommandException.message("Directory does not exist");
         if (!path.toFile().isDirectory()) throw CommandException.message("Not a directory");
 
+        var newPath = path.getParent().resolve(path.getFileName() + "_new");
+
+        try {
+            Files.createDirectories(newPath);
+        } catch (FileAlreadyExistsException e) {
+            // ignore
+        } catch (IOException e) {
+            plugin().getLogger().log(Level.SEVERE, "Could not create directory", e);
+            throw CommandException.message("Could not create new directory");
+        }
+
         try (var files = Files.list(path)) {
             List<Path> list = files
                     .filter(p -> p.toFile().isFile())
@@ -75,7 +87,7 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
                         if (args.flags().has("o")) {
                             report = sanitizer.fix();
                         } else {
-                            report = sanitizer.fix(sanitizer.name() + "_new");
+                            report = sanitizer.fix(newPath.resolve(curr.getFileName()));
                         }
                         messageSender().sendMessage(sender, report.shortComponent(configuration.settings()));
                     } catch (Throwable e) {
@@ -98,6 +110,4 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
         }
         return Collections.emptyList();
     }
-}
-
 }

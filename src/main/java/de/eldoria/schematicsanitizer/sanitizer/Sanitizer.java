@@ -10,11 +10,9 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
-import de.eldoria.eldoutilities.commands.command.util.CommandAssertions;
-import de.eldoria.schematicsanitizer.WorldEditUtil;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
-import org.bukkit.command.CommandException;
+import de.eldoria.schematicsanitizer.util.WorldEditUtil;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

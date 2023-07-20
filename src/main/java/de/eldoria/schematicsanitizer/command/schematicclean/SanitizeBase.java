@@ -15,14 +15,13 @@ import de.eldoria.eldoutilities.commands.executor.ITabExecutor;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
-import de.eldoria.schematicsanitizer.util.Text;
+import de.eldoria.schematicsanitizer.util.Completion;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +43,7 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         Path path = worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
         if (!path.toFile().exists()) throw CommandException.message("Unknown file");
-        if (path.toFile().isDirectory()) throw CommandException.message("Only single files can be processed.");
+        if (path.toFile().isDirectory()) throw CommandException.message("Only a single file can be processed.");
 
         Sanitizer sanitizer;
         try {

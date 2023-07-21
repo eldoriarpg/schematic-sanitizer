@@ -35,8 +35,6 @@ public class SanitizerPlugin extends EldoPlugin {
     public SanitizerPlugin() {
         // Create base configuration
         configuration = new Configuration(this);
-        configuration.settings();
-        configuration.save(Configuration.SETTINGS);
     }
 
     @Override
@@ -66,5 +64,11 @@ public class SanitizerPlugin extends EldoPlugin {
                 .register();
 
         registerCommand(new SchematicSanitizer(this, configuration));
+    }
+
+    @Override
+    public void onPostStart() throws Throwable {
+        configuration.settings();
+        configuration.save(Configuration.SETTINGS);
     }
 }

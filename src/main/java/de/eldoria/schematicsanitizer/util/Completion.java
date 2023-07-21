@@ -87,10 +87,11 @@ public final class Completion {
     }
 
     private static List<String> clean(Collection<Path> paths, String clean) {
+        var harmonizedClean = clean.replace("\\", "/");
         return paths.stream()
                 .map(p -> p.toFile().isDirectory() ? p + "/" : p.toString())
                 .map(p -> p.replace("\\", "/"))
-                .map(p -> p.replace(clean, "").replace(" ", "\\_").replaceAll("^/", ""))
+                .map(p -> p.replace(harmonizedClean, "").replace(" ", "\\_").replaceAll("^/", ""))
                 .filter(s -> !s.isBlank())
                 .sorted()
                 .toList();

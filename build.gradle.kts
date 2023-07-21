@@ -75,6 +75,14 @@ dependencies {
 }
 
 tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+
     register<Copy>("copyToServer") {
         val props = Properties()
         val propFile = file("build.properties")

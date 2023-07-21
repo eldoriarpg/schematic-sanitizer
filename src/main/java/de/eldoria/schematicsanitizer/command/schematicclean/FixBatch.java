@@ -45,12 +45,12 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         Path path;
         try {
-            path = worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
+            path = worldEdit().getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
         } catch (InvalidPathException e) {
             throw CommandException.message("Invalid path");
         }
 
-        if (!path.toAbsolutePath().startsWith(worldEdit.getSchematicsFolderPath().toAbsolutePath())) {
+        if (!path.toAbsolutePath().startsWith(worldEdit().getSchematicsFolderPath().toAbsolutePath())) {
             throw CommandException.message("Invalid directory");
         }
         if (!path.toFile().exists()) throw CommandException.message("Directory does not exist");
@@ -92,7 +92,7 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
                         if (args.flags().has("o")) {
                             report = sanitizer.fix();
                         } else {
-                            report = sanitizer.fix(newPath.resolve(curr.getFileName()));
+                            report = sanitizer.fix(newPath.resolve(sanitizer.name() + ".schem"));
                         }
                         messageSender().sendMessage(sender, report.shortComponent(configuration.settings()));
                     } catch (Throwable e) {
@@ -111,7 +111,7 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
-            return Completion.completeDirectories(worldEdit.getSchematicsFolderPath(), args.asString(0));
+            return Completion.completeDirectories(worldEdit().getSchematicsFolderPath(), args.asString(0));
         }
         return Collections.emptyList();
     }

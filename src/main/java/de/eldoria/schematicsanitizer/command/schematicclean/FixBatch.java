@@ -31,15 +31,14 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class FixBatch extends AdvancedCommand implements ITabExecutor {
-    private final WorldEdit worldEdit;
     private final Configuration configuration;
+    private WorldEdit worldEdit;
 
     public FixBatch(Plugin plugin, Configuration configuration) {
         super(plugin, CommandMeta.builder("fixbatch")
                 .addArgument("directory", true)
                 .build());
         this.configuration = configuration;
-        worldEdit = WorldEdit.getInstance();
     }
 
     @Override
@@ -115,5 +114,9 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
             return Completion.completeDirectories(worldEdit.getSchematicsFolderPath(), args.asString(0));
         }
         return Collections.emptyList();
+    }
+        public WorldEdit worldEdit() {
+        if (worldEdit == null) worldEdit = WorldEdit.getInstance();
+        return worldEdit;
     }
 }

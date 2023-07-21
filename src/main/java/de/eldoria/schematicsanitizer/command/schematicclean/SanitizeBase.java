@@ -29,15 +29,14 @@ import java.util.List;
 import java.util.logging.Level;
 
 public abstract class SanitizeBase extends AdvancedCommand implements ITabExecutor {
-    private final WorldEdit worldEdit;
     private final Report report;
     private final Configuration configuration;
+    private WorldEdit worldEdit;
 
     public SanitizeBase(Plugin plugin, CommandMeta commandMeta, Report report, Configuration configuration) {
         super(plugin, commandMeta);
         this.report = report;
         this.configuration = configuration;
-        worldEdit = WorldEdit.getInstance();
     }
 
     @Override
@@ -72,10 +71,15 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
-            return Completion.completeAll(worldEdit.getSchematicsFolderPath(), args.asString(0));
+            return Completion.completeAll(worldEdit().getSchematicsFolderPath(), args.asString(0));
         }
         return Collections.emptyList();
     }
 
     protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
+
+    public WorldEdit worldEdit() {
+        if (worldEdit == null) worldEdit = WorldEdit.getInstance();
+        return worldEdit;
+    }
 }

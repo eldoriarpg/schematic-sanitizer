@@ -50,9 +50,11 @@ public final class Completion {
     }
 
     private static Path buildPath(Path base, String search) throws InvalidPathException {
-        search = search.replace("\\_", " ");
+        search = search.replace("\\_", " ").replaceAll("^([/\\\\]+|[a-zA-Z]:\\\\)", "");
         if (search.contains("..")) throw new InvalidPathException(search, "no stepping out");
-        return base.resolve(search).toAbsolutePath();
+        Path resolved = base.resolve(search).toAbsolutePath();
+        if (resolved.startsWith(base.toAbsolutePath())) return resolved;
+        return base;
     }
 
     private static List<Path> directoryList(Path path) {

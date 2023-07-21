@@ -24,6 +24,13 @@ class CompletionTest {
         Assertions.assertEquals(4, strings.size());
     }
     @Test
+    void completeEmptyDirectorySlash() {
+        Path base = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer");
+        List<String> strings = Completion.completeDirectories(base, "/");
+        Assertions.assertTrue(strings.contains("command/"));
+        Assertions.assertEquals(4, strings.size());
+    }
+    @Test
     void completeSearchDirectory() {
         Path base = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer");
         List<String> strings = Completion.completeDirectories(base, "com");
@@ -55,6 +62,14 @@ class CompletionTest {
     void completeEmptyFile() {
         Path base = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer", "util");
         List<String> strings = Completion.completeFiles(base, "");
+        Assertions.assertTrue(strings.contains("Completion.java"));
+        Assertions.assertEquals(4, strings.size());
+    }
+
+    @Test
+    void completeEmptyFileSlash() {
+        Path base = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer", "util");
+        List<String> strings = Completion.completeFiles(base, "/");
         Assertions.assertTrue(strings.contains("Completion.java"));
         Assertions.assertEquals(4, strings.size());
     }

@@ -15,8 +15,8 @@ import de.eldoria.schematicsanitizer.command.schematicclean.Report;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
-public class SchematicSaniziter extends AdvancedCommand {
-    public SchematicSaniziter(Plugin plugin, Configuration configuration) {
+public class SchematicSanitizer extends AdvancedCommand {
+    public SchematicSanitizer(Plugin plugin, Configuration configuration) {
         super(plugin);
         Report report = new Report(plugin, configuration);
         meta(CommandMeta.builder("schematicsanitizer")

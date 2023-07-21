@@ -11,7 +11,7 @@ import de.eldoria.eldoutilities.localization.ILocalizer;
 import de.eldoria.eldoutilities.localization.Localizer;
 import de.eldoria.eldoutilities.messages.MessageSender;
 import de.eldoria.eldoutilities.plugin.EldoPlugin;
-import de.eldoria.schematicsanitizer.command.SchematicSaniziter;
+import de.eldoria.schematicsanitizer.command.SchematicSanitizer;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -65,6 +65,6 @@ public class SanitizerPlugin extends EldoPlugin {
                 .errorColor(TextColor.color(255, 56, 89))
                 .register();
 
-        registerCommand(new SchematicSaniziter(this, configuration));
+        registerCommand(new SchematicSanitizer(this, configuration));
     }
 }

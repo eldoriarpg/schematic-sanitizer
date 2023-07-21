@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +44,12 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
-        Path path = worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
+        Path path;
+        try {
+            path = worldEdit.getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
+        } catch (InvalidPathException e) {
+            throw CommandException.message("Invalid path");
+        }
 
         if (!path.toAbsolutePath().startsWith(worldEdit.getSchematicsFolderPath().toAbsolutePath())) {
             throw CommandException.message("Invalid directory");

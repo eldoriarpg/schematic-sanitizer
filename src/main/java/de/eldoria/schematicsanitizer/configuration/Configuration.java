@@ -1,3 +1,9 @@
+/*
+ *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ *     Copyright (C) RainbowDashLabs and Contributor
+ */
+
 package de.eldoria.schematicsanitizer.configuration;
 
 import com.fasterxml.jackson.databind.Module;
@@ -12,7 +18,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class Configuration extends JacksonConfig<ConfigFile> {
-    private static final ConfigKey<Settings> SETTINGS = ConfigKey.of("Filter Settings", Path.of("filter_settings.yml"),
+    public static final ConfigKey<Settings> SETTINGS = ConfigKey.of("Filter Settings", Path.of("filter_settings.yml"),
             Settings.class, () -> Settings.DEFAULT);
 
     public Configuration(@NotNull Plugin plugin) {
@@ -22,6 +28,7 @@ public class Configuration extends JacksonConfig<ConfigFile> {
     public Settings settings() {
         return secondary(SETTINGS);
     }
+
 
     @Override
     protected List<Module> additionalModules() {

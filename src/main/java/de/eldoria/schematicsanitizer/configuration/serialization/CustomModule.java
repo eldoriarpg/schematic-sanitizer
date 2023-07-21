@@ -1,3 +1,9 @@
+/*
+ *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ *     Copyright (C) RainbowDashLabs and Contributor
+ */
+
 package de.eldoria.schematicsanitizer.configuration.serialization;
 
 import com.fasterxml.jackson.core.Version;
@@ -16,7 +22,7 @@ public class CustomModule extends Module {
 
     @Override
     public Version version() {
-        return new Version(1,0,0,"", "de.eldoria", "schematic-sanitizer");
+        return new Version(1, 0, 0, "", "de.eldoria", "schematic-sanitizer");
     }
 
     @Override

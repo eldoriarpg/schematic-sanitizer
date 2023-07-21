@@ -1,10 +1,10 @@
-package de.eldoria.schematicsanitizer.sanitizer.filter;
+/*
+ *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ *     Copyright (C) RainbowDashLabs and Contributor
+ */
 
-import com.sk89q.worldedit.util.nbt.BinaryTag;
-import com.sk89q.worldedit.util.nbt.BinaryTagType;
-import com.sk89q.worldedit.util.nbt.BinaryTagTypes;
-import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
-import de.eldoria.schematicsanitizer.sanitizer.report.builder.ReportBuilder;
+package de.eldoria.schematicsanitizer.sanitizer.filter;
 
 import java.util.Set;
 

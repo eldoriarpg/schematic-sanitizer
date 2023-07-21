@@ -1,3 +1,9 @@
+/*
+ *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ *     Copyright (C) RainbowDashLabs and Contributor
+ */
+
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
@@ -36,13 +42,13 @@ public class Report extends AdvancedCommand {
         messageSender().sendMessage(sender, report.component(configuration.settings()));
     }
 
-    private UUID getSenderUUID(CommandSender sender) {
-        return (sender instanceof Entity e) ? e.getUniqueId() : console;
-    }
-
     public SanitizerReport get(CommandSender sender) {
         SanitizerReport report = reports.get(getSenderUUID(sender));
         CommandAssertions.isTrue(report != null, "No report registered.");
         return report;
+    }
+
+    private UUID getSenderUUID(CommandSender sender) {
+        return (sender instanceof Entity e) ? e.getUniqueId() : console;
     }
 }

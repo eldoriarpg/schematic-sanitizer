@@ -1,3 +1,9 @@
+/*
+ *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *
+ *     Copyright (C) RainbowDashLabs and Contributor
+ */
+
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
@@ -18,6 +24,7 @@ public class Check extends SanitizeBase {
 
     @Override
     protected SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException {
+        //TODO async
         return sanitizer.check();
     }
 }

@@ -27,10 +27,10 @@ jobs:
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           HANGAR_CHANNEL: Release
-        run: ./gradlew publishMavenPublicationToEldoNexusRepository
+        run: ./gradlew publishAllPublicationsToHangar
       - name: Publish dev to hangar
         if: github.ref_name == 'dev'
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           HANGAR_CHANNEL: Development
-        run: ./gradlew publishMavenPublicationToEldoNexusRepository
+        run: ./gradlew publishAllPublicationsToHangar

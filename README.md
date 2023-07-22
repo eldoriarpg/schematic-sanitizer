@@ -79,8 +79,8 @@ dependencies {
 </repository>
 
 <dependency>
-    <groupId>de.eldoria</groupId>
-    <artifactId>companies-api</artifactId>
+    <groupId>de.eldoria.schematic-sanitizer</groupId>
+    <artifactId>api</artifactId>
     <version>version</version>
 </dependency>
 ```

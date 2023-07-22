@@ -21,6 +21,7 @@ import static de.eldoria.schematicsanitizer.util.Text.numbers;
  * A report representing actions taken by a {@link Sanitizer} process.
  */
 public final class SanitizerReport {
+    private final Path path;
     private final @Nullable Path newPath;
     private final EntityReport entities;
     private final BlockReport blocks;
@@ -36,9 +37,10 @@ public final class SanitizerReport {
      * @param blocksNbt   the removed blocks because of their tags
      * @param limits      the limits or the schematics
      */
-    public SanitizerReport(@Nullable Path newPath, EntityReport entities, BlockReport blocks,
+    public SanitizerReport(Path path, @Nullable Path newPath, EntityReport entities, BlockReport blocks,
                            EntityNbtReport entitiesNbt,
                            BlockNbtReport blocksNbt, LimitReport limits) {
+        this.path = path;
         this.newPath = newPath;
         this.entities = entities;
         this.blocks = blocks;
@@ -55,12 +57,12 @@ public final class SanitizerReport {
      */
     public String component(Settings settings) {
         return """
-                <header>Schematic Report</header><default>
+                <header>Schematic Report</header><default> <hover:show_text:'<default>%s'>File</hover>
                 %s
                 <section>Removed Content:<default>
                 %s
                 """.stripIndent()
-                .formatted(limits.summary(settings), summary().indent(2));
+                .formatted(path, limits.summary(settings), summary().indent(2));
     }
 
     public String shortComponent(Settings settings) {
@@ -132,5 +134,14 @@ public final class SanitizerReport {
 
     private String showButton(String subCommand) {
         return "<click:run_command:/schematicsanitizer report page %s 0><interact><hover:show_text:'<default>Click me'>[Show]</hover><default></click>".formatted(subCommand);
+    }
+
+    /**
+     * The path of the checked file.
+     *
+     * @return path
+     */
+    public Path path() {
+        return path;
     }
 }

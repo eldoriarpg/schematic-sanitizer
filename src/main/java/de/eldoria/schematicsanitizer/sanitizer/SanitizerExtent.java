@@ -45,12 +45,14 @@ import java.util.function.Supplier;
 
 public class SanitizerExtent extends BlockArrayClipboard {
     private final Settings settings;
-    private final ReportBuilder report = new ReportBuilder();
+    private final ReportBuilder report;
 
-    public SanitizerExtent(Clipboard base, Settings settings) {
+    public SanitizerExtent(Path path, Clipboard base, Settings settings) {
         super(base.getRegion());
         this.settings = settings;
-        report.limit().maxSize(Math.max(Math.max(base.getHeight(), base.getWidth()), base.getLength()));
+        this.report = new ReportBuilder(path);
+        this.report.limit().maxSize(Math.max(Math.max(base.getHeight(), base.getWidth()), base.getLength()));
+        setOrigin(base.getOrigin());
     }
 
     @Override

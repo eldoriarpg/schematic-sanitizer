@@ -98,7 +98,7 @@ public class Sanitizer {
 
     private SanitizerExtent sanitize() throws IOException {
         try (Clipboard clipboard = WorldEditUtil.loadSchematic(path)) {
-            SanitizerExtent sanitizerExtent = new SanitizerExtent(clipboard, settings);
+            SanitizerExtent sanitizerExtent = new SanitizerExtent(path, clipboard, settings);
             ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
             Operations.completeBlindly(copy);
             return sanitizerExtent;

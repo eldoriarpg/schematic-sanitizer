@@ -24,6 +24,11 @@ public class ReportBuilder {
     private final EntityNbtReportBuilder entityNbtReport = new EntityNbtReportBuilder();
     private final LimitReportBuilder limitReportBuilder = new LimitReportBuilder();
     private Path newPath = null;
+    private final Path path;
+
+    public ReportBuilder(Path path) {
+        this.path = path;
+    }
 
     /**
      * Retrieves the EntityReportBuilder instance.

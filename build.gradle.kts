@@ -9,7 +9,7 @@ plugins {
     `maven-publish`
 }
 
-group = "de.eldoria.schematic-sanatizer"
+group = "de.eldoria.schematic-sanitizer"
 version = "1.0.3"
 
 allprojects {

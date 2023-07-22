@@ -15,8 +15,8 @@ dependencies {
     implementation(project(":api"))
     compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
     implementation("net.kyori:adventure-platform-bukkit:4.3.0")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.6.4")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.4")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.7.0")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.7.0")
 
     implementation(libs.bundles.eldoutil) {
         exclude("net.kyori")

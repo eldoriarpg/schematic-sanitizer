@@ -74,7 +74,6 @@ class CompletionTest {
 
     @Test
     void completeSearchSubDirectoryFiles() {
-        Path base = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer");
         List<String> strings = Completion.completeFiles(root, "rendering/entities/");
         Assertions.assertTrue(strings.contains("rendering/entities/ComponentEntityRenderer.java"));
         Assertions.assertEquals(5, strings.size());

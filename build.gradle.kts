@@ -1,30 +1,73 @@
-import java.util.*
+import com.diffplug.gradle.spotless.SpotlessPlugin
+import de.chojo.PublishData
 
 plugins {
     java
     alias(libs.plugins.spotless)
     alias(libs.plugins.publishdata)
     alias(libs.plugins.shadow)
-    alias(libs.plugins.pluginyml)
     `maven-publish`
 }
 
-group = "de.eldoria"
-version = "1.0.3"
+group = "de.eldoria.schematic-sanitizer"
+version = "1.0.4"
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven("https://eldonexus.de/repository/maven-public/")
-    maven("https://eldonexus.de/repository/maven-proxies/")
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+allprojects {
+    apply {
+        plugin<SpotlessPlugin>()
+        plugin<JavaPlugin>()
+        plugin<PublishData>()
+        plugin<MavenPublishPlugin>()
     }
-    withSourcesJar()
-    withJavadocJar()
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven("https://eldonexus.de/repository/maven-public/")
+        maven("https://eldonexus.de/repository/maven-proxies/")
+    }
+
+    dependencies {
+        testImplementation(platform("org.junit:junit-bom:5.9.3"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    spotless {
+        java {
+            licenseHeaderFile(rootProject.file("HEADER.txt"))
+            target("**/*.java")
+        }
+    }
+
+    tasks {
+        compileJava {
+            options.encoding = "UTF-8"
+        }
+
+        compileTestJava {
+            options.encoding = "UTF-8"
+        }
+
+        javadoc {
+            options.encoding = "UTF-8"
+        }
+
+        test {
+            dependsOn(spotlessCheck)
+            useJUnitPlatform()
+            testLogging {
+                events("passed", "skipped", "failed")
+            }
+        }
+    }
 }
 
 publishData {
@@ -53,70 +96,10 @@ publishing {
     }
 }
 
-spotless {
-    java {
-        licenseHeaderFile(rootProject.file("HEADER.txt"))
-        target("**/*.java")
-    }
-}
 
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.6.3-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.6.3-SNAPSHOT")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.7.0")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.7.0")
 
-    implementation("net.kyori:adventure-platform-bukkit:4.3.0")
-    implementation(libs.bundles.eldoutil) {
-        exclude("net.kyori")
-    }
-
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-tasks {
-    register<Copy>("copyToServer") {
-        val props = Properties()
-        val propFile = file("build.properties")
-        if (!propFile.exists()) propFile.createNewFile()
-        file("build.properties").reader().let { props.load(it) }
-        val path = props.getProperty("targetDir") ?: ""
-        if (path.isEmpty()) {
-            println("targetDir is not set in gradle properties")
-            return@register
-        }
-        from(shadowJar)
-        destinationDir = File(path)
-    }
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events("passed", "skipped", "failed")
-        }
-    }
-
-    build {
-        dependsOn(shadowJar)
-    }
-
-    shadowJar {
-        relocate("de.eldoria.eldoutilities", "de.eldoria.schematicsanitizer.libs.utils")
-        relocate("de.eldoria.jacksonbukkit", "de.eldoria.schematicsanitizer.libs.jacksonbukkit")
-        //relocate("com", "de.eldoria.schematicsanitizer.libs")
-        //relocate("net", "de.eldoria.schematicsanitizer.libs")
-    }
-}
-
-bukkit {
-    name = "SchematicSanitizer"
-    main = "de.eldoria.schematicsanitizer.SanitizerPlugin"
-    apiVersion = "1.16"
-
-
-    commands {
-        register("schematicsanitizer") {
-            usage = "schemsan fix|check <schematic> [new file]"
-            aliases = listOf("schemsan", "sanitizer")
-        }
-    }
 }

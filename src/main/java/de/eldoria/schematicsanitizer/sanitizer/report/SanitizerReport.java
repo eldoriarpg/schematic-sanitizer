@@ -65,7 +65,7 @@ public final class SanitizerReport {
                 .formatted(path, limits.summary(settings), summary().indent(2));
     }
 
-    public String shortComponent(Settings settings) {
+    public String shortComponent(Settings settings, String regPath) {
         List<String> errors = limits.errors(settings);
         if (!blocks.isEmpty()) {
             errors.add("%s<default> illegal blocks found".formatted(numbers(blocks)));
@@ -79,6 +79,15 @@ public final class SanitizerReport {
         if (!entitiesNbt.isEmpty()) {
             errors.add("%s<default> illegal NBT entries on entities found".formatted(numbers(entitiesNbt)));
         }
+        if (!blocks.isEmpty()) {
+            int perc = Math.round(limits.content().nonAirBlocks() / (float) blocks.size() * 100);
+            if (perc >= 90) {
+                errors.add("<bad>%d%% <default>of block were removed".formatted(perc));
+            }
+        }
+
+        if (!errors.isEmpty())
+            errors.add("<click:run_command:'/schematicsanitizer report load %s'><interact>[Full report]</click>".formatted(regPath));
         return errors.isEmpty() ? "<good>No problems found!" : String.join("\n", errors);
     }
 

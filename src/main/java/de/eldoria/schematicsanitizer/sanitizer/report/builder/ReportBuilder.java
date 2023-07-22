@@ -85,6 +85,6 @@ public class ReportBuilder {
     }
 
     public SanitizerReport build() {
-        return new SanitizerReport(newPath, entityReport.build(), blockReport.build(), entityNbtReport.build(), blockNbtReport.build(), limitReportBuilder.build());
+        return new SanitizerReport(path, newPath, entityReport.build(), blockReport.build(), entityNbtReport.build(), blockNbtReport.build(), limitReportBuilder.build());
     }
 }

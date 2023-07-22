@@ -33,12 +33,14 @@ import java.util.logging.Level;
 public class FixBatch extends AdvancedCommand implements ITabExecutor {
     private final Configuration configuration;
     private WorldEdit worldEdit;
+    private final Report report;
 
-    public FixBatch(Plugin plugin, Configuration configuration) {
+    public FixBatch(Plugin plugin, Configuration configuration, Report report) {
         super(plugin, CommandMeta.builder("fixbatch")
                 .addArgument("directory", true)
                 .build());
         this.configuration = configuration;
+        this.report = report;
     }
 
     @Override
@@ -94,7 +96,8 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
                         } else {
                             report = sanitizer.fix(newPath.resolve(sanitizer.name() + ".schem"));
                         }
-                        messageSender().sendMessage(sender, report.shortComponent(configuration.settings()));
+                        String regPath = this.report.addFileReport(report);
+                        messageSender().sendMessage(sender, report.shortComponent(configuration.settings(), regPath));
                     } catch (Throwable e) {
                         plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
                         handleCommandError(sender, CommandException.message("Something went wrong. Please check the console"));

@@ -22,7 +22,7 @@ public class SchematicSanitizer extends AdvancedCommand {
         meta(CommandMeta.builder("schematicsanitizer")
                 .withSubCommand(new Check(plugin, report, configuration))
                 .withSubCommand(new Fix(plugin, report, configuration))
-                .withSubCommand(new FixBatch(plugin, configuration))
+                .withSubCommand(new FixBatch(plugin, configuration, report))
                 .withSubCommand(report)
                 .build());
     }

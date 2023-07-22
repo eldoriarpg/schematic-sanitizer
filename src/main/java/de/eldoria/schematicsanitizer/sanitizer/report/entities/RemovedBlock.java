@@ -15,6 +15,6 @@ public record RemovedBlock(BlockVector3 location, BlockType type,
                            BlockRemovalCause removalCause) implements ComponentEntity {
     @Override
     public String component() {
-        return "%s %s %s".formatted(coords(location), name(BukkitAdapter.adapt(type)), cause(removalCause));
+        return "%s %s %s".formatted(coords(location), name(BukkitAdapter.adapt(type), type), cause(removalCause));
     }
 }

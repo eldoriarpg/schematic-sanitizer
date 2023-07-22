@@ -17,9 +17,9 @@ public record RemovedEntityNbt(Location location, BaseEntity type, NbtRemovalCau
     @Override
     public String component() {
         if (value == null) {
-            return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType())), cause(removalCause), meta(tag));
+            return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType()),type.getType()), cause(removalCause), meta(tag));
         }
-        return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType())), cause(removalCause), meta("{%s:%s}".formatted(tag, value)));
+        return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType()), type.getType()), cause(removalCause), meta("{%s:%s}".formatted(tag, value)));
     }
 
 }

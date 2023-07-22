@@ -7,6 +7,7 @@
 package de.eldoria.schematicsanitizer.sanitizer.report.entities;
 
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.registry.Keyed;
 import com.sk89q.worldedit.util.Location;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.Cause;
 import net.kyori.adventure.translation.Translatable;
@@ -52,8 +53,8 @@ public interface ComponentEntity {
      * @param translatable the Translatable object to be formatted
      * @return the formatted string
      */
-    default String name(Translatable translatable) {
-        return "<#ffdd00><lang:%s>".formatted(translatable.translationKey());
+    default String name(Translatable translatable, Keyed keyed) {
+        return "<hover:show_text:'<default>%s'><#ffdd00><lang:%s></hover>".formatted(keyed.getId(), translatable.translationKey());
     }
 
     /**

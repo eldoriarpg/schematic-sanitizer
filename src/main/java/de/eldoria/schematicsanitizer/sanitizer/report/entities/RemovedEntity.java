@@ -15,7 +15,7 @@ public record RemovedEntity(Location location, BaseEntity type,
                             EntityRemovalCause removalCause) implements ComponentEntity {
     @Override
     public String component() {
-        return "%s %s %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType())), cause(removalCause));
+        return "%s %s %s".formatted(coords(location), name(BukkitAdapter.adapt(type.getType()), type.getType()), cause(removalCause));
     }
 
 }

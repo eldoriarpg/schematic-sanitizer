@@ -17,8 +17,8 @@ public record RemovedBlockNbt(BlockVector3 location, BlockType type, NbtRemovalC
     @Override
     public String component() {
         if (value == null) {
-            return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type)), cause(removalCause), meta(tag));
+            return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type), type), cause(removalCause), meta(tag));
         }
-        return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type)), cause(removalCause), meta("{%s:%s}".formatted(tag, value)));
+        return "%s %s %s: %s".formatted(coords(location), name(BukkitAdapter.adapt(type),type), cause(removalCause), meta("{%s:%s}".formatted(tag, value)));
     }
 }

@@ -52,8 +52,29 @@ You will receive a short report of every single schematic telling you the proble
 
 ## Usage as an api
 
-```kts
+**Gradle**
+``` kotlin
+repositories {
+    maven("https://eldonexus.de/repository/maven-public")
+}
 
+dependencies {
+    compileOnly("de.eldoria", "companies-api", "version")
+}
+```
+
+**Maven**
+``` xml
+<repository>
+    <id>EldoNexus</id>
+    <url>https://eldonexus.de/repository/maven-public/</url>
+</repository>
+
+<dependency>
+    <groupId>de.eldoria</groupId>
+    <artifactId>companies-api</artifactId>
+    <version>version</version>
+</dependency>
 ```
 
 Get the path of your schematic

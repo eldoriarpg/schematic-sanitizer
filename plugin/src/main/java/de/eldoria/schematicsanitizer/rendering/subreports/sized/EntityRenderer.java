@@ -11,8 +11,9 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityRep
 
 import java.util.List;
 
-public record EntityRenderer(List<RemovedEntityRenderer> removed) implements SizedReportRenderer<RemovedEntityRenderer> {
-        public static EntityRenderer create(EntityReport report) {
+public record EntityRenderer(
+        List<RemovedEntityRenderer> removed) implements SizedReportRenderer<RemovedEntityRenderer> {
+    public static EntityRenderer create(EntityReport report) {
         List<RemovedEntityRenderer> entities = report.entities().stream().map(RemovedEntityRenderer::new).toList();
         return new EntityRenderer(entities);
     }

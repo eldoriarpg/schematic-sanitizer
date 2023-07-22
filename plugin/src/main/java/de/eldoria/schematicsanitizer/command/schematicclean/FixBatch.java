@@ -34,8 +34,8 @@ import java.util.logging.Level;
 
 public class FixBatch extends AdvancedCommand implements ITabExecutor {
     private final Configuration configuration;
-    private WorldEdit worldEdit;
     private final Report report;
+    private WorldEdit worldEdit;
 
     public FixBatch(Plugin plugin, Configuration configuration, Report report) {
         super(plugin, CommandMeta.builder("fixbatch")
@@ -122,7 +122,8 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
         }
         return Collections.emptyList();
     }
-        public WorldEdit worldEdit() {
+
+    public WorldEdit worldEdit() {
         if (worldEdit == null) worldEdit = WorldEdit.getInstance();
         return worldEdit;
     }

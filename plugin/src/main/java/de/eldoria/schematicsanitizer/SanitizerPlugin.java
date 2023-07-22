@@ -6,7 +6,6 @@
 
 package de.eldoria.schematicsanitizer;
 
-import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.world.entity.EntityType;
 import de.eldoria.eldoutilities.config.template.PluginBaseConfiguration;
 import de.eldoria.eldoutilities.localization.ILocalizer;
@@ -79,7 +78,7 @@ public class SanitizerPlugin extends EldoPlugin {
         String collect = EntityType.REGISTRY.getMap().values().stream().map(EntityType::getId).collect(Collectors.joining("\n"));
         try {
             Files.writeString(getDataFolder().toPath().resolve("entity_types.txt"), collect);
-        }catch (IOException e){
+        } catch (IOException e) {
             logger().log(Level.WARNING, "Could not dump entities");
         }
     }

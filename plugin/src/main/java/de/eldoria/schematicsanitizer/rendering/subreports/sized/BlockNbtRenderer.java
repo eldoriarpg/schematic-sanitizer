@@ -11,7 +11,8 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.BlockNbtR
 
 import java.util.List;
 
-public record BlockNbtRenderer(List<RemovedBlockNbtRenderer> removed) implements SizedReportRenderer<RemovedBlockNbtRenderer> {
+public record BlockNbtRenderer(
+        List<RemovedBlockNbtRenderer> removed) implements SizedReportRenderer<RemovedBlockNbtRenderer> {
     public static BlockNbtRenderer create(BlockNbtReport report) {
         List<RemovedBlockNbtRenderer> entities = report.entities().stream().map(RemovedBlockNbtRenderer::new).toList();
         return new BlockNbtRenderer(entities);

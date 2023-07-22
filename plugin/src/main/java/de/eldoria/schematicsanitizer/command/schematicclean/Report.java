@@ -39,7 +39,7 @@ public class Report extends AdvancedCommand {
     public Report(Plugin plugin, Configuration configuration) {
         super(plugin);
         this.configuration = configuration;
-        Show show = new Show(plugin, this, configuration);
+        Show show = new Show(plugin, this);
         meta(CommandMeta.builder("report")
                 .withDefaultCommand(show)
                 .withSubCommand(show)

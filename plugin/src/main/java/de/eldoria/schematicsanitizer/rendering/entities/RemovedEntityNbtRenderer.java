@@ -14,9 +14,6 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntityNbt;
 import org.jetbrains.annotations.Nullable;
 
 public record RemovedEntityNbtRenderer(RemovedEntityNbt entity) implements ComponentEntityRenderer {
-    public RemovedEntityNbtRenderer of(RemovedEntityNbt e){
-        return new RemovedEntityNbtRenderer(e);
-    }
     @Override
     public String component() {
         if (value() == null) {

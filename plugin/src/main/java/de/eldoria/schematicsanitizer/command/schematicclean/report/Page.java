@@ -10,7 +10,6 @@ import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
 import de.eldoria.schematicsanitizer.command.schematicclean.Report;
 import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
-import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import org.bukkit.plugin.Plugin;
 
 public class Page extends AdvancedCommand {

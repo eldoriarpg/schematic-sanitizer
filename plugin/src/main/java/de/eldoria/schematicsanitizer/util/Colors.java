@@ -6,7 +6,7 @@
 
 package de.eldoria.schematicsanitizer.util;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Colors {
     public static final Color HEADER = new Color(235, 52, 110);
@@ -17,6 +17,4 @@ public class Colors {
     public static final Color GOOD = new Color(32, 250, 69);
     public static final Color INTERACT = new Color(247, 237, 49);
     public static final Color INACTIVE = new Color(79, 79, 79);
-//    public static final Color NAME = new Color();
-//    public static final Color NAME = new Color();
 }

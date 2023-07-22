@@ -32,4 +32,5 @@ dependencyResolutionManagement {
         }
     }
 }
-
+include("api")
+include("plugin")

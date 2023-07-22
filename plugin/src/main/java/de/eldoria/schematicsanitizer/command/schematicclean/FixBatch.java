@@ -17,6 +17,7 @@ import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.util.Completion;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -33,12 +34,13 @@ import java.util.logging.Level;
 
 public class FixBatch extends AdvancedCommand implements ITabExecutor {
     private final Configuration configuration;
-    private WorldEdit worldEdit;
     private final Report report;
+    private WorldEdit worldEdit;
 
     public FixBatch(Plugin plugin, Configuration configuration, Report report) {
         super(plugin, CommandMeta.builder("fixbatch")
                 .addArgument("directory", true)
+                .withPermission(Permissions.Fix.BATCH)
                 .build());
         this.configuration = configuration;
         this.report = report;
@@ -120,7 +122,8 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
         }
         return Collections.emptyList();
     }
-        public WorldEdit worldEdit() {
+
+    public WorldEdit worldEdit() {
         if (worldEdit == null) worldEdit = WorldEdit.getInstance();
         return worldEdit;
     }

@@ -40,7 +40,7 @@ public class Load extends AdvancedCommand implements ITabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
-        if(args.sizeIs(1)){
+        if (args.sizeIs(1)) {
             return Completion.complete(args.asString(0), report.fileReports());
         }
         return Collections.emptyList();

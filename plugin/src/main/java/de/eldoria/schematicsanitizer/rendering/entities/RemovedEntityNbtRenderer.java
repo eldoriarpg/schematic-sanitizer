@@ -17,7 +17,7 @@ public record RemovedEntityNbtRenderer(RemovedEntityNbt entity) implements Compo
     @Override
     public String component() {
         if (value() == null) {
-            return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()),type().getType()), cause(removalCause()), meta(tag()));
+            return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(tag()));
         }
         return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta("{%s:%s}".formatted(tag(), value())));
     }

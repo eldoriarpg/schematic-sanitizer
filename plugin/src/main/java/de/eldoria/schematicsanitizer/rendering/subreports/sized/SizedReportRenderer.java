@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public interface SizedReportRenderer<T extends ComponentEntityRenderer> extends SizedReport<T> {
-        /**
+    /**
      * Returns a paged sublist of entities.
      *
      * @param page the page number

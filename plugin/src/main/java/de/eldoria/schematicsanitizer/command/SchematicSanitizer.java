@@ -8,11 +8,14 @@ package de.eldoria.schematicsanitizer.command;
 
 import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
+import de.eldoria.eldoutilities.commands.defaultcommands.DefaultAbout;
+import de.eldoria.eldoutilities.commands.defaultcommands.DefaultDebug;
 import de.eldoria.schematicsanitizer.command.schematicclean.Check;
 import de.eldoria.schematicsanitizer.command.schematicclean.Fix;
 import de.eldoria.schematicsanitizer.command.schematicclean.FixBatch;
 import de.eldoria.schematicsanitizer.command.schematicclean.Report;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.plugin.Plugin;
 
 public class SchematicSanitizer extends AdvancedCommand {
@@ -23,6 +26,8 @@ public class SchematicSanitizer extends AdvancedCommand {
                 .withSubCommand(new Check(plugin, report, configuration))
                 .withSubCommand(new Fix(plugin, report, configuration))
                 .withSubCommand(new FixBatch(plugin, configuration, report))
+                .withSubCommand(new DefaultAbout(plugin))
+                .withSubCommand(new DefaultDebug(plugin, Permissions.DEBUG))
                 .withSubCommand(report)
                 .build());
     }

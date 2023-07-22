@@ -11,6 +11,7 @@ import de.eldoria.eldoutilities.commands.command.util.Arguments;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class Fix extends SanitizeBase {
         super(plugin, CommandMeta.builder("fix")
                 .addUnlocalizedArgument("schematic", true)
                 .addUnlocalizedArgument("new_name", false)
+                .withPermission(Permissions.Fix.USE)
                 .build(), report, configuration);
     }
 

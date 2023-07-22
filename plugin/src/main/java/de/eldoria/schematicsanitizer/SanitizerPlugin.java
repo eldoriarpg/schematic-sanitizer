@@ -6,6 +6,7 @@
 
 package de.eldoria.schematicsanitizer;
 
+import com.sk89q.worldedit.world.entity.EntityType;
 import de.eldoria.eldoutilities.config.template.PluginBaseConfiguration;
 import de.eldoria.eldoutilities.localization.ILocalizer;
 import de.eldoria.eldoutilities.localization.Localizer;
@@ -17,7 +18,10 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import static de.eldoria.schematicsanitizer.util.Colors.BAD;
 import static de.eldoria.schematicsanitizer.util.Colors.GOOD;
@@ -70,5 +74,12 @@ public class SanitizerPlugin extends EldoPlugin {
     public void onPostStart() throws Throwable {
         configuration.settings();
         configuration.save(Configuration.SETTINGS);
+
+        String collect = EntityType.REGISTRY.getMap().values().stream().map(EntityType::getId).collect(Collectors.joining("\n"));
+        try {
+            Files.writeString(getDataFolder().toPath().resolve("entity_types.txt"), collect);
+        } catch (IOException e) {
+            logger().log(Level.WARNING, "Could not dump entities");
+        }
     }
 }

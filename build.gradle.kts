@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.eldoria.schematic-sanitizer"
-version = "1.0.4"
+version = "1.0.5"
 
 allprojects {
     apply {
@@ -94,12 +94,4 @@ publishing {
             name = "EldoNexus"
         }
     }
-}
-
-
-dependencies {
-    compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.7.0")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.7.0")
-
 }

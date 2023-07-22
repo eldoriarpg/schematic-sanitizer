@@ -62,14 +62,14 @@ class CompletionTest {
     void completeEmptyFile() {
         List<String> strings = Completion.completeFiles(util, "");
         Assertions.assertTrue(strings.contains("Completion.java"));
-        Assertions.assertEquals(3, strings.size());
+        Assertions.assertEquals(4, strings.size());
     }
 
     @Test
     void completeEmptyFileSlash() {
         List<String> strings = Completion.completeFiles(util, "/");
         Assertions.assertTrue(strings.contains("Completion.java"));
-        Assertions.assertEquals(3, strings.size());
+        Assertions.assertEquals(4, strings.size());
     }
 
     @Test

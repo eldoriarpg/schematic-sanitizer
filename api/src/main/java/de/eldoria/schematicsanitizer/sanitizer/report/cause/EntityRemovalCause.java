@@ -35,6 +35,16 @@ public abstract class EntityRemovalCause extends Cause {
      */
     public static final EntityRemovalCause UNKNOWN_TYPE = new EntityRemovalCause("Unknown type") {
     };
+    /**
+     * Represents an unknown type of entity removal cause.
+     */
+    public static final EntityRemovalCause CREATURE_LIMIT = new EntityRemovalCause("Creature Limit") {
+    };
+    /**
+     * Represents an unknown type of entity removal cause.
+     */
+    public static final EntityRemovalCause NON_CREATURE_LIMIT = new EntityRemovalCause("Non Creature Limit") {
+    };
 
     /**
      * Creates a new instance of EntityRemovalCause with the specified name.

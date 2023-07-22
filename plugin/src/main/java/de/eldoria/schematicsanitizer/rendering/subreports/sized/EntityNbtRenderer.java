@@ -11,11 +11,13 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityNbt
 
 import java.util.List;
 
-public record EntityNbtRenderer(List<RemovedEntityNbtRenderer> removed) implements SizedReportRenderer<RemovedEntityNbtRenderer> {
-        public static EntityNbtRenderer create(EntityNbtReport report) {
+public record EntityNbtRenderer(
+        List<RemovedEntityNbtRenderer> removed) implements SizedReportRenderer<RemovedEntityNbtRenderer> {
+    public static EntityNbtRenderer create(EntityNbtReport report) {
         List<RemovedEntityNbtRenderer> entities = report.entities().stream().map(RemovedEntityNbtRenderer::new).toList();
         return new EntityNbtRenderer(entities);
     }
+
     @Override
     public List<RemovedEntityNbtRenderer> entities() {
         return removed;

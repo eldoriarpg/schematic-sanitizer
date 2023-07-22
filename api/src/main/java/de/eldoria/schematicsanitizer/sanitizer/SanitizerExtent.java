@@ -202,8 +202,20 @@ public class SanitizerExtent extends BlockArrayClipboard {
         if (allowedEntity(location, entity)) {
             content.countEntity(type);
             return switch (type) {
-                case CREATURE -> content.creatures() <= contentLimit.creatures() ? ifValid.get() : null;
-                case NON_CREATURE -> content.nonCreatures() <= contentLimit.nonCreatures() ? ifValid.get() : null;
+                case CREATURE -> {
+                    if (content.creatures() <= contentLimit.creatures()) {
+                        yield ifValid.get();
+                    }
+                    report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.CREATURE_LIMIT));
+                    yield null;
+                }
+                case NON_CREATURE -> {
+                    if (content.nonCreatures() <= contentLimit.nonCreatures()) {
+                        yield ifValid.get();
+                    }
+                    report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.NON_CREATURE_LIMIT));
+                    yield null;
+                }
                 case UNKNOWN -> null;
             };
         }

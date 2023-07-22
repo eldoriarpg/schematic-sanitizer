@@ -19,7 +19,7 @@ public record RemovedBlockNbtRenderer(RemovedBlockNbt block) implements Componen
         if (value() == null) {
             return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type()), type()), cause(removalCause()), meta(tag()));
         }
-        return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type()),type()), cause(removalCause()), meta("{%s:%s}".formatted(tag(), value())));
+        return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type()), type()), cause(removalCause()), meta("{%s:%s}".formatted(tag(), value())));
     }
 
     public BlockVector3 location() {

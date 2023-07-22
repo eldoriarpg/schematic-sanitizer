@@ -53,12 +53,25 @@ What it won't do:
 
 Instead of just fixing a single schematic you can fix a whole directory with `/schematicsanitizer fixbatch <directory>`.
 
-This will fix all schematics directly inside this directory. Schematics will be saved suffixed with `_new`.
+This will fix all schematics directly inside this directory. Schematics will be saved to an adjacent directory suffixed with `_new`.
 Adding the `-o` flag will override the original files.
 
 You will receive a short report of every single schematic telling you the problems if there were some.
 
+### Permissions
+
+| Permission                   | Action                            |
+|------------------------------|-----------------------------------|
+| schematicsanitizer.fix.use   | Access to the fix subcommand      |
+| schematicsanitizer.fix.batch | Access to the fixbatch subcommand |
+| schematicsanitizer.check.use | Access to the check subcommand    |
+| schematicsanitizer.admin     | Access to the debug subcommand    |
+
+The report subcommand can be used by anyone who has permissions for fix or check.
+
 ## Usage as an api
+
+### [Javadocs](https://eldoriarpg.github.io/schematic-sanitizer/)
 
 **Gradle**
 ``` kotlin
@@ -187,7 +200,7 @@ for (RemovedEntity entity : check.entities().entities()) {
 Alternatively you can perform a fix of the schematic
 
 ```java
-SanitizerReport fix = sanitizer.fix(Path.of("path", "to", "new", "file.schematic"));
+SanitizerReport fix = sanitizer.fix(Path.of("path", "to", "new", "file.schem"));
 ```
 
 Instead of providing a path you can also just provide a new name and the new schematic will be created next to the old one.

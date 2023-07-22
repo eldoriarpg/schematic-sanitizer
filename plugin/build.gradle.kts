@@ -1,8 +1,10 @@
+import io.papermc.hangarpublishplugin.model.Platforms
 import java.util.*
 
 plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
+    alias(libs.plugins.hangar)
 }
 
 publishData {
@@ -13,13 +15,15 @@ publishData {
 
 dependencies {
     implementation(project(":api"))
-    compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
-    implementation("net.kyori:adventure-platform-bukkit:4.3.0")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.7.0")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.7.0")
+    compileOnly(libs.paper)
+    implementation("net.kyori:adventure-platform-bukkit:4.3.0"){
+        exclude("org.jetbrains")
+    }
+    compileOnly(libs.bundles.fawe)
+    compileOnly("org.jetbrains:annotations:24.0.1")
 
     implementation(libs.bundles.eldoutil) {
-        exclude("net.kyori")
+        exclude("org.jetbrains")
     }
 }
 
@@ -39,6 +43,28 @@ publishing {
 
             setUrl(publishData.getRepository())
             name = "EldoNexus"
+        }
+    }
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        version.set(publishData.getVersion())
+        namespace("Eldoria", "SchematicSanitizer")
+        channel.set(System.getenv("HANGAR_CHANNEL"))
+
+        apiKey.set(System.getenv("HANGAR_KEY"))
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                platformVersions.set(listOf("1.16.5-1.20.1"))
+                this.dependencies {
+                    hangar("IntellectualSites", "FastAsyncWorldEdit"){
+                        required.set(true)
+                    }
+                }
+            }
         }
     }
 }
@@ -69,10 +95,24 @@ tasks {
     }
 
     shadowJar {
-        relocate("de.eldoria.eldoutilities", "de.eldoria.schematicsanitizer.libs.utils")
-        relocate("de.eldoria.jacksonbukkit", "de.eldoria.schematicsanitizer.libs.jacksonbukkit")
-        //relocate("com", "de.eldoria.schematicsanitizer.libs")
-        //relocate("net", "de.eldoria.schematicsanitizer.libs")
+        archiveBaseName.set("schematic-sanitizer")
+        archiveVersion.set(publishData.getVersion())
+        val mapping = mapOf(
+                "de.eldoria.eldoutilities" to "utils",
+                "de.eldoria.jacksonbukkit" to "jacksonbukkit",
+                "org.yaml" to "yaml",
+                "net.kyori" to "adventure",
+                "com.fasterxml.jackson" to "jackson"
+                )
+        if (publishData.isPublicBuild()) {
+            println("relocating")
+            val base = "de.eldoria.schematicsanitizer.libs."
+            for ((pattern, name) in mapping) {
+                println("relocating ${pattern} to ${base}${name}")
+                relocate(pattern, "${base}${name}")
+            }
+
+        }
     }
 }
 
@@ -80,11 +120,12 @@ bukkit {
     name = "SchematicSanitizer"
     main = "de.eldoria.schematicsanitizer.SanitizerPlugin"
     apiVersion = "1.16"
+    version = publishData.getVersion(true)
+    website = "https://github.com/eldoriarpg/schematic-sanitizer"
 
 
     commands {
         register("schematicsanitizer") {
-            usage = "schemsan fix|check <schematic> [new file]"
             aliases = listOf("schemsan", "sanitizer")
         }
     }

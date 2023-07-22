@@ -37,13 +37,23 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         int page = args.asInt(0, 0);
         ReportRenderer sanitizerReport = report.get(sender);
+        if (sanitizerReport == null) {
+            throw CommandException.message("No report available");
+        }
+        SizedReportRenderer<?> sized = map.apply(sanitizerReport);
+        if (sized.isEmpty()) {
+            throw CommandException.message("No page available. 0 results.");
+        }
+        if (page < 0 || page > sized.pages(SIZE)) {
+            throw CommandException.message("Invalid page.");
+        }
         String component = sanitizerReport.pageComponent(map, page, SIZE);
         component = """
                 <header>Schematic Report</header>
                 %s
                 %s
                 """.stripIndent()
-                .formatted(component.indent(2), getPageFooter(page, map.apply(sanitizerReport)));
+                .formatted(component.indent(2), getPageFooter(page, sized));
         messageSender().sendMessage(sender, component);
     }
 

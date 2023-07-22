@@ -18,6 +18,7 @@ import de.eldoria.schematicsanitizer.command.schematicclean.report.Show;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -42,6 +43,7 @@ public class Report extends AdvancedCommand {
         Show show = new Show(plugin, this);
         meta(CommandMeta.builder("report")
                 .withDefaultCommand(show)
+                .withPermission(Permissions.Fix.USE, Permissions.Fix.BATCH, Permissions.Check.USE)
                 .withSubCommand(show)
                 .withSubCommand(new Page(plugin, this))
                 .withSubCommand(new Load(plugin, this))

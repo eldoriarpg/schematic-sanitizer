@@ -5,9 +5,8 @@ publishData {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper", "paper-api", "1.20-R0.1-SNAPSHOT")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.7.0")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.7.0")
+    compileOnly(libs.paper)
+    compileOnly(libs.bundles.fawe)
 }
 
 publishing {

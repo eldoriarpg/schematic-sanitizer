@@ -17,6 +17,7 @@ import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.util.Completion;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,7 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     public FixBatch(Plugin plugin, Configuration configuration, Report report) {
         super(plugin, CommandMeta.builder("fixbatch")
                 .addArgument("directory", true)
+                .withPermission(Permissions.Fix.BATCH)
                 .build());
         this.configuration = configuration;
         this.report = report;

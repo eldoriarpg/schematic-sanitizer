@@ -1,8 +1,10 @@
+import io.papermc.hangarpublishplugin.model.Platforms
 import java.util.*
 
 plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
+    alias(libs.plugins.hangar)
 }
 
 publishData {
@@ -45,6 +47,31 @@ publishing {
     }
 }
 
+hangarPublish {
+    publications.register("plugin") {
+        version.set(project.version as String) // use project version as publication version
+        namespace("Eldoria", "SchematicSanitizer")
+        channel.set(System.getenv("HANGAR_CHANNEL"))
+
+        // your api key.
+        // defaults to the `io.papermc.hangar-publish-plugin.[publicationName].api-key` or `io.papermc.hangar-publish-plugin.default-api-key` Gradle properties
+        apiKey.set(System.getenv("HANGAR_KEY"))
+
+        // register platforms
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                platformVersions.set(listOf("1.16.5-1.20.1"))
+                this.dependencies {
+                    hangar("IntellectualSites", "FastAsyncWorldEdit"){
+                        required.set(true)
+                    }
+                }
+            }
+        }
+    }
+}
+
 tasks {
     register<Copy>("copyToServer") {
         val props = Properties()
@@ -71,6 +98,8 @@ tasks {
     }
 
     shadowJar {
+        archiveBaseName.set("schematic-sanitizer")
+        archiveVersion.set(publishData.getVersion())
         val mapping = mapOf(
                 "de.eldoria.eldoutilities" to "utils",
                 "de.eldoria.jacksonbukkit" to "jacksonbukkit",

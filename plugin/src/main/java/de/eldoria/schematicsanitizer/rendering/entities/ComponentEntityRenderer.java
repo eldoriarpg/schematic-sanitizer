@@ -10,7 +10,8 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.registry.Keyed;
 import com.sk89q.worldedit.util.Location;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.Cause;
-import net.kyori.adventure.translation.Translatable;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 
 /**
  * The ComponentEntity interface defines methods for interacting with a component entity.
@@ -53,8 +54,28 @@ public interface ComponentEntityRenderer {
      * @param translatable the Translatable object to be formatted
      * @return the formatted string
      */
-    default String name(Translatable translatable, Keyed keyed) {
-        return "<hover:show_text:'<default>%s'><#ffdd00><lang:%s></hover>".formatted(keyed.getId(), translatable.translationKey());
+    default String name(Material translatable, Keyed keyed) {
+        return name(translatable.translationKey(), keyed);
+    }
+
+    /**
+     * Returns a string formatted with a given Translatable object.
+     *
+     * @param translatable the Translatable object to be formatted
+     * @return the formatted string
+     */
+    default String name(EntityType translatable, Keyed keyed) {
+        return name(translatable.translationKey(), keyed);
+    }
+
+    /**
+     * Returns a string formatted with a given Translatable object.
+     *
+     * @param key the translatable key to be formatted
+     * @return the formatted string
+     */
+    default String name(String key, Keyed keyed) {
+        return "<hover:show_text:'<default>%s'><#ffdd00><lang:%s></hover>".formatted(keyed.getId(), key);
     }
 
     /**

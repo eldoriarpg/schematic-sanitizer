@@ -26,7 +26,6 @@ public class Check extends SanitizeBase {
 
     @Override
     protected SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException {
-        //TODO async
         return sanitizer.check();
     }
 }

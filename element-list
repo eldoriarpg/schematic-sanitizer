@@ -1,0 +1,14 @@
+de.eldoria.schematicsanitizer.sanitizer
+de.eldoria.schematicsanitizer.sanitizer.filter
+de.eldoria.schematicsanitizer.sanitizer.filter.builder
+de.eldoria.schematicsanitizer.sanitizer.limit
+de.eldoria.schematicsanitizer.sanitizer.limit.builder
+de.eldoria.schematicsanitizer.sanitizer.report
+de.eldoria.schematicsanitizer.sanitizer.report.builder
+de.eldoria.schematicsanitizer.sanitizer.report.cause
+de.eldoria.schematicsanitizer.sanitizer.report.entities
+de.eldoria.schematicsanitizer.sanitizer.report.subreports
+de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized
+de.eldoria.schematicsanitizer.sanitizer.settings
+de.eldoria.schematicsanitizer.sanitizer.settings.builder
+de.eldoria.schematicsanitizer.util

@@ -49,15 +49,12 @@ publishing {
 
 hangarPublish {
     publications.register("plugin") {
-        version.set(project.version as String) // use project version as publication version
+        version.set(publishData.getVersion())
         namespace("Eldoria", "SchematicSanitizer")
         channel.set(System.getenv("HANGAR_CHANNEL"))
 
-        // your api key.
-        // defaults to the `io.papermc.hangar-publish-plugin.[publicationName].api-key` or `io.papermc.hangar-publish-plugin.default-api-key` Gradle properties
         apiKey.set(System.getenv("HANGAR_KEY"))
 
-        // register platforms
         platforms {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })

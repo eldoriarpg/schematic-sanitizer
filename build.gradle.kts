@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.eldoria.schematic-sanitizer"
-version = "1.0.3"
+version = "1.0.4"
 
 allprojects {
     apply {

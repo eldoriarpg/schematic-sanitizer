@@ -52,6 +52,10 @@ You will receive a short report of every single schematic telling you the proble
 
 ## Usage as an api
 
+```kts
+
+```
+
 Get the path of your schematic
 ```java
 Path schematic = getDataFolder().toPath().resolve("myschematic.schem");

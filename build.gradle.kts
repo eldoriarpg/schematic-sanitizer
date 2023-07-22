@@ -56,6 +56,10 @@ allprojects {
             options.encoding = "UTF-8"
         }
 
+        javadoc {
+            options.encoding = "UTF-8"
+        }
+
         test {
             dependsOn(spotlessCheck)
             useJUnitPlatform()

@@ -21,8 +21,15 @@ dependencyResolutionManagement {
             version("eldoutil", "2.0.1-DEV")
             library("eldoutil-plugin", "de.eldoria.util", "plugin").versionRef("eldoutil")
             library("eldoutil-configuration", "de.eldoria.util", "jackson-configuration").versionRef("eldoutil")
-            library("jacksonbukkit","de.eldoria.jacksonbukkit:jackson-bukkit:1.2.0")
-            bundle("eldoutil", listOf("eldoutil-plugin","eldoutil-configuration", "jacksonbukkit"))
+            library("jacksonbukkit", "de.eldoria.jacksonbukkit:jackson-bukkit:1.2.0")
+            bundle("eldoutil", listOf("eldoutil-plugin", "eldoutil-configuration", "jacksonbukkit"))
+
+            version("fawe", "2.7.0")
+            library("fawe-core", "com.fastasyncworldedit", "FastAsyncWorldEdit-Core").versionRef("fawe")
+            library("fawe-bukkit", "com.fastasyncworldedit", "FastAsyncWorldEdit-Bukkit").versionRef("fawe")
+            bundle("fawe", listOf("fawe-core", "fawe-bukkit"))
+
+            library("paper", "io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
 
             // plugins
             plugin("spotless", "com.diffplug.spotless").version("6.20.0")

@@ -32,6 +32,6 @@ jobs:
           distribution: adopt
           java-version: 17
       - name: Test with Gradle
-        run: gradlew.bat test
+        run: ./gradlew test
       - name: Build with Gradle
-        run: gradlew.bat --build-cache build
+        run: ./gradlew --build-cache build

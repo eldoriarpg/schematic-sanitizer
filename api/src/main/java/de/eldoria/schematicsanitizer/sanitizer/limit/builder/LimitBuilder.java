@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  * A builder class for creating instances of {@link Limit}.
  * This class provides methods to set the size and the content limit of the limit.
  */
-
 public class LimitBuilder {
     private final ContentLimitBuilder contentLimit = new ContentLimitBuilder();
     private int size = 600;

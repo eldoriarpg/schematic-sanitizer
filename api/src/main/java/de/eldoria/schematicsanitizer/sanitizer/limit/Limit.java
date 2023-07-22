@@ -6,5 +6,10 @@
 
 package de.eldoria.schematicsanitizer.sanitizer.limit;
 
+/**
+ * The limits for a schematic
+ * @param size the max length of the longest edge
+ * @param contentLimit content limit
+ */
 public record Limit(int size, ContentLimit contentLimit) {
 }

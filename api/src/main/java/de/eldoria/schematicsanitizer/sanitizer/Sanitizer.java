@@ -19,6 +19,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * The core class to sanitize a schematic.
+ * <p>
+ * Create a {@link Sanitizer} instance via {@link #create(Path, Settings)}.
+ * After that you can either get a report via {@link #check()} or directly {@link #fix()} the schematic by removing invalid blocks and entities.
+ */
 public class Sanitizer {
     private final Path path;
     private final Settings settings;
@@ -48,7 +54,9 @@ public class Sanitizer {
      * @throws IOException if an I/O error occurs during the sanitization process
      */
     public SanitizerReport check() throws IOException {
-        return sanitize().report();
+        try (var san = sanitize()) {
+            return san.report();
+        }
     }
 
     /**
@@ -80,11 +88,12 @@ public class Sanitizer {
      * @throws IOException if an I/O error occurs during the fix process
      */
     public SanitizerReport fix(Path newPath) throws IOException {
-        SanitizerExtent sanitize = sanitize();
-        try (var writer = BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(newPath.toFile()))) {
-            writer.write(sanitize);
+        try (var sanitize = sanitize()) {
+            try (var writer = BuiltInClipboardFormat.FAST.getWriter(new FileOutputStream(newPath.toFile()))) {
+                writer.write(sanitize);
+            }
+            return sanitize.report(newPath);
         }
-        return sanitize.report(newPath);
     }
 
     /**

@@ -12,6 +12,9 @@ import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 
 import java.util.function.Consumer;
 
+/**
+ * A builder to create a {@link Settings} instance
+ */
 public class SettingsBuilder {
     private final FilterBuilder filter = new FilterBuilder();
     private final LimitBuilder limit = new LimitBuilder();

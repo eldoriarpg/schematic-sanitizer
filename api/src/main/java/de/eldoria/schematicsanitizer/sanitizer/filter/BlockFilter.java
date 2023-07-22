@@ -14,6 +14,7 @@ import java.util.Set;
 
 /**
  * A class used for filtering blocks based on a blacklist of materials.
+ * @param materialBlacklist a list of materials which are not allowed
  */
 
 public record BlockFilter(Set<Material> materialBlacklist) {

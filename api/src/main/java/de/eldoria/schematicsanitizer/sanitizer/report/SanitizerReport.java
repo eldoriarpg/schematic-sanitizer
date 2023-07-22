@@ -26,6 +26,11 @@ import java.nio.file.Path;
  * @param blocksNbt   the removed blocks because of their tags
  * @param limits      the limits or the schematics
  */
-public record SanitizerReport(Path path, @Nullable Path newPath, EntityReport entities, BlockReport blocks,
-                              EntityNbtReport entitiesNbt, BlockNbtReport blocksNbt, LimitReport limits) {
+public record SanitizerReport(Path path,
+                              @Nullable Path newPath,
+                              EntityReport entities,
+                              BlockReport blocks,
+                              EntityNbtReport entitiesNbt,
+                              BlockNbtReport blocksNbt,
+                              LimitReport limits) {
 }

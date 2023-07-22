@@ -10,6 +10,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 
 import java.util.List;
 
+/**
+ * Removed entities
+ *
+ * @param removed entities
+ */
 public record EntityReport(List<RemovedEntity> removed) implements SizedReport<RemovedEntity> {
     @Override
     public List<RemovedEntity> entities() {

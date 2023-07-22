@@ -10,6 +10,10 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
 
 import java.util.List;
 
+/**
+ * Removed blocks
+ * @param removed blocks
+ */
 public record BlockReport(List<RemovedBlock> removed) implements SizedReport<RemovedBlock> {
     @Override
     public int size() {

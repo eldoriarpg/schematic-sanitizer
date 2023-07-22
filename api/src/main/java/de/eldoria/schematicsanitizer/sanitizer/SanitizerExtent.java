@@ -13,6 +13,7 @@ import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.entity.Entity;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
@@ -26,6 +27,7 @@ import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import de.eldoria.schematicsanitizer.sanitizer.filter.BlockFilter;
 import de.eldoria.schematicsanitizer.sanitizer.filter.EntityFilter;
+import de.eldoria.schematicsanitizer.sanitizer.filter.Filter;
 import de.eldoria.schematicsanitizer.sanitizer.limit.ContentLimit;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.sanitizer.report.builder.ContentReportBuilder;
@@ -41,12 +43,57 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * An extent which filters the set blocks based on the provided {@link Settings}.
+ * <p>
+ * It is recommended to use a {@link ForwardExtentCopy} to write into it.
+ *
+ * <pre>
+ * SanitizerExtent sanitizerExtent = new SanitizerExtent(path, clipboard, settings);
+ * ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
+ * Operations.completeBlindly(copy);
+ * </pre>
+ * <p>
+ * The extent will then remove any data.
+ * <p>
+ * A report about the removed data can be retrieved with {@link #report()}
+ * <br>
+ * <br>
+ * <b>What the extent will do:</b>
+ * <ul>
+ * <li> remove creature entities once the {@link ContentLimit#creatures()} limit is reached
+ * <li> remove non creature entities once the {@link ContentLimit#nonCreatures()} limit is reached
+ * <li> remove invalid nbt tags from blocks as defined in {@link Filter#nbtBlacklist()}
+ * <li> remove invalid nbt tags with content from blocks as defined in {@link Filter#textBlacklist()}
+ * <li> remove invalid nbt tags from entities as defined in {@link Filter#nbtBlacklist()}
+ * <li> remove invalid nbt tags with content from entities as defined in {@link Filter#textBlacklist()}
+ * <li> remove blocks when they are contained in {@link BlockFilter#materialBlacklist()}
+ * <li> remove entities when they are contained in {@link EntityFilter#entityBlacklist()}
+ * <li> remove entities if they are a creature and {@link EntityFilter#removeCreature()} is true
+ * <li> remove entities if they are not a creature and {@link EntityFilter#removeNonCreatures()} is true
+ * </ul>
+ * <p>
+ * <b>What the extent won't do:</b>
+ * <ul>
+ * <li> remove blocks once the {@link ContentLimit#blocks()} limit is reached
+ * <li> remove blocks once the {@link ContentLimit#nonAirBlocks()} limit is reached
+ * </ul>
+ */
 public class SanitizerExtent extends BlockArrayClipboard {
     private final Settings settings;
     private final ReportBuilder report;
 
+    /**
+     * Creates a new extent
+     *
+     * @param path     path of the file used in the report
+     * @param base     the clipboard which will be copied
+     * @param settings settings for filtering
+     */
     public SanitizerExtent(Path path, Clipboard base, Settings settings) {
         super(base.getRegion());
         this.settings = settings;
@@ -55,6 +102,16 @@ public class SanitizerExtent extends BlockArrayClipboard {
         setOrigin(base.getOrigin());
     }
 
+    public SanitizerReport report(Path newPath) {
+        report.newPath(newPath);
+        return report.build();
+    }
+
+    public SanitizerReport report() {
+        return report.build();
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
     public boolean setTile(int x, int y, int z, CompoundTag tag) {
         //TODO not sure what to do here
@@ -102,15 +159,6 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return setBlock(position.getBlockX(), position.getBlockY(), position.getBlockZ(), block);
     }
 
-    public SanitizerReport report(Path newPath) {
-        report.newPath(newPath);
-        return report.build();
-    }
-
-    public SanitizerReport report() {
-        return report.build();
-    }
-
     /**
      * Checks if a block is allowed based on the given {@link Settings}.
      *
@@ -138,6 +186,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
      * @param <B>     The type of the BlockStateHolder.
      * @return The cleaned BlockStateHolder.
      */
+    @SuppressWarnings("unchecked")
     private <B extends BlockStateHolder<B>> B cleanBlockData(BlockVector3 vector3, B block) {
         if (!(block instanceof BaseBlock)) return block;
         CompoundBinaryTag nbt = block.getNbt();
@@ -185,55 +234,47 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return true;
     }
 
-    private <B extends BlockStateHolder<B>> CompoundBinaryTag cleanBlockNBT(BlockVector3 vector3, B block, CompoundBinaryTag nbt) {
-        for (String key : nbt.keySet()) {
-            if (settings.filter().nbtBlacklist().contains(key)) {
-                nbt = nbt.remove(key);
-                report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, key);
-                continue;
-            }
-            BinaryTag nextTag = nbt.get(key);
-            if (nextTag == null) continue;
-            BinaryTagType<? extends BinaryTag> nextType = nextTag.type();
-            if (BinaryTagTypes.COMPOUND.test(nextType)) {
-                nbt = cleanBlockNBT(vector3, block, nbt.getCompound(key));
-                continue;
-            }
 
-            if (BinaryTagTypes.STRING.test(nextType)) {
-                String text = nbt.getString(key);
-                for (String e : settings.filter().textBlacklist()) {
-                    if (text.contains(e)) {
-                        nbt = nbt.remove(key);
-                        report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, text);
-                    }
-                }
-            }
-        }
-        return nbt;
+    private <B extends BlockStateHolder<B>> CompoundBinaryTag cleanBlockNBT(BlockVector3 vector3, B block, CompoundBinaryTag nbt) {
+        return cleanNBT(tag -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
+                (key, value) -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value),
+                nbt);
     }
 
     private CompoundBinaryTag cleanEntityNBT(Location location, BaseEntity entity, CompoundBinaryTag nbt) {
+        return cleanNBT(t -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, t),
+                (tag, text) -> report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text),
+                nbt);
+    }
+
+    private CompoundBinaryTag cleanNBT(Consumer<String> onIllegalTag, BiConsumer<String, String> onIllegalText, CompoundBinaryTag nbt) {
+        // iterate over keys
         for (String key : nbt.keySet()) {
+            // remove key if it is blacklisted
             if (settings.filter().nbtBlacklist().contains(key)) {
                 nbt = nbt.remove(key);
-                report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, key);
+                onIllegalTag.accept(key);
                 continue;
             }
-            BinaryTag nextTag = nbt.get(key);
-            if (nextTag == null) continue;
-            BinaryTagType<? extends BinaryTag> nextType = nextTag.type();
-            if (nextType.test(BinaryTagTypes.COMPOUND)) {
-                nbt = cleanEntityNBT(location, entity, nbt.getCompound(key));
+            // get the entry
+            BinaryTag entry = nbt.get(key);
+            if (entry == null) continue;
+            BinaryTagType<? extends BinaryTag> type = entry.type();
+            // check if the tag is an object/compound
+            if (type.test(BinaryTagTypes.COMPOUND)) {
+                // check object keys via recursion
+                nbt = cleanNBT(onIllegalTag, onIllegalText, nbt.getCompound(key));
                 continue;
             }
 
-            if (nextType.test(BinaryTagTypes.STRING)) {
+            // check if the key has a string value
+            if (type.test(BinaryTagTypes.STRING)) {
                 String text = nbt.getString(key);
+                // check if any blacklisted value is contained inside the text
                 for (String e : settings.filter().textBlacklist()) {
                     if (text.contains(e)) {
                         nbt = nbt.remove(key);
-                        report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, key, text);
+                        onIllegalText.accept(key, text);
                     }
                 }
             }

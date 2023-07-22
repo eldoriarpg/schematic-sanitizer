@@ -7,11 +7,18 @@
 package de.eldoria.schematicsanitizer.sanitizer.settings;
 
 import com.sk89q.worldedit.world.entity.EntityTypes;
+import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.filter.Filter;
 import de.eldoria.schematicsanitizer.sanitizer.limit.Limit;
 import de.eldoria.schematicsanitizer.sanitizer.settings.builder.SettingsBuilder;
 import org.bukkit.Material;
 
+/**
+ * Represents settings for a {@link Sanitizer}.
+ *
+ * @param filter filter
+ * @param limit  limit
+ */
 public record Settings(Filter filter, Limit limit) {
     /**
      * Default settings for a certain feature.
@@ -101,6 +108,7 @@ public record Settings(Filter filter, Limit limit) {
                     .size(600)
                     .contentLimit(content -> content
                             .blocks(50000)
+                            .nonAirBlocks(40000)
                             .creatures(50)
                             .nonCreatures(600)
                     )

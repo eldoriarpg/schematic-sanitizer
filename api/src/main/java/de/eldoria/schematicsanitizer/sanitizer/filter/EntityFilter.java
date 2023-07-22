@@ -7,10 +7,19 @@
 package de.eldoria.schematicsanitizer.sanitizer.filter;
 
 import com.sk89q.worldedit.world.entity.EntityType;
+import org.bukkit.entity.Creature;
 
 import java.util.Set;
 
-public record EntityFilter(boolean removeCreature, boolean removeNonCreatures, Set<EntityType> entityBlacklist) {
+/**
+ * A filter for entities
+ * @param removeCreature remove entities which are classified as {@link Creature}
+ * @param removeNonCreatures remove entities which are not classified as {@link Creature}
+ * @param entityBlacklist remove entities which have the exact type
+ */
+public record EntityFilter(boolean removeCreature,
+                           boolean removeNonCreatures,
+                           Set<EntityType> entityBlacklist) {
     /**
      * Checks if the given entity type is blacklisted.
      *

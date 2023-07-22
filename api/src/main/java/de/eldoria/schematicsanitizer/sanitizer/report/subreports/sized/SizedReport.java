@@ -9,6 +9,10 @@ package de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized;
 
 import java.util.List;
 
+/**
+ * Represents a sized report
+ * @param <T> type of the report elements
+ */
 public interface SizedReport<T> {
     /**
      * Returns the size of the list of entities.

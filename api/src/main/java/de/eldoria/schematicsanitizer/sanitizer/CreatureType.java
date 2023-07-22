@@ -11,6 +11,9 @@ import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.world.entity.EntityType;
 import org.bukkit.entity.Creature;
 
+/**
+ * Type of entity
+ */
 public enum CreatureType {
     CREATURE, NON_CREATURE, UNKNOWN;
 

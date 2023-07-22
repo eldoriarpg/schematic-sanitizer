@@ -13,7 +13,6 @@ import de.eldoria.schematicsanitizer.sanitizer.limit.ContentLimit;
  * It provides methods to set the limits for blocks, non-air blocks, creatures, and non-creatures.
  * Once the limits are set, the build() method can be called to create a ContentLimit object.
  */
-
 public class ContentLimitBuilder {
     private int blocks = 50000;
     private int nonAirBlocks = 50000;

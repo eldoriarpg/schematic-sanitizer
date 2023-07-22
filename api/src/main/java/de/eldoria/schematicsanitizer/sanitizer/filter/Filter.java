@@ -8,7 +8,17 @@ package de.eldoria.schematicsanitizer.sanitizer.filter;
 
 import java.util.Set;
 
-public record Filter(BlockFilter blockFilter, EntityFilter entityFilter, Set<String> textBlacklist,
+/**
+ * A filter for a schematic
+ *
+ * @param blockFilter   block filter
+ * @param entityFilter  entity filter
+ * @param textBlacklist blacklist for values of text nbt tags
+ * @param nbtBlacklist  blacklist for nbt keys
+ */
+public record Filter(BlockFilter blockFilter,
+                     EntityFilter entityFilter,
+                     Set<String> textBlacklist,
                      Set<String> nbtBlacklist) {
 
 }

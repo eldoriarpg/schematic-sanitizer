@@ -10,6 +10,10 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntityNbt;
 
 import java.util.List;
 
+/**
+ * Removed nbt tags
+ * @param removed entities with removed tags
+ */
 public record EntityNbtReport(List<RemovedEntityNbt> removed) implements SizedReport<RemovedEntityNbt> {
     @Override
     public List<RemovedEntityNbt> entities() {

@@ -18,6 +18,7 @@ import java.nio.file.Path;
 public class WorldEditUtil {
     public static Clipboard loadSchematic(File file) throws IOException {
         ClipboardFormat format = ClipboardFormats.findByFile(file);
+        if(format == null) throw new IOException("Unknown file format");
         try (var in = new FileInputStream(file); var reader = format.getReader(in)) {
             return reader.read();
         }

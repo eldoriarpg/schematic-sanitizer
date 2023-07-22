@@ -44,11 +44,11 @@ public record ContentReport(int blocks, int nonAirBlocks, int totalCreatures, in
     }
 
     private String blocksLine(ContentLimit limit) {
-        return contentLine("Blocks", "The total amount of blocks (L*W*H)", blocks, limit.blocks());
+        return contentLine("Blocks", "The total amount of blocks (L*W*H) including blacklisted", blocks, limit.blocks());
     }
 
     private String nonAirBlocksLine(ContentLimit limit) {
-        return contentLine("Non Air Blocks", "The amount of non air blocks", nonAirBlocks, limit.nonAirBlocks());
+        return contentLine("Non Air Blocks", "The amount of non air blocks including blacklisted", nonAirBlocks, limit.nonAirBlocks());
     }
 
     private String totalCreaturesLine(ContentLimit limit) {

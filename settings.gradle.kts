@@ -34,7 +34,7 @@ dependencyResolutionManagement {
             // plugins
             plugin("spotless", "com.diffplug.spotless").version("6.20.0")
             plugin("shadow", "com.github.johnrengelman.shadow").version("8.1.1")
-            plugin("publishdata", "de.chojo.publishdata").version("1.2.4")
+            plugin("publishdata", "de.chojo.publishdata").version("1.2.5")
             plugin("pluginyml", "net.minecrell.plugin-yml.bukkit").version("0.6.0")
             plugin("hangar", "io.papermc.hangar-publish-plugin").version("0.0.5")
         }

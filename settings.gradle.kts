@@ -24,7 +24,7 @@ dependencyResolutionManagement {
             library("jacksonbukkit", "de.eldoria.jacksonbukkit:jackson-bukkit:1.2.0")
             bundle("eldoutil", listOf("eldoutil-plugin", "eldoutil-configuration", "jacksonbukkit"))
 
-            version("fawe", "2.7.0")
+            version("fawe", "2.7.1")
             library("fawe-core", "com.fastasyncworldedit", "FastAsyncWorldEdit-Core").versionRef("fawe")
             library("fawe-bukkit", "com.fastasyncworldedit", "FastAsyncWorldEdit-Bukkit").versionRef("fawe")
             bundle("fawe", listOf("fawe-core", "fawe-bukkit"))

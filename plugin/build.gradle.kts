@@ -74,7 +74,7 @@ tasks {
         val props = Properties()
         val propFile = file("build.properties")
         if (!propFile.exists()) propFile.createNewFile()
-        file("build.properties").reader().let { props.load(it) }
+        propFile.reader().let { props.load(it) }
         val path = props.getProperty("targetDir") ?: ""
         if (path.isEmpty()) {
             println("targetDir is not set in gradle properties")

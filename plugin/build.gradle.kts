@@ -16,15 +16,13 @@ publishData {
 dependencies {
     implementation(project(":api"))
     compileOnly(libs.paper)
-    implementation("net.kyori:adventure-platform-bukkit:4.3.0"){
+    implementation("net.kyori:adventure-platform-bukkit:4.3.0") {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)
     compileOnly("org.jetbrains:annotations:24.0.1")
 
-    implementation(libs.bundles.eldoutil) {
-        exclude("org.jetbrains")
-    }
+    bukkitLibrary(libs.bundles.eldoutil)
 }
 
 publishing {
@@ -50,18 +48,18 @@ publishing {
 hangarPublish {
     publications.register("plugin") {
         version.set(publishData.getVersion())
-        namespace("Eldoria", "SchematicSanitizer")
-        channel.set(System.getenv("HANGAR_CHANNEL"))
+        id = "SchematicSanitizer"
+        channel = System.getenv("HANGAR_CHANNEL")
 
-        apiKey.set(System.getenv("HANGAR_KEY"))
+        apiKey = System.getenv("HANGAR_KEY")
 
         platforms {
             register(Platforms.PAPER) {
                 jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set(listOf("1.16.5-1.20.1"))
+                platformVersions.set(listOf("1.16.5-1.20.2"))
                 this.dependencies {
-                    hangar("IntellectualSites", "FastAsyncWorldEdit"){
-                        required.set(true)
+                    hangar("FastAsyncWorldEdit") {
+                        required = true
                     }
                 }
             }
@@ -74,7 +72,7 @@ tasks {
         val props = Properties()
         val propFile = file("build.properties")
         if (!propFile.exists()) propFile.createNewFile()
-        file("build.properties").reader().let { props.load(it) }
+        propFile.reader().let { props.load(it) }
         val path = props.getProperty("targetDir") ?: ""
         if (path.isEmpty()) {
             println("targetDir is not set in gradle properties")
@@ -103,7 +101,7 @@ tasks {
                 "org.yaml" to "yaml",
                 "net.kyori" to "adventure",
                 "com.fasterxml.jackson" to "jackson"
-                )
+        )
         if (publishData.isPublicBuild()) {
             println("relocating")
             val base = "de.eldoria.schematicsanitizer.libs."

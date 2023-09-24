@@ -18,11 +18,12 @@ plugins {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("eldoutil", "2.0.1")
+            version("eldoutil", "2.0.3")
             library("eldoutil-plugin", "de.eldoria.util", "plugin").versionRef("eldoutil")
             library("eldoutil-configuration", "de.eldoria.util", "jackson-configuration").versionRef("eldoutil")
             library("jacksonbukkit", "de.eldoria.jacksonbukkit:jackson-bukkit:1.2.0")
-            bundle("eldoutil", listOf("eldoutil-plugin", "eldoutil-configuration", "jacksonbukkit"))
+            library("jacksonyaml", "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2")
+            bundle("eldoutil", listOf("eldoutil-plugin", "eldoutil-configuration", "jacksonbukkit", "jacksonyaml"))
 
             version("fawe", "2.7.1")
             library("fawe-core", "com.fastasyncworldedit", "FastAsyncWorldEdit-Core").versionRef("fawe")

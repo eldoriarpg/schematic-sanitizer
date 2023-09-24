@@ -22,9 +22,7 @@ dependencies {
     compileOnly(libs.bundles.fawe)
     compileOnly("org.jetbrains:annotations:24.0.1")
 
-    implementation(libs.bundles.eldoutil) {
-        exclude("org.jetbrains")
-    }
+    bukkitLibrary(libs.bundles.eldoutil)
 }
 
 publishing {

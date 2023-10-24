@@ -33,7 +33,7 @@ dependencyResolutionManagement {
             library("paper", "io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
 
             // plugins
-            plugin("spotless", "com.diffplug.spotless").version("6.21.0")
+            plugin("spotless", "com.diffplug.spotless").version("6.22.0")
             plugin("shadow", "com.github.johnrengelman.shadow").version("8.1.1")
             plugin("publishdata", "de.chojo.publishdata").version("1.2.5")
             plugin("pluginyml", "net.minecrell.plugin-yml.bukkit").version("0.6.0")

@@ -16,7 +16,7 @@ publishData {
 dependencies {
     implementation(project(":api"))
     compileOnly(libs.paper)
-    implementation("net.kyori:adventure-platform-bukkit:4.3.0") {
+    implementation("net.kyori:adventure-platform-bukkit:4.3.1") {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)

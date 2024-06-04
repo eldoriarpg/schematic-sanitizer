@@ -16,11 +16,11 @@ publishData {
 dependencies {
     implementation(project(":api"))
     compileOnly(libs.paper)
-    implementation("net.kyori:adventure-platform-bukkit:4.3.0") {
+    implementation("net.kyori:adventure-platform-bukkit:4.3.3") {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)
-    compileOnly("org.jetbrains:annotations:24.0.1")
+    compileOnly("org.jetbrains:annotations:24.1.0")
 
     bukkitLibrary(libs.bundles.eldoutil)
 }

@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.eldoria.schematic-sanitizer"
-version = "1.0.6"
+version = "1.0.7"
 
 allprojects {
     apply {
@@ -28,7 +28,7 @@ allprojects {
     }
 
     dependencies {
-        testImplementation(platform("org.junit:junit-bom:5.10.0"))
+        testImplementation(platform("org.junit:junit-bom:5.10.2"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
 

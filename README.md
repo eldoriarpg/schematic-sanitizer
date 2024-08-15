@@ -15,6 +15,8 @@ The sanitizer can give you a report of found issues on the schematic or even fix
 
 This plugin can be used as a standalone plugin or as an api.
 
+Download from [hangar](https://hangar.papermc.io/Eldoria/SchematicSanitizer)
+
 [![Cooperation-Label: Recommended and supported by RedstoneWorld](https://redstoneworld.de/bilder/kooperation/Cooperation-Label.png)](https://redstoneworld.de)
 
 ## Usage as a plugin

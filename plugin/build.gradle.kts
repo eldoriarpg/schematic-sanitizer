@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
     alias(libs.plugins.hangar)
+    id("xyz.jpenilla.run-paper") version "2.3.0"
 }
 
 publishData {
@@ -16,12 +17,13 @@ publishData {
 dependencies {
     implementation(project(":api"))
     compileOnly(libs.paper)
-    implementation("net.kyori:adventure-platform-bukkit:4.3.3") {
+    bukkitLibrary("net.kyori:adventure-platform-bukkit:4.3.3") {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)
     compileOnly("org.jetbrains:annotations:24.1.0")
 
+    bukkitLibrary(libs.jacksonyaml)
     bukkitLibrary(libs.bundles.eldoutil)
 }
 
@@ -95,22 +97,23 @@ tasks {
     shadowJar {
         archiveBaseName.set("schematic-sanitizer")
         archiveVersion.set(publishData.getVersion())
-        val mapping = mapOf(
-                "de.eldoria.eldoutilities" to "utils",
-                "de.eldoria.jacksonbukkit" to "jacksonbukkit",
-                "org.yaml" to "yaml",
-                "net.kyori" to "adventure",
-                "com.fasterxml.jackson" to "jackson"
-        )
-        if (publishData.isPublicBuild()) {
-            println("relocating")
-            val base = "de.eldoria.schematicsanitizer.libs."
-            for ((pattern, name) in mapping) {
-                println("relocating ${pattern} to ${base}${name}")
-                relocate(pattern, "${base}${name}")
-            }
-
+//        val mapping = mapOf(
+//        )
+//        if (publishData.isPublicBuild()) {
+//            println("relocating")
+//            val base = "de.eldoria.schematicsanitizer.libs."
+//            for ((pattern, name) in mapping) {
+//                println("relocating ${pattern} to ${base}${name}")
+//                relocate(pattern, "${base}${name}")
+//            }
+//        }
+    }
+    runServer {
+        val myPlugins = runPaper.downloadPluginsSpec {
+            url("https://ci.athion.net/job/FastAsyncWorldEdit/lastSuccessfulBuild/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.11.2-SNAPSHOT-879.jar")
         }
+        downloadPlugins.from(myPlugins)
+        minecraftVersion("1.21")
     }
 }
 

@@ -18,7 +18,7 @@ plugins {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("eldoutil", "2.1.2")
+            version("eldoutil", "2.1.3")
             library("eldoutil-plugin", "de.eldoria.util", "plugin").versionRef("eldoutil")
             library("eldoutil-configuration", "de.eldoria.util", "jackson-configuration").versionRef("eldoutil")
             library("jacksonbukkit", "de.eldoria.jacksonbukkit:jackson-bukkit:1.2.0")

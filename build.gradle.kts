@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.eldoria.schematic-sanitizer"
-version = "1.0.7"
+version = "1.0.8"
 
 allprojects {
     apply {
@@ -28,13 +28,13 @@ allprojects {
     }
 
     dependencies {
-        testImplementation(platform("org.junit:junit-bom:5.10.2"))
+        testImplementation(platform("org.junit:junit-bom:5.11.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
 
     java {
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
+            languageVersion.set(JavaLanguageVersion.of(21))
         }
         withSourcesJar()
         withJavadocJar()

@@ -18,10 +18,6 @@ import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Location;
-import com.sk89q.worldedit.util.nbt.BinaryTag;
-import com.sk89q.worldedit.util.nbt.BinaryTagType;
-import com.sk89q.worldedit.util.nbt.BinaryTagTypes;
-import com.sk89q.worldedit.util.nbt.CompoundBinaryTag;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
@@ -38,6 +34,10 @@ import de.eldoria.schematicsanitizer.sanitizer.report.cause.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
+import org.enginehub.linbus.tree.LinCompoundTag;
+import org.enginehub.linbus.tree.LinStringTag;
+import org.enginehub.linbus.tree.LinTag;
+import org.enginehub.linbus.tree.LinTagType;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -156,7 +156,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
 
     @Override
     public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 position, T block) throws WorldEditException {
-        return setBlock(position.getBlockX(), position.getBlockY(), position.getBlockZ(), block);
+        return setBlock(position.x(), position.y(), position.z(), block);
     }
 
     /**
@@ -189,7 +189,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
     @SuppressWarnings("unchecked")
     private <B extends BlockStateHolder<B>> B cleanBlockData(BlockVector3 vector3, B block) {
         if (!(block instanceof BaseBlock)) return block;
-        CompoundBinaryTag nbt = block.getNbt();
+        LinCompoundTag nbt = block.getNbt();
         if (nbt != null) nbt = cleanBlockNBT(vector3, block, nbt);
         return (B) block.toBaseBlock(nbt);
     }
@@ -247,46 +247,46 @@ public class SanitizerExtent extends BlockArrayClipboard {
     }
 
 
-    private <B extends BlockStateHolder<B>> CompoundBinaryTag cleanBlockNBT(BlockVector3 vector3, B block, CompoundBinaryTag nbt) {
+    private <B extends BlockStateHolder<B>> LinCompoundTag cleanBlockNBT(BlockVector3 vector3, B block, LinCompoundTag nbt) {
         return cleanNBT(tag -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
                 (key, value) -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value),
                 nbt);
     }
 
-    private CompoundBinaryTag cleanEntityNBT(Location location, BaseEntity entity, CompoundBinaryTag nbt) {
+    private LinCompoundTag cleanEntityNBT(Location location, BaseEntity entity, LinCompoundTag nbt) {
         return cleanNBT(t -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, t),
                 (tag, text) -> report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text),
                 nbt);
     }
 
-    private CompoundBinaryTag cleanNBT(Consumer<String> onIllegalTag, BiConsumer<String, String> onIllegalText, CompoundBinaryTag nbt) {
+    private LinCompoundTag cleanNBT(Consumer<String> onIllegalTag, BiConsumer<String, String> onIllegalText, LinCompoundTag nbt) {
         // iterate over keys
-        for (String key : nbt.keySet()) {
+        for (String key : nbt.value().keySet()) {
             // remove key if it is blacklisted
             if (settings.filter().nbtBlacklist().contains(key)) {
-                nbt = nbt.remove(key);
+                nbt.value().remove(key);
                 onIllegalTag.accept(key);
                 continue;
             }
             // get the entry
-            BinaryTag entry = nbt.get(key);
+            LinTag<?> entry = nbt.value().get(key);
             if (entry == null) continue;
-            BinaryTagType<? extends BinaryTag> type = entry.type();
+            var type = entry.type();
             // check if the tag is an object/compound
-            if (type.test(BinaryTagTypes.COMPOUND)) {
+            if (type.equals(LinTagType.compoundTag())) {
                 // check object keys via recursion
-                nbt = cleanNBT(onIllegalTag, onIllegalText, nbt.getCompound(key));
+                nbt = cleanNBT(onIllegalTag, onIllegalText, nbt.getTag(key, LinTagType.compoundTag()));
                 continue;
             }
 
             // check if the key has a string value
-            if (type.test(BinaryTagTypes.STRING)) {
-                String text = nbt.getString(key);
+            if (type.equals(LinTagType.stringTag())) {
+                LinStringTag text = nbt.getTag(key, LinTagType.stringTag());
                 // check if any blacklisted value is contained inside the text
                 for (String e : settings.filter().textBlacklist()) {
-                    if (text.contains(e)) {
-                        nbt = nbt.remove(key);
-                        onIllegalText.accept(key, text);
+                    if (text.value().contains(e)) {
+                        nbt.value().remove(key);
+                        onIllegalText.accept(key, text.value());
                     }
                 }
             }
@@ -295,7 +295,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
     }
 
     private BaseEntity cleanEntity(Location location, BaseEntity entity) {
-        CompoundBinaryTag nbt = entity.getNbt();
+        LinCompoundTag nbt = entity.getNbt();
         if (nbt != null) entity.setNbt(cleanEntityNBT(location, entity, nbt));
         return entity;
     }

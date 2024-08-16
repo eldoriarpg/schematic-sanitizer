@@ -25,7 +25,7 @@ dependencyResolutionManagement {
             library("jacksonyaml", "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.2")
             bundle("eldoutil", listOf("eldoutil-plugin", "eldoutil-configuration", "jacksonbukkit", "jacksonyaml"))
 
-            version("fawe", "2.9.1")
+            version("fawe", "2.11.1")
             library("fawe-core", "com.fastasyncworldedit", "FastAsyncWorldEdit-Core").versionRef("fawe")
             library("fawe-bukkit", "com.fastasyncworldedit", "FastAsyncWorldEdit-Bukkit").versionRef("fawe")
             bundle("fawe", listOf("fawe-core", "fawe-bukkit"))

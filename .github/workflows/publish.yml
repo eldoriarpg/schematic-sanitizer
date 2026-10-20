@@ -1,0 +1,45 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+      - dev*
+      - feature/*
+      - fix/*
+    tags:
+      - v*
+
+jobs:
+  publish:
+    environment: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build
+        run: ./gradlew build
+      - name: Publish to EldoNexus
+        run: ./gradlew publishAllPublicationsToEldoNexusRepository
+        env:
+          ORG_GRADLE_PROJECT_EldoNexusUsername: ${{ secrets.NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_EldoNexusPassword: ${{ secrets.NEXUS_PASSWORD }}
+      - name: Publish release to Hangar
+        if: github.ref_type == 'tag'
+        run: ./gradlew publishAllPublicationsToHangar
+        env:
+          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
+          HANGAR_CHANNEL: Release
+      - name: Publish dev build to Hangar
+        if: startsWith(github.ref_name, 'dev')
+        run: ./gradlew publishAllPublicationsToHangar
+        env:
+          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
+          HANGAR_CHANNEL: Development

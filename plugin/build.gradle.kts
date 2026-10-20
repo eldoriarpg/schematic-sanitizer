@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
     alias(libs.plugins.hangar)
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 publishData {
@@ -17,7 +17,7 @@ publishData {
 dependencies {
     implementation(project(":api"))
     compileOnly(libs.paper)
-    bukkitLibrary("net.kyori:adventure-platform-bukkit:4.3.4") {
+    bukkitLibrary("net.kyori:adventure-platform-bukkit:4.4.1") {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)

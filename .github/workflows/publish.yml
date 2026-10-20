@@ -11,7 +11,11 @@ on:
       - v*
 
 jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+
   publish:
+    needs: verify
     environment: build
     runs-on: ubuntu-latest
 
@@ -24,8 +28,6 @@ jobs:
           java-version: 25
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
-      - name: Build
-        run: ./gradlew build
       - name: Publish to EldoNexus
         run: ./gradlew publishAllPublicationsToEldoNexusRepository
         env:
@@ -43,3 +45,27 @@ jobs:
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           HANGAR_CHANNEL: Development
+
+  javadocs:
+    needs: verify
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Build Javadocs
+        run: |
+          ./gradlew api:javadoc
+          touch api/build/docs/javadoc/.nojekyll
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: api/build/docs/javadoc

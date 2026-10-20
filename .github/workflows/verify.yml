@@ -2,8 +2,14 @@ name: Verify state
 
 on:
   push:
+    branches-ignore:
+      - main
+      - dev*
+      - feature/*
+      - fix/*
   pull_request:
     types: [ opened, ready_for_review, synchronize ]
+  workflow_call:
 
 jobs:
   build:

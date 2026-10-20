@@ -61,7 +61,7 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
             try {
                 SanitizerReport report = report(sanitizer, args);
                 this.report.register(sender, report);
-            } catch (IOException e) {
+            } catch (IOException | RuntimeException e) {
                 plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
                 handleCommandError(sender, CommandException.message("Something went wrong. Please check the console"));
             }

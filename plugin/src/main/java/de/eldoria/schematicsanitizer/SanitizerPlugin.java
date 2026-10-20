@@ -6,20 +6,31 @@
 
 package de.eldoria.schematicsanitizer;
 
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.world.entity.EntityType;
 import de.eldoria.eldoutilities.config.template.PluginBaseConfiguration;
+import de.eldoria.eldoutilities.debug.HealthCheck;
+import de.eldoria.eldoutilities.debug.data.EntryData;
 import de.eldoria.eldoutilities.localization.ILocalizer;
 import de.eldoria.eldoutilities.localization.Localizer;
 import de.eldoria.eldoutilities.messages.MessageSender;
 import de.eldoria.eldoutilities.plugin.EldoPlugin;
+import de.eldoria.eldoutilities.updater.Updater;
+import de.eldoria.eldoutilities.updater.lynaupdater.LynaUpdateData;
 import de.eldoria.schematicsanitizer.command.SchematicSanitizer;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.Tag;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -34,6 +45,7 @@ import static de.eldoria.schematicsanitizer.util.Colors.VALUE;
 
 @SuppressWarnings("unused")
 public class SanitizerPlugin extends EldoPlugin {
+    private static final int LYNA_PRODUCT_ID = 32;
     private final Configuration configuration;
 
     public SanitizerPlugin() {
@@ -74,7 +86,15 @@ public class SanitizerPlugin extends EldoPlugin {
     @Override
     public void onPostStart() throws Throwable {
         configuration.settings();
+        configuration.save();
         configuration.save(Configuration.SETTINGS);
+
+        if (configuration.main().updateCheck()) {
+            Updater.lyna(LynaUpdateData.builder(this, LYNA_PRODUCT_ID)
+                            .notifyPermission(Permissions.UPDATE_NOTIFY)
+                            .build())
+                    .start();
+        }
 
         String collect = EntityType.REGISTRY.getMap().values().stream().map(EntityType::getId).collect(Collectors.joining("\n"));
         try {
@@ -82,5 +102,43 @@ public class SanitizerPlugin extends EldoPlugin {
         } catch (IOException e) {
             logger().log(Level.WARNING, "Could not dump entities");
         }
+    }
+
+    @Override
+    public @NotNull EntryData[] getDebugInformations() {
+        return new EntryData[]{
+                new EntryData("Environment", Map.of(
+                        "FastAsyncWorldEdit", faweVersion(),
+                        "Schematic folder", schematicFolder().toString()))
+        };
+    }
+
+    @Override
+    public @NotNull List<HealthCheck> getHealthChecks() {
+        return List.of(faweHealth(), schematicFolderHealth());
+    }
+
+    private HealthCheck faweHealth() {
+        Plugin fawe = getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
+        if (fawe == null || !fawe.isEnabled()) {
+            return HealthCheck.error("FastAsyncWorldEdit", "Not installed or not enabled");
+        }
+        return HealthCheck.ok("FastAsyncWorldEdit", "Version " + fawe.getPluginMeta().getVersion());
+    }
+
+    private HealthCheck schematicFolderHealth() {
+        Path folder = schematicFolder();
+        if (!Files.isDirectory(folder)) return HealthCheck.warn("Schematic folder", "Does not exist: " + folder);
+        if (!Files.isReadable(folder)) return HealthCheck.error("Schematic folder", "Not readable: " + folder);
+        return HealthCheck.ok("Schematic folder", folder.toString());
+    }
+
+    private String faweVersion() {
+        Plugin fawe = getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
+        return fawe == null ? "not installed" : fawe.getPluginMeta().getVersion();
+    }
+
+    private Path schematicFolder() {
+        return WorldEdit.getInstance().getSchematicsFolderPath();
     }
 }

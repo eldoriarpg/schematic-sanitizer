@@ -35,16 +35,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlock;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 import de.eldoria.schematicsanitizer.sanitizer.settings.Settings;
 import org.enginehub.linbus.tree.LinCompoundTag;
-import org.enginehub.linbus.tree.LinStringTag;
-import org.enginehub.linbus.tree.LinTag;
-import org.enginehub.linbus.tree.LinTagType;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -248,50 +243,17 @@ public class SanitizerExtent extends BlockArrayClipboard {
 
 
     private <B extends BlockStateHolder<B>> LinCompoundTag cleanBlockNBT(BlockVector3 vector3, B block, LinCompoundTag nbt) {
-        return cleanNBT(tag -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
-                (key, value) -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value),
-                nbt);
+        return NbtCleaner.of(settings.filter(),
+                tag -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
+                (key, value) -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value)
+        ).clean(nbt);
     }
 
     private LinCompoundTag cleanEntityNBT(Location location, BaseEntity entity, LinCompoundTag nbt) {
-        return cleanNBT(t -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, t),
-                (tag, text) -> report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text),
-                nbt);
-    }
-
-    private LinCompoundTag cleanNBT(Consumer<String> onIllegalTag, BiConsumer<String, String> onIllegalText, LinCompoundTag nbt) {
-        // iterate over keys
-        for (String key : nbt.value().keySet()) {
-            // remove key if it is blacklisted
-            if (settings.filter().nbtBlacklist().contains(key)) {
-                nbt.value().remove(key);
-                onIllegalTag.accept(key);
-                continue;
-            }
-            // get the entry
-            LinTag<?> entry = nbt.value().get(key);
-            if (entry == null) continue;
-            var type = entry.type();
-            // check if the tag is an object/compound
-            if (type.equals(LinTagType.compoundTag())) {
-                // check object keys via recursion
-                nbt = cleanNBT(onIllegalTag, onIllegalText, nbt.getTag(key, LinTagType.compoundTag()));
-                continue;
-            }
-
-            // check if the key has a string value
-            if (type.equals(LinTagType.stringTag())) {
-                LinStringTag text = nbt.getTag(key, LinTagType.stringTag());
-                // check if any blacklisted value is contained inside the text
-                for (String e : settings.filter().textBlacklist()) {
-                    if (text.value().contains(e)) {
-                        nbt.value().remove(key);
-                        onIllegalText.accept(key, text.value());
-                    }
-                }
-            }
-        }
-        return nbt;
+        return NbtCleaner.of(settings.filter(),
+                tag -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, tag),
+                (tag, text) -> report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text)
+        ).clean(nbt);
     }
 
     private BaseEntity cleanEntity(Location location, BaseEntity entity) {

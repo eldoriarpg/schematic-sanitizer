@@ -1,0 +1,34 @@
+[versions]
+eldoutil = "2.2.0"
+fawe = "2.16.1"
+publishdata = "2.0.0"
+spotless = "8.10.4"
+
+[libraries]
+eldoutil-plugin = { module = "de.eldoria.util:plugin", version.ref = "eldoutil" }
+eldoutil-configuration = { module = "de.eldoria.util:jackson-configuration", version.ref = "eldoutil" }
+eldoutil-updater = { module = "de.eldoria.util:updater", version.ref = "eldoutil" }
+jackson-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.22.4"
+adventure-bukkit = "net.kyori:adventure-platform-bukkit:4.4.1"
+
+fawe-core = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Core", version.ref = "fawe" }
+fawe-bukkit = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit", version.ref = "fawe" }
+paper = "io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT"
+jetbrains-annotations = "org.jetbrains:annotations:26.1.0"
+
+junit-bom = "org.junit:junit-bom:6.1.3"
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+gradle-publishdata = { module = "de.chojo:publishdata", version.ref = "publishdata" }
+gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+
+[bundles]
+eldoutil = ["eldoutil-plugin", "eldoutil-configuration", "eldoutil-updater", "jackson-yaml"]
+fawe = ["fawe-core", "fawe-bukkit"]
+
+[plugins]
+shadow = "com.gradleup.shadow:9.6.1"
+pluginyml = "de.eldoria.plugin-yml.bukkit:0.9.0"
+hangar = "io.papermc.hangar-publish-plugin:0.1.4"
+runpaper = "xyz.jpenilla.run-paper:3.1.0"

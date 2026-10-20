@@ -31,6 +31,6 @@ public class Fix extends SanitizeBase {
         if (args.flags().has("o")) {
             return sanitizer.fix();
         }
-        return sanitizer.fix(sanitizer.name() + "_new");
+        return sanitizer.fix(args.asString(1, sanitizer.name() + "_new"));
     }
 }

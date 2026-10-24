@@ -75,9 +75,6 @@ tasks {
         downloadPlugins {
             modrinth("fastasyncworldedit", libs.versions.fawe.get())
         }
-        javaLauncher = project.javaToolchains.launcherFor {
-            languageVersion = JavaLanguageVersion.of(25)
-        }
         jvmArgs("-Dcom.mojang.eula.agree=true")
     }
 }

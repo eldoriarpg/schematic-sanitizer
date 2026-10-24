@@ -11,9 +11,15 @@ import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.ValueDeserializer;
 
+/**
+ * Reads entity types by id. An id the server does not know is kept as it is, so it stays in the file and matches no
+ * entity, instead of turning into an empty entry.
+ */
 public class EntityTypeDeserializer extends ValueDeserializer<EntityType> {
     @Override
     public EntityType deserialize(JsonParser p, DeserializationContext ctxt) {
-        return EntityTypes.get(p.getValueAsString());
+        String id = p.getValueAsString();
+        EntityType type = EntityTypes.get(id);
+        return type != null ? type : new EntityType(id);
     }
 }

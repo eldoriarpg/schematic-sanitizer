@@ -5,13 +5,22 @@
  */
 package de.eldoria.schematicsanitizer.configuration;
 
-public class ConfigFile {
-    private boolean updateCheck = true;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
-    /**
-     * @return true when the plugin should check Lyna for new versions and notify admins
-     */
-    public boolean updateCheck() {
-        return updateCheck;
+/**
+ * The content of {@code config.yml}. The switch {@code updateCheck} of 1.x is read once into {@code updates.notice}
+ * and not written back.
+ */
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+public class ConfigFile {
+    private UpdateSettings updates = new UpdateSettings();
+
+    public UpdateSettings updates() {
+        return updates;
+    }
+
+    @JsonSetter("updateCheck")
+    private void legacyUpdateCheck(boolean updateCheck) {
+        updates.notice(updateCheck);
     }
 }

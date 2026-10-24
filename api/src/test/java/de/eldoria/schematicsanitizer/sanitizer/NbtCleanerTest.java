@@ -108,4 +108,36 @@ class NbtCleanerTest {
         assertTrue(cleaner.clean(nbt).value().isEmpty());
         assertEquals(List.of("Command"), removedTexts);
     }
+
+    @Test
+    void removesClickEventsOfComponentSignText() {
+        NbtCleaner componentCleaner = new NbtCleaner(
+                Set.of("click_event"), Set.of(), removedTags::add, (key, value) -> removedTexts.add(key));
+        LinCompoundTag line = LinCompoundTag.builder()
+                .putString("text", "hi")
+                .put(
+                        "click_event",
+                        LinCompoundTag.builder()
+                                .putString("action", "run_command")
+                                .putString("command", "/say hi")
+                                .build())
+                .build();
+        LinCompoundTag nbt = LinCompoundTag.builder()
+                .put(
+                        "front_text",
+                        LinCompoundTag.builder()
+                                .put("messages", LinListTag.of(LinTagType.compoundTag(), List.of(line)))
+                                .build())
+                .build();
+
+        LinCompoundTag cleaned = componentCleaner
+                .clean(nbt)
+                .getTag("front_text", LinTagType.compoundTag())
+                .getListTag("messages", LinTagType.compoundTag())
+                .value()
+                .getFirst();
+
+        assertEquals(Set.of("text"), cleaned.value().keySet());
+        assertEquals(List.of("click_event"), removedTags);
+    }
 }

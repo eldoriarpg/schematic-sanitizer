@@ -74,7 +74,10 @@ public record Settings(Filter filter, Limit limit) {
                     .entityFilter(entities -> entities.removeCreature(true)
                             .removeNonCreatures(false)
                             .withEntityBlacklist(
-                                    EntityTypes.COMMAND_BLOCK_MINECART, EntityTypes.FALLING_BLOCK, EntityTypes.POTION))
+                                    EntityTypes.COMMAND_BLOCK_MINECART,
+                                    EntityTypes.FALLING_BLOCK,
+                                    EntityTypes.SPLASH_POTION,
+                                    EntityTypes.LINGERING_POTION))
                     .withTextBlacklist("clickEvent", "run_command")
                     .withNbtBlacklist(
                             "LootTable",
@@ -90,7 +93,9 @@ public record Settings(Filter filter, Limit limit) {
                             "buy",
                             "buyB",
                             "sell",
-                            "SaddleItem"))
+                            "SaddleItem",
+                            "equipment",
+                            "click_event"))
             .limit(limit -> limit.size(600)
                     .contentLimit(content -> content.blocks(50000)
                             .nonAirBlocks(40000)

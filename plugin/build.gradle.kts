@@ -39,10 +39,10 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     testImplementation(libs.paper)
 
-    bukkitLibrary(libs.adventure.bukkit) {
-        exclude("org.jetbrains")
-    }
-    bukkitLibrary(libs.bundles.eldoutil)
+    bukkitLibrary(libs.bundles.utilities)
+    bukkitLibrary(libs.bundles.jackson)
+    testImplementation(libs.bundles.utilities)
+    testImplementation(libs.bundles.jackson)
 }
 
 hangarPublish {

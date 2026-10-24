@@ -1,16 +1,21 @@
 [versions]
-eldoutil = "2.2.0"
+utilities = "3.6.0"
+jackson = "3.2.4"
+jackson-annotations = "2.22"
 fawe = "2.16.1"
 palantir = "2.102.0"
 publishdata = "2.2.0"
 spotless = "8.10.4"
 
 [libraries]
-eldoutil-plugin = { module = "de.eldoria.util:plugin", version.ref = "eldoutil" }
-eldoutil-configuration = { module = "de.eldoria.util:jackson-configuration", version.ref = "eldoutil" }
-eldoutil-updater = { module = "de.eldoria.util:updater", version.ref = "eldoutil" }
-jackson-yaml = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.22.4"
-adventure-bukkit = "net.kyori:adventure-platform-bukkit:4.4.1"
+eldoutil-plugin = { module = "de.eldoria.util:plugin", version.ref = "utilities" }
+eldoutil-jackson = { module = "de.eldoria.util:jackson-configuration", version.ref = "utilities" }
+eldoutil-updater = { module = "de.eldoria.util:updater", version.ref = "utilities" }
+
+jackson-core = { module = "tools.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-yaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations" }
 
 fawe-core = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Core", version.ref = "fawe" }
 fawe-bukkit = { module = "com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit", version.ref = "fawe" }
@@ -25,7 +30,8 @@ gradle-publishdata = { module = "de.chojo:publishdata", version.ref = "publishda
 gradle-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
 
 [bundles]
-eldoutil = ["eldoutil-plugin", "eldoutil-configuration", "eldoutil-updater", "jackson-yaml"]
+utilities = ["eldoutil-plugin", "eldoutil-jackson", "eldoutil-updater"]
+jackson = ["jackson-core", "jackson-databind", "jackson-yaml", "jackson-annotations"]
 fawe = ["fawe-core", "fawe-bukkit"]
 
 [plugins]

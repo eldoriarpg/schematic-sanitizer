@@ -5,16 +5,14 @@
  */
 package de.eldoria.schematicsanitizer.configuration.serialization.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.sk89q.worldedit.world.entity.EntityType;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
-
-public class EntityTypeSerializer extends JsonSerializer<EntityType> {
+public class EntityTypeSerializer extends ValueSerializer<EntityType> {
     @Override
-    public void serialize(EntityType value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(EntityType value, JsonGenerator gen, SerializationContext ctxt) {
         gen.writeString(value.getId());
     }
 }

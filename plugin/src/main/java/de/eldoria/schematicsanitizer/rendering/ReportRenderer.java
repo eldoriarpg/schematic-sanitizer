@@ -76,7 +76,8 @@ public record ReportRenderer(
             errors.add("%s<default> illegal NBT entries on entities found".formatted(numbers(entitiesNbt())));
         }
         if (!blocks().isEmpty()) {
-            int perc = Math.round(limits().content().nonAirBlocks() / (float) blocks().size() * 100);
+            int nonAir = Math.max(1, limits().content().nonAirBlocks());
+            int perc = Math.round(blocks().size() / (float) nonAir * 100);
             if (perc >= 90) {
                 errors.add("<bad>%d%% <default>of block were removed".formatted(perc));
             }

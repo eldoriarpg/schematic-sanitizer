@@ -7,7 +7,7 @@ sidebar_position: 6
 The checks of Schematic Sanitizer are available to your own plugin through the `api` module. You can check a
 schematic file, read the report and write a cleaned copy, with your own rules.
 
-The full Javadocs are at [eldoriarpg.github.io/schematic-sanitizer](https://eldoriarpg.github.io/schematic-sanitizer/).
+The full API reference is in the [Javadoc](pathname:///schematic-sanitizer/javadoc/).
 
 ## Add the dependency
 
@@ -18,7 +18,7 @@ The API is published on EldoNexus.
 | Repository | `https://eldonexus.de/repository/maven-public/` |
 | Group | `de.eldoria.schematic-sanitizer` |
 | Artifact | `api` |
-| Version | `1.0.9` |
+| Version | `2.0.0` |
 
 **Gradle (Kotlin)**
 
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("de.eldoria.schematic-sanitizer:api:1.0.9")
+    compileOnly("de.eldoria.schematic-sanitizer:api:2.0.0")
 }
 ```
 
@@ -43,7 +43,7 @@ dependencies {
 <dependency>
     <groupId>de.eldoria.schematic-sanitizer</groupId>
     <artifactId>api</artifactId>
-    <version>1.0.9</version>
+    <version>2.0.0</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -56,7 +56,18 @@ depend:
   - SchematicSanitizer
 ```
 
-The API needs Paper and FastAsyncWorldEdit, like the plugin.
+A Paper plugin declares it in its `paper-plugin.yml` instead:
+
+```yaml
+dependencies:
+  server:
+    SchematicSanitizer:
+      load: BEFORE
+      required: true
+      join-classpath: true
+```
+
+The API needs Paper 1.21.11 or newer, Java 25 and FastAsyncWorldEdit, like the plugin.
 
 ## Build your rules
 

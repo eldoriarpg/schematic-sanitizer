@@ -89,6 +89,8 @@ After a check or a fix you get a report in chat. It has three parts:
 - **Removed content.** How many blocks, block data tags, entities and entity data tags were removed. Click **[Show]**
   to page through the list. Each entry shows the position, the type and the reason.
 
+![A report in chat with limits, content and removed content](./report.png)
+
 The reasons you can see are:
 
 | Reason | Meaning |

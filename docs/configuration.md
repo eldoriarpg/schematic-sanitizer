@@ -116,12 +116,22 @@ them to `entityBlacklist` if you want thrown potions removed.
 ## config.yml
 
 ```yaml
-updateCheck: true
+updates:
+  askForAutoUpdate: true
+  autoUpdate: false
+  notice: true
 ```
 
 | Key | Default | What it does |
 |---|---|---|
-| `updateCheck` | `true` | Check for new versions. See [Update check](./updates-and-support.md#update-check). |
+| `updates.notice` | `true` | Tells the console and players with `schematicsanitizer.updates` when a new version is out. |
+| `updates.autoUpdate` | `false` | Downloads new stable releases of the same major version on its own. They are installed on the next restart. |
+| `updates.askForAutoUpdate` | `true` | Offers admins in chat to download a new version and to turn on `autoUpdate`. |
+
+See [Update check](./updates-and-support.md#update-check).
+
+Servers coming from 1.x keep their choice: `updateCheck` is read once into `updates.notice` and then removed from the
+file.
 
 ## base_configuration.yml
 

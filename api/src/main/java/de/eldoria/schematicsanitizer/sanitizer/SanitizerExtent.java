@@ -105,10 +105,14 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return report.build();
     }
 
+    /**
+     * Passes tile data through unchanged. Copying a schematic hands block entity data to
+     * {@link #setBlock(int, int, int, BlockStateHolder)} together with the block, where it is cleaned; a cleaned file
+     * checked again reports no further tags.
+     */
     @SuppressWarnings("deprecation")
     @Override
     public boolean setTile(int x, int y, int z, CompoundTag tag) {
-        // TODO not sure what to do here
         return super.setTile(x, y, z, tag);
     }
 
@@ -230,7 +234,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
         if (type == CreatureType.CREATURE && filter.removeCreature()) {
             report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.CREATURE));
             return false;
-        } else if (filter.removeNonCreatures()) {
+        } else if (type == CreatureType.NON_CREATURE && filter.removeNonCreatures()) {
             report.entity().removed(new RemovedEntity(location, entity, EntityRemovalCause.NON_CREATURE));
             return false;
         }

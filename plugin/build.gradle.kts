@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.pluginyml.paper)
     alias(libs.plugins.hangar)
     alias(libs.plugins.runpaper)
+    alias(libs.plugins.minotaur)
 }
 
 description = "Paper plugin that checks schematics and removes blocks, entities and NBT from them."
@@ -72,6 +73,21 @@ hangarPublish {
             }
         }
     }
+}
+
+modrinth {
+    token = providers.environmentVariable("MODRINTH_TOKEN")
+    projectId = "fPX2XM5q"
+    versionNumber = project.version.toString()
+    versionType = "release"
+    uploadFile.set(tasks.shadowJar)
+    gameVersions.addAll("1.21.11", "26.1", "26.1.1", "26.1.2", "26.2", "26.3")
+    loaders.addAll("paper", "purpur")
+    dependencies {
+        required.project("fastasyncworldedit")
+    }
+    changelog = providers.environmentVariable("MODRINTH_CHANGELOG_FILE").map { file(it).readText() }.orElse("")
+    syncBodyFrom = rootProject.file("README.md").readText()
 }
 
 tasks {

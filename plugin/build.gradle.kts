@@ -2,7 +2,7 @@ import io.papermc.hangarpublishplugin.model.Platforms
 import java.util.Properties
 
 plugins {
-    id("publishing-conventions")
+    id("schematic-sanitizer.publishing-conventions")
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
     alias(libs.plugins.hangar)

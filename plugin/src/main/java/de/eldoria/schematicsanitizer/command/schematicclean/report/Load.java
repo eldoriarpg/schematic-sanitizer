@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean.report;
 
 import de.eldoria.eldoutilities.commands.Completion;
@@ -25,21 +24,23 @@ public class Load extends AdvancedCommand implements ITabExecutor {
     private final Report report;
 
     public Load(Plugin plugin, Report report) {
-        super(plugin, CommandMeta.builder("load")
-                .addUnlocalizedArgument("path", true)
-                .build());
+        super(
+                plugin,
+                CommandMeta.builder("load").addUnlocalizedArgument("path", true).build());
         this.report = report;
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args)
+            throws CommandException {
         if (!report.load(sender, args.asString(0))) {
             throw CommandException.message("Unknown report");
         }
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
             return Completion.complete(args.asString(0), report.fileReports());
         }

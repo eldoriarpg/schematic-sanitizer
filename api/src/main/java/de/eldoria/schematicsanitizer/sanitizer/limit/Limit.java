@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.limit;
 
 /**
@@ -11,5 +10,4 @@ package de.eldoria.schematicsanitizer.sanitizer.limit;
  * @param size the max length of the longest edge
  * @param contentLimit content limit
  */
-public record Limit(int size, ContentLimit contentLimit) {
-}
+public record Limit(int size, ContentLimit contentLimit) {}

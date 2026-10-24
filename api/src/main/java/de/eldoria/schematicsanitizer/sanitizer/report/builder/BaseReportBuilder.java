@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.List;
  *
  * @param <V> the type of the elements in the report
  */
-
 public class BaseReportBuilder<V> {
     private final List<V> removed = new ArrayList<>();
 

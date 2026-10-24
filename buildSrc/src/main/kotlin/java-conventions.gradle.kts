@@ -30,8 +30,14 @@ java {
 
 spotless {
     java {
-        licenseHeaderFile(rootProject.file("HEADER.txt"))
         target("src/**/*.java")
+        licenseHeaderFile(project.file("HEADER.txt").takeIf { it.exists() } ?: rootProject.file("HEADER.txt"))
+        palantirJavaFormat(libs.versions.palantir.get()).formatJavadoc(false)
+        removeUnusedImports()
+        importOrder("", "java", "javax", "\\#")
+        trimTrailingWhitespace()
+        endWithNewline()
+        encoding("UTF-8")
     }
 }
 
@@ -45,7 +51,6 @@ tasks {
     }
 
     test {
-        dependsOn(spotlessCheck)
         useJUnitPlatform()
         testLogging {
             events("passed", "skipped", "failed")

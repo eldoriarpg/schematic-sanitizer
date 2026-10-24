@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.entities;
 
 import com.sk89q.worldedit.entity.BaseEntity;
@@ -19,9 +18,9 @@ import org.jetbrains.annotations.Nullable;
  * @param tag removed tag
  * @param value removed value if it contained invalid text
  */
-public record RemovedEntityNbt(Location location,
-                               BaseEntity type,
-                               NbtRemovalCause removalCause,
-                               String tag,
-                               @Nullable String value) {
-}
+public record RemovedEntityNbt(
+        Location location,
+        BaseEntity type,
+        NbtRemovalCause removalCause,
+        String tag,
+        @Nullable String value) {}

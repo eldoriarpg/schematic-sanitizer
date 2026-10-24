@@ -1,21 +1,19 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.block.BlockType;
-import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.BlockNbtReport;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedBlockNbt;
+import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.BlockNbtReport;
 
 /**
  * Builds a BlockNbtReport containing information about removed block NBT data.
  */
-
 public class BlockNbtReportBuilder extends BaseReportBuilder<RemovedBlockNbt> {
     /**
      * Logs removal of a block with the specified details.

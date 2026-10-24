@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import com.sk89q.worldedit.WorldEdit;
@@ -17,9 +16,9 @@ import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.util.Completion;
+import de.eldoria.schematicsanitizer.util.Permissions;
 import de.eldoria.schematicsanitizer.util.SchematicPaths;
 import de.eldoria.schematicsanitizer.util.Text;
-import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -38,16 +37,19 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     private WorldEdit worldEdit;
 
     public FixBatch(Plugin plugin, Configuration configuration, Report report) {
-        super(plugin, CommandMeta.builder("fixbatch")
-                .addArgument("directory", true)
-                .withPermission(Permissions.Fix.BATCH)
-                .build());
+        super(
+                plugin,
+                CommandMeta.builder("fixbatch")
+                        .addArgument("directory", true)
+                        .withPermission(Permissions.Fix.BATCH)
+                        .build());
         this.configuration = configuration;
         this.report = report;
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args)
+            throws CommandException {
         Path path = SchematicPaths.resolve(worldEdit().getSchematicsFolderPath(), args.asString(0))
                 .orElseThrow(() -> CommandException.message("Invalid directory"));
         if (!path.toFile().exists()) throw CommandException.message("Directory does not exist");
@@ -67,8 +69,7 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
         }
 
         try (var files = Files.list(path)) {
-            List<Path> list = files
-                    .filter(p -> p.toFile().isFile())
+            List<Path> list = files.filter(p -> p.toFile().isFile())
                     .filter(p -> {
                         String name = p.toFile().getName();
                         return name.endsWith(".schem") || name.endsWith(".schematic");
@@ -77,13 +78,19 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
             plugin().getServer().getScheduler().runTaskAsynchronously(plugin(), () -> {
                 messageSender().sendMessage(sender, "Starting batch. Processing %d files".formatted(list.size()));
                 for (Path curr : list) {
-                    messageSender().sendMessage(sender, "Checking <value>" + Text.escape(curr.getFileName().toString()));
+                    messageSender()
+                            .sendMessage(
+                                    sender,
+                                    "Checking <value>"
+                                            + Text.escape(curr.getFileName().toString()));
                     Sanitizer sanitizer;
                     try {
                         sanitizer = Sanitizer.create(curr, configuration.settings());
                     } catch (Throwable e) {
                         plugin().getLogger().log(Level.SEVERE, "Could not load schematic.", e);
-                        handleCommandError(sender, CommandException.message("Could not load schematic " + Text.escape(curr.toString())));
+                        handleCommandError(
+                                sender,
+                                CommandException.message("Could not load schematic " + Text.escape(curr.toString())));
                         continue;
                     }
                     try {
@@ -98,7 +105,8 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
                         messageSender().sendMessage(sender, renderer.shortComponent(regPath));
                     } catch (Throwable e) {
                         plugin().getLogger().log(Level.SEVERE, "Could not process schematic", e);
-                        handleCommandError(sender, CommandException.message("Something went wrong. Please check the console"));
+                        handleCommandError(
+                                sender, CommandException.message("Something went wrong. Please check the console"));
                     }
                 }
                 messageSender().sendMessage(sender, "Batch process finished.");
@@ -110,7 +118,8 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
             return Completion.completeDirectories(worldEdit().getSchematicsFolderPath(), args.asString(0));
         }

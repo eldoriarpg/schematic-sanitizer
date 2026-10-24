@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.entities;
 
 import com.sk89q.worldedit.math.BlockVector3;
@@ -18,7 +17,6 @@ import org.bukkit.entity.EntityType;
  * <p>
  * This interface provides methods for retrieving component, coordinates, name, cause, and meta of an entity.
  */
-
 public interface ComponentEntityRenderer {
     /**
      * Retrieves the component of the object.

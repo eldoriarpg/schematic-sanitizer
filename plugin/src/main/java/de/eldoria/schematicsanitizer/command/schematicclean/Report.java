@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import com.google.common.cache.Cache;
@@ -31,7 +30,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Report extends AdvancedCommand {
-    private final Cache<String, ReportRenderer> fileReports = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
+    private final Cache<String, ReportRenderer> fileReports =
+            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
     private final Map<UUID, ReportRenderer> reports = new HashMap<>();
     private final UUID console = new UUID(0L, 0L);
     private final Configuration configuration;
@@ -61,7 +61,9 @@ public class Report extends AdvancedCommand {
     }
 
     private String buildCacheString(Path path) {
-        return path.toAbsolutePath().toString().replace(worldEdit().getSchematicsFolderPath().toAbsolutePath().toString(), "");
+        return path.toAbsolutePath()
+                .toString()
+                .replace(worldEdit().getSchematicsFolderPath().toAbsolutePath().toString(), "");
     }
 
     public boolean load(CommandSender sender, String path) {

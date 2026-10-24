@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized;
 
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntityNbt;
@@ -19,5 +18,4 @@ public record EntityNbtReport(List<RemovedEntityNbt> removed) implements SizedRe
     public List<RemovedEntityNbt> entities() {
         return removed;
     }
-
 }

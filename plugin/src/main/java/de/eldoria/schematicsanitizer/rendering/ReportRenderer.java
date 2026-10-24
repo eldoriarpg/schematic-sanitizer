@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering;
 
 import de.eldoria.schematicsanitizer.rendering.subreports.LimitRenderer;
@@ -25,11 +24,19 @@ import static de.eldoria.schematicsanitizer.util.Text.escape;
 import static de.eldoria.schematicsanitizer.util.Text.numbers;
 import static de.eldoria.schematicsanitizer.util.Text.quoted;
 
-public record ReportRenderer(SanitizerReport report, Settings settings, EntityRenderer entities, BlockRenderer blocks,
-                             EntityNbtRenderer entitiesNbt, BlockNbtRenderer blocksNbt, LimitRenderer limits) {
+public record ReportRenderer(
+        SanitizerReport report,
+        Settings settings,
+        EntityRenderer entities,
+        BlockRenderer blocks,
+        EntityNbtRenderer entitiesNbt,
+        BlockNbtRenderer blocksNbt,
+        LimitRenderer limits) {
 
     public static ReportRenderer create(SanitizerReport report, Settings settings) {
-        return new ReportRenderer(report, settings,
+        return new ReportRenderer(
+                report,
+                settings,
                 EntityRenderer.create(report.entities()),
                 BlockRenderer.create(report.blocks()),
                 EntityNbtRenderer.create(report.entitiesNbt()),
@@ -48,8 +55,10 @@ public record ReportRenderer(SanitizerReport report, Settings settings, EntityRe
                 %s
                 <section>Removed Content:<default>
                 %s
-                """.stripIndent()
-                .formatted(quoted(escape(path().toString())), limits().summary(settings), summary().indent(2));
+                """.stripIndent().formatted(
+                quoted(escape(path().toString())),
+                limits().summary(settings),
+                summary().indent(2));
     }
 
     public String shortComponent(String regPath) {
@@ -74,7 +83,8 @@ public record ReportRenderer(SanitizerReport report, Settings settings, EntityRe
         }
 
         if (!errors.isEmpty())
-            errors.add("<click:run_command:'/schematicsanitizer report load %s'><interact>[Full report]</click>".formatted(quoted(regPath)));
+            errors.add("<click:run_command:'/schematicsanitizer report load %s'><interact>[Full report]</click>"
+                    .formatted(quoted(regPath)));
         return errors.isEmpty() ? "<good>No problems found!" : String.join("\n", errors);
     }
 
@@ -96,15 +106,20 @@ public record ReportRenderer(SanitizerReport report, Settings settings, EntityRe
                 %s<default> illegal blocks found %s
                 %s<default> illegal NBT entries on blocks found %s
                 %s<default> illegal entities found %s
-                %s<default> illegal NBT entries on entities found %s"""
-                .formatted(numbers(blocks()), blocks().isEmpty() ? "" : showButton("blocks"),
-                        numbers(blocksNbt()), blocksNbt().isEmpty() ? "" : showButton("blocks_nbt"),
-                        numbers(entities()), entities().isEmpty() ? "" : showButton("entities"),
-                        numbers(entitiesNbt()), entitiesNbt().isEmpty() ? "" : showButton("entities_nbt"));
+                %s<default> illegal NBT entries on entities found %s""".formatted(
+                        numbers(blocks()),
+                        blocks().isEmpty() ? "" : showButton("blocks"),
+                        numbers(blocksNbt()),
+                        blocksNbt().isEmpty() ? "" : showButton("blocks_nbt"),
+                        numbers(entities()),
+                        entities().isEmpty() ? "" : showButton("entities"),
+                        numbers(entitiesNbt()),
+                        entitiesNbt().isEmpty() ? "" : showButton("entities_nbt"));
     }
 
     private String showButton(String subCommand) {
-        return "<click:run_command:/schematicsanitizer report page %s 0><interact><hover:show_text:'<default>Click me'>[Show]</hover><default></click>".formatted(subCommand);
+        return "<click:run_command:/schematicsanitizer report page %s 0><interact><hover:show_text:'<default>Click me'>[Show]</hover><default></click>"
+                .formatted(subCommand);
     }
 
     public @Nullable Path newPath() {

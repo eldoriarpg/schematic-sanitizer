@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.settings;
 
 import com.sk89q.worldedit.world.entity.EntityTypes;
@@ -67,26 +66,16 @@ public record Settings(Filter filter, Limit limit) {
      * @see SettingsBuilder
      */
     public static final Settings DEFAULT = new SettingsBuilder()
-            .filter(filter -> filter
-                    .blockFilter(blocks -> blocks
-                            .withMaterialBlacklist(
-                                    Material.COMMAND_BLOCK,
-                                    Material.REPEATING_COMMAND_BLOCK,
-                                    Material.CHAIN_COMMAND_BLOCK,
-                                    Material.STRUCTURE_BLOCK)
-                    )
-                    .entityFilter(entities -> entities
-                            .removeCreature(true)
+            .filter(filter -> filter.blockFilter(blocks -> blocks.withMaterialBlacklist(
+                            Material.COMMAND_BLOCK,
+                            Material.REPEATING_COMMAND_BLOCK,
+                            Material.CHAIN_COMMAND_BLOCK,
+                            Material.STRUCTURE_BLOCK))
+                    .entityFilter(entities -> entities.removeCreature(true)
                             .removeNonCreatures(false)
                             .withEntityBlacklist(
-                                    EntityTypes.COMMAND_BLOCK_MINECART,
-                                    EntityTypes.FALLING_BLOCK,
-                                    EntityTypes.POTION)
-                    )
-                    .withTextBlacklist(
-                            "clickEvent",
-                            "run_command"
-                    )
+                                    EntityTypes.COMMAND_BLOCK_MINECART, EntityTypes.FALLING_BLOCK, EntityTypes.POTION))
+                    .withTextBlacklist("clickEvent", "run_command")
                     .withNbtBlacklist(
                             "LootTable",
                             "ArmorItem",
@@ -101,18 +90,12 @@ public record Settings(Filter filter, Limit limit) {
                             "buy",
                             "buyB",
                             "sell",
-                            "SaddleItem"
-                    )
-            )
-            .limit(limit -> limit
-                    .size(600)
-                    .contentLimit(content -> content
-                            .blocks(50000)
+                            "SaddleItem"))
+            .limit(limit -> limit.size(600)
+                    .contentLimit(content -> content.blocks(50000)
                             .nonAirBlocks(40000)
                             .creatures(50)
-                            .nonCreatures(600)
-                    )
-            )
+                            .nonCreatures(600)))
             .build();
 
     public static SettingsBuilder builder() {

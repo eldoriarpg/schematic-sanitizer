@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -15,7 +14,9 @@ import org.bukkit.entity.Creature;
  * Type of entity
  */
 public enum CreatureType {
-    CREATURE, NON_CREATURE, UNKNOWN;
+    CREATURE,
+    NON_CREATURE,
+    UNKNOWN;
 
     public static CreatureType getType(BaseEntity base) {
         return getType(base.getType());

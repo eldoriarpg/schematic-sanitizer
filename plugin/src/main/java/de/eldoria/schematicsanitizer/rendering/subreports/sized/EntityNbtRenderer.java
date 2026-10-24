@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports.sized;
 
 import de.eldoria.schematicsanitizer.rendering.entities.RemovedEntityNbtRenderer;
@@ -11,10 +10,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityNbt
 
 import java.util.List;
 
-public record EntityNbtRenderer(
-        List<RemovedEntityNbtRenderer> removed) implements SizedReportRenderer<RemovedEntityNbtRenderer> {
+public record EntityNbtRenderer(List<RemovedEntityNbtRenderer> removed)
+        implements SizedReportRenderer<RemovedEntityNbtRenderer> {
     public static EntityNbtRenderer create(EntityNbtReport report) {
-        List<RemovedEntityNbtRenderer> entities = report.entities().stream().map(RemovedEntityNbtRenderer::new).toList();
+        List<RemovedEntityNbtRenderer> entities =
+                report.entities().stream().map(RemovedEntityNbtRenderer::new).toList();
         return new EntityNbtRenderer(entities);
     }
 
@@ -22,5 +22,4 @@ public record EntityNbtRenderer(
     public List<RemovedEntityNbtRenderer> entities() {
         return removed;
     }
-
 }

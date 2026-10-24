@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.entities;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -15,7 +14,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntity;
 public record RemovedEntityRenderer(RemovedEntity entity) implements ComponentEntityRenderer {
     @Override
     public String component() {
-        return "%s %s %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()));
+        return "%s %s %s"
+                .formatted(
+                        coords(location()),
+                        name(BukkitAdapter.adapt(type().getType()), type().getType()),
+                        cause(removalCause()));
     }
 
     public Location location() {

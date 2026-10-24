@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports.sized;
 
 import de.eldoria.schematicsanitizer.rendering.entities.RemovedBlockRenderer;
@@ -13,7 +12,8 @@ import java.util.List;
 
 public record BlockRenderer(List<RemovedBlockRenderer> removed) implements SizedReportRenderer<RemovedBlockRenderer> {
     public static BlockRenderer create(BlockReport report) {
-        List<RemovedBlockRenderer> entities = report.entities().stream().map(RemovedBlockRenderer::new).toList();
+        List<RemovedBlockRenderer> entities =
+                report.entities().stream().map(RemovedBlockRenderer::new).toList();
         return new BlockRenderer(entities);
     }
 

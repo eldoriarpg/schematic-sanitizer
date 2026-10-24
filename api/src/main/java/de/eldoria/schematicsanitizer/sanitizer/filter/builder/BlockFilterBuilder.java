@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.filter.builder;
 
 import de.eldoria.schematicsanitizer.sanitizer.filter.BlockFilter;
@@ -18,7 +17,6 @@ import java.util.Set;
 /**
  * A builder class for creating BlockFilter objects.
  */
-
 public class BlockFilterBuilder {
     private final Set<Material> materialBlacklist = EnumSet.noneOf(Material.class);
 
@@ -29,7 +27,8 @@ public class BlockFilterBuilder {
      * @return The BlockFilterBuilder instance with the updated material blacklist.
      */
     public BlockFilterBuilder withMaterialBlacklist(Material... materials) {
-        return withMaterialBlacklist(Arrays.stream(materials).filter(Objects::nonNull).toList());
+        return withMaterialBlacklist(
+                Arrays.stream(materials).filter(Objects::nonNull).toList());
     }
 
     /**

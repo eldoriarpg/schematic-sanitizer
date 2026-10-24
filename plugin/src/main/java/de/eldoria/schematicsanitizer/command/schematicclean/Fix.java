@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
@@ -22,11 +21,15 @@ import java.nio.file.Path;
 public class Fix extends SanitizeBase {
 
     public Fix(Plugin plugin, Report report, Configuration configuration) {
-        super(plugin, CommandMeta.builder("fix")
-                .addUnlocalizedArgument("schematic", true)
-                .addUnlocalizedArgument("new_name", false)
-                .withPermission(Permissions.Fix.USE)
-                .build(), report, configuration);
+        super(
+                plugin,
+                CommandMeta.builder("fix")
+                        .addUnlocalizedArgument("schematic", true)
+                        .addUnlocalizedArgument("new_name", false)
+                        .withPermission(Permissions.Fix.USE)
+                        .build(),
+                report,
+                configuration);
     }
 
     @Override

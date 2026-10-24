@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean.report;
 
 import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
@@ -14,11 +13,13 @@ import org.bukkit.plugin.Plugin;
 
 public class Page extends AdvancedCommand {
     public Page(Plugin plugin, Report report) {
-        super(plugin, CommandMeta.builder("page")
-                .withSubCommand(new ShowPage(plugin, "entities", report, ReportRenderer::entities))
-                .withSubCommand(new ShowPage(plugin, "entities_nbt", report, ReportRenderer::entitiesNbt))
-                .withSubCommand(new ShowPage(plugin, "blocks", report, ReportRenderer::blocks))
-                .withSubCommand(new ShowPage(plugin, "blocks_nbt", report, ReportRenderer::blocksNbt))
-                .build());
+        super(
+                plugin,
+                CommandMeta.builder("page")
+                        .withSubCommand(new ShowPage(plugin, "entities", report, ReportRenderer::entities))
+                        .withSubCommand(new ShowPage(plugin, "entities_nbt", report, ReportRenderer::entitiesNbt))
+                        .withSubCommand(new ShowPage(plugin, "blocks", report, ReportRenderer::blocks))
+                        .withSubCommand(new ShowPage(plugin, "blocks_nbt", report, ReportRenderer::blocksNbt))
+                        .build());
     }
 }

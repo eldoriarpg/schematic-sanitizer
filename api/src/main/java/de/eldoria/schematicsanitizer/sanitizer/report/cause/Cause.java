@@ -1,15 +1,13 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.cause;
 
 /**
  * This is an abstract class representing a cause.
  */
-
 public abstract class Cause {
     private final String name;
 
@@ -31,5 +29,4 @@ public abstract class Cause {
     public String toString() {
         return name;
     }
-
 }

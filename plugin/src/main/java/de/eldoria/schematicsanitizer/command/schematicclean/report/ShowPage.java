@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean.report;
 
 import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
@@ -26,15 +25,16 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
     private final Function<ReportRenderer, SizedReportRenderer<?>> map;
 
     public ShowPage(Plugin plugin, String name, Report report, Function<ReportRenderer, SizedReportRenderer<?>> map) {
-        super(plugin, CommandMeta.builder(name)
-                .addUnlocalizedArgument("page", false)
-                .build());
+        super(
+                plugin,
+                CommandMeta.builder(name).addUnlocalizedArgument("page", false).build());
         this.report = report;
         this.map = map;
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args)
+            throws CommandException {
         int page = args.asInt(0, 0);
         ReportRenderer sanitizerReport = report.get(sender);
         if (sanitizerReport == null) {
@@ -52,8 +52,7 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
                 <header>Schematic Report</header>
                 %s
                 %s
-                """.stripIndent()
-                .formatted(component.indent(2), getPageFooter(page, sized));
+                """.stripIndent().formatted(component.indent(2), getPageFooter(page, sized));
         messageSender().sendMessage(sender, component);
     }
 
@@ -66,6 +65,7 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
     }
 
     private String pageCommand(int page, String arrow) {
-        return "<click:run_command:/schematicsanitizer report page %s %d>%s</click>".formatted(meta().name(), page, arrow);
+        return "<click:run_command:/schematicsanitizer report page %s %d>%s</click>"
+                .formatted(meta().name(), page, arrow);
     }
 }

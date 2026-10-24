@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.util;
 
 import net.kyori.adventure.text.Component;
@@ -42,7 +41,9 @@ class TextTest {
         Component component = MiniMessage.miniMessage()
                 .deserialize("<click:run_command:'/report load %s'>[Full report]</click>".formatted(Text.quoted(EVIL)));
         assertEquals("[Full report]", plain(component));
-        Component clicked = component.children().isEmpty() ? component : component.children().getFirst();
+        Component clicked = component.children().isEmpty()
+                ? component
+                : component.children().getFirst();
         assertEquals("/report load " + EVIL, clicked.clickEvent().value());
     }
 

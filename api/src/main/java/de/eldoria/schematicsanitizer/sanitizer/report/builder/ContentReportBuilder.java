@@ -1,19 +1,16 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
 import de.eldoria.schematicsanitizer.sanitizer.CreatureType;
 import de.eldoria.schematicsanitizer.sanitizer.report.subreports.ContentReport;
 
-
 /**
  * The ContentReportBuilder class is responsible for constructing ContentReport objects and keeping track of various statistics related to the content.
  */
-
 public class ContentReportBuilder {
     private int blocks;
     private int nonAirBlocks;
@@ -83,8 +80,7 @@ public class ContentReportBuilder {
         switch (type) {
             case CREATURE -> totalCreatures++;
             case NON_CREATURE -> totalNonCreatures++;
-            case UNKNOWN -> {
-            }
+            case UNKNOWN -> {}
         }
     }
 
@@ -97,8 +93,7 @@ public class ContentReportBuilder {
         switch (type) {
             case CREATURE -> creatures++;
             case NON_CREATURE -> nonCreatures++;
-            case UNKNOWN -> {
-            }
+            case UNKNOWN -> {}
         }
     }
 

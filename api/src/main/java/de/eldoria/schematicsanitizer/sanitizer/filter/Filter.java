@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.filter;
 
 import java.util.Set;
@@ -16,9 +15,5 @@ import java.util.Set;
  * @param textBlacklist blacklist for values of text nbt tags
  * @param nbtBlacklist  blacklist for nbt keys
  */
-public record Filter(BlockFilter blockFilter,
-                     EntityFilter entityFilter,
-                     Set<String> textBlacklist,
-                     Set<String> nbtBlacklist) {
-
-}
+public record Filter(
+        BlockFilter blockFilter, EntityFilter entityFilter, Set<String> textBlacklist, Set<String> nbtBlacklist) {}

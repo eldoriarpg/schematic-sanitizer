@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports;
 
 import de.eldoria.schematicsanitizer.sanitizer.report.subreports.LimitReport;
@@ -24,18 +23,21 @@ public record LimitRenderer(LimitReport report, ContentRenderer content) {
         return """
                 <section>Limits:<default>
                   <name>%s: %s
-                                
+
                 <section>Content:<default>
                 %s""".formatted(
-                Text.hovered("Max Size", "The longest side of the schematic"),
-                numbers(maxSize(), settings.limit().size()),
-                content().summary(settings).indent(2));
+                        Text.hovered("Max Size", "The longest side of the schematic"),
+                        numbers(maxSize(), settings.limit().size()),
+                        content().summary(settings).indent(2));
     }
 
     public List<String> errors(Settings settings) {
         List<String> entities = new LinkedList<>();
         if (maxSize() > settings.limit().size()) {
-            entities.add("<name>%s: %s".formatted(Text.hovered("Max Size", "The longest side of the schematic"), numbers(maxSize(), settings.limit().size())));
+            entities.add("<name>%s: %s"
+                    .formatted(
+                            Text.hovered("Max Size", "The longest side of the schematic"),
+                            numbers(maxSize(), settings.limit().size())));
         }
         entities.addAll(content().errors(settings));
         return entities;

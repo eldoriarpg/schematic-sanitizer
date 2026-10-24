@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports;
 
 import de.eldoria.schematicsanitizer.sanitizer.limit.ContentLimit;
@@ -31,8 +30,7 @@ public record ContentRenderer(ContentReport report) {
                 totalCreaturesLine(limit),
                 totalNonCreaturesLine(limit),
                 creaturesLine(limit),
-                nonCreaturesLine(limit)
-        );
+                nonCreaturesLine(limit));
     }
 
     public Collection<String> errors(Settings settings) {
@@ -48,27 +46,45 @@ public record ContentRenderer(ContentReport report) {
     }
 
     private String blocksLine(ContentLimit limit) {
-        return contentLine("Blocks", "The total amount of blocks (L*W*H) including blacklisted", blocks(), limit.blocks());
+        return contentLine(
+                "Blocks", "The total amount of blocks (L*W*H) including blacklisted", blocks(), limit.blocks());
     }
 
     private String nonAirBlocksLine(ContentLimit limit) {
-        return contentLine("Non Air Blocks", "The amount of non air blocks including blacklisted", nonAirBlocks(), limit.nonAirBlocks());
+        return contentLine(
+                "Non Air Blocks",
+                "The amount of non air blocks including blacklisted",
+                nonAirBlocks(),
+                limit.nonAirBlocks());
     }
 
     private String totalCreaturesLine(ContentLimit limit) {
-        return contentLine("Total Creatures", "The total amount of creatures. Including blacklisted", totalCreatures(), limit.creatures());
+        return contentLine(
+                "Total Creatures",
+                "The total amount of creatures. Including blacklisted",
+                totalCreatures(),
+                limit.creatures());
     }
 
     private String totalNonCreaturesLine(ContentLimit limit) {
-        return contentLine("Total Non Creatures", "The total amount of non creatures. Including blacklisted", totalNonCreatures(), limit.nonCreatures());
+        return contentLine(
+                "Total Non Creatures",
+                "The total amount of non creatures. Including blacklisted",
+                totalNonCreatures(),
+                limit.nonCreatures());
     }
 
     private String creaturesLine(ContentLimit limit) {
-        return contentLine("Creatures", "The amount of creatures that are not blacklisted", creatures(), limit.creatures());
+        return contentLine(
+                "Creatures", "The amount of creatures that are not blacklisted", creatures(), limit.creatures());
     }
 
     private String nonCreaturesLine(ContentLimit limit) {
-        return contentLine("Non Creatures", "The amount of non creatures that are not blacklisted", nonCreatures(), limit.nonCreatures());
+        return contentLine(
+                "Non Creatures",
+                "The amount of non creatures that are not blacklisted",
+                nonCreatures(),
+                limit.nonCreatures());
     }
 
     private String contentLine(String name, String hover, int value, int limit) {

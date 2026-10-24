@@ -39,6 +39,8 @@ filter:
     entityBlacklist:
     - minecraft:command_block_minecart
     - minecraft:falling_block
+    - minecraft:splash_potion
+    - minecraft:lingering_potion
   textBlacklist:
   - clickEvent
   - run_command
@@ -57,6 +59,8 @@ filter:
   - buyB
   - sell
   - SaddleItem
+  - equipment
+  - click_event
 limit:
   size: 600
   contentLimit:
@@ -73,35 +77,35 @@ limit:
 | `blockFilter.materialBlacklist` | command block, repeating command block, chain command block, structure block | Blocks of these types are removed. Use Bukkit material names like `COMMAND_BLOCK`. |
 | `entityFilter.removeCreature` | `true` | Remove every creature, like animals, monsters and villagers. |
 | `entityFilter.removeNonCreatures` | `false` | Remove every non-creature, like armor stands, item frames, paintings, minecarts and boats. |
-| `entityFilter.entityBlacklist` | `minecraft:command_block_minecart`, `minecraft:falling_block` | Entities of these types are removed. Use entity IDs as listed in `entity_types.txt`. |
+| `entityFilter.entityBlacklist` | `minecraft:command_block_minecart`, `minecraft:falling_block`, `minecraft:splash_potion`, `minecraft:lingering_potion` | Entities of these types are removed. Use entity IDs as listed in `entity_types.txt`. An ID your server does not know stays in the file and removes nothing. |
 | `textBlacklist` | `clickEvent`, `run_command` | A text data tag is removed when its value contains one of these texts. |
 | `nbtBlacklist` | see the list above | Data tags with one of these names are removed, together with everything inside them. |
 
 See [What gets removed](./checking-and-fixing.md#what-gets-removed) for how creatures and non-creatures are told
 apart.
 
-:::warning Turning on non-creature removal
-When `removeNonCreatures` is `true`, creatures are removed as well, even if `removeCreature` is `false`. The report
-lists them with the reason "Non Creature".
-:::
-
 #### What the defaults remove
 
 - **Command blocks and structure blocks**, and minecarts with a command block.
-- **Falling blocks.**
-- **Text with `clickEvent` or `run_command`**, the markers of clickable commands, for example on signs.
+- **Falling blocks** and **thrown potions**.
+- **Clickable commands in text**, for example on signs: `click_event` removes the click action of a text line,
+  `clickEvent` and `run_command` catch older text written as JSON.
 - **Items stored in blocks.** `Items` empties chests, barrels, droppers, hoppers and other containers.
-- **Items stored on entities**, through `Item`, `HandItems`, `ArmorItems`, `Inventory`, `DecorItem`, `SaddleItem` and
-  `FireworksItem`. `Item` is, for example, the item in an item frame.
+- **Items stored on entities**, through `equipment`, `Item`, `Inventory` and `FireworksItem`. `equipment` holds what a
+  mob wears and holds, and the saddle of a horse. `Item` is, for example, the item in an item frame.
+  `HandItems`, `ArmorItems`, `HandItem`, `ArmorItem`, `DecorItem` and `SaddleItem` are the older names of the same
+  data.
 - **Loot tables** (`LootTable`), so a chest does not fill itself with loot when it is opened.
 - **Villager trades** (`buy`, `buyB`, `sell`).
 - **All creatures.**
 
 If you want to keep container contents, take `Items` out of `nbtBlacklist`.
 
-The default list also contains `minecraft:potion`. FastAsyncWorldEdit marks that ID as old, and a server that does not
-know it leaves it out of the file. Newer servers use `minecraft:splash_potion` and `minecraft:lingering_potion`. Add
-them to `entityBlacklist` if you want thrown potions removed.
+:::info Files from 1.x
+The defaults are only written into a new file. If your `filter_settings.yml` comes from 1.x, add `equipment` and
+`click_event` to `nbtBlacklist`, and `minecraft:splash_potion` and `minecraft:lingering_potion` to `entityBlacklist`, to
+get the same result on current servers.
+:::
 
 ### limit
 

@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.filter;
 
 import com.sk89q.worldedit.world.entity.EntityType;
@@ -17,9 +16,7 @@ import java.util.Set;
  * @param removeNonCreatures remove entities which are not classified as {@link Creature}
  * @param entityBlacklist remove entities which have the exact type
  */
-public record EntityFilter(boolean removeCreature,
-                           boolean removeNonCreatures,
-                           Set<EntityType> entityBlacklist) {
+public record EntityFilter(boolean removeCreature, boolean removeNonCreatures, Set<EntityType> entityBlacklist) {
     /**
      * Checks if the given entity type is blacklisted.
      *

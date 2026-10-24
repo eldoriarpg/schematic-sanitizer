@@ -1,22 +1,20 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
 import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.util.Location;
-import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityNbtReport;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntityNbt;
+import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityNbtReport;
 
 /**
  * This class represents a builder for generating entity NBT reports.
  * It extends the BaseReportBuilder class and is specifically designed for building reports on removed entity NBT data.
  */
-
 public class EntityNbtReportBuilder extends BaseReportBuilder<RemovedEntityNbt> {
     /**
      * Logs removal of a specific NBT key and its associated text from an entity at a certain location.

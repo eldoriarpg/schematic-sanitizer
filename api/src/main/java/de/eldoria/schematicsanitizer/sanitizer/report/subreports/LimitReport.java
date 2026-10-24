@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.subreports;
 
 /**
@@ -11,5 +10,4 @@ package de.eldoria.schematicsanitizer.sanitizer.report.subreports;
  * @param maxSize the longest edge of the region
  * @param content content report
  */
-public record LimitReport(int maxSize, ContentReport content) {
-}
+public record LimitReport(int maxSize, ContentReport content) {}

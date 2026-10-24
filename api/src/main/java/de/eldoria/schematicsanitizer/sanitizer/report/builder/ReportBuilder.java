@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.builder;
 
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
@@ -16,7 +15,6 @@ import java.nio.file.Path;
  * BlockReportBuilder, BlockNbtReportBuilder, EntityNbtReportBuilder, and LimitReportBuilder.
  * It also provides a method to set a new path and a method to build the final ComponentSanitizerReport object.
  */
-
 public class ReportBuilder {
     private final EntityReportBuilder entityReport = new EntityReportBuilder();
     private final BlockReportBuilder blockReport = new BlockReportBuilder();
@@ -85,6 +83,13 @@ public class ReportBuilder {
     }
 
     public SanitizerReport build() {
-        return new SanitizerReport(path, newPath, entityReport.build(), blockReport.build(), entityNbtReport.build(), blockNbtReport.build(), limitReportBuilder.build());
+        return new SanitizerReport(
+                path,
+                newPath,
+                entityReport.build(),
+                blockReport.build(),
+                entityNbtReport.build(),
+                blockNbtReport.build(),
+                limitReportBuilder.build());
     }
 }

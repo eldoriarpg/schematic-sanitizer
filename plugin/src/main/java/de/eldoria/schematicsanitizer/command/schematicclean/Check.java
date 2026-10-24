@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import de.eldoria.eldoutilities.commands.command.CommandMeta;
@@ -18,10 +17,14 @@ import java.io.IOException;
 
 public class Check extends SanitizeBase {
     public Check(Plugin plugin, Report report, Configuration configuration) {
-        super(plugin, CommandMeta.builder("check")
-                .addUnlocalizedArgument("schematic", true)
-                .withPermission(Permissions.Check.USE)
-                .build(), report, configuration);
+        super(
+                plugin,
+                CommandMeta.builder("check")
+                        .addUnlocalizedArgument("schematic", true)
+                        .withPermission(Permissions.Check.USE)
+                        .build(),
+                report,
+                configuration);
     }
 
     @Override

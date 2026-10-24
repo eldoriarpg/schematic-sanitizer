@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports.sized;
 
 import de.eldoria.schematicsanitizer.rendering.entities.RemovedBlockNbtRenderer;
@@ -11,10 +10,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.BlockNbtR
 
 import java.util.List;
 
-public record BlockNbtRenderer(
-        List<RemovedBlockNbtRenderer> removed) implements SizedReportRenderer<RemovedBlockNbtRenderer> {
+public record BlockNbtRenderer(List<RemovedBlockNbtRenderer> removed)
+        implements SizedReportRenderer<RemovedBlockNbtRenderer> {
     public static BlockNbtRenderer create(BlockNbtReport report) {
-        List<RemovedBlockNbtRenderer> entities = report.entities().stream().map(RemovedBlockNbtRenderer::new).toList();
+        List<RemovedBlockNbtRenderer> entities =
+                report.entities().stream().map(RemovedBlockNbtRenderer::new).toList();
         return new BlockNbtRenderer(entities);
     }
 

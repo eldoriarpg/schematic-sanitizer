@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.subreports.sized;
 
 import de.eldoria.schematicsanitizer.rendering.entities.RemovedEntityRenderer;
@@ -11,10 +10,11 @@ import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.EntityRep
 
 import java.util.List;
 
-public record EntityRenderer(
-        List<RemovedEntityRenderer> removed) implements SizedReportRenderer<RemovedEntityRenderer> {
+public record EntityRenderer(List<RemovedEntityRenderer> removed)
+        implements SizedReportRenderer<RemovedEntityRenderer> {
     public static EntityRenderer create(EntityReport report) {
-        List<RemovedEntityRenderer> entities = report.entities().stream().map(RemovedEntityRenderer::new).toList();
+        List<RemovedEntityRenderer> entities =
+                report.entities().stream().map(RemovedEntityRenderer::new).toList();
         return new EntityRenderer(entities);
     }
 

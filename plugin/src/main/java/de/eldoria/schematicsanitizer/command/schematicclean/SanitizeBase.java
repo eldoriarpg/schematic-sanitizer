@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean;
 
 import com.sk89q.worldedit.WorldEdit;
@@ -40,7 +39,8 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args)
+            throws CommandException {
         Path path = SchematicPaths.resolve(worldEdit().getSchematicsFolderPath(), args.asString(0))
                 .orElseThrow(() -> CommandException.message("Invalid path"));
         if (!path.toFile().exists()) throw CommandException.message("Unknown file");
@@ -66,7 +66,8 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
         if (args.sizeIs(1)) {
             return Completion.completeAll(worldEdit().getSchematicsFolderPath(), args.asString(0));
         }

@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer;
 
 import de.eldoria.schematicsanitizer.sanitizer.filter.Filter;
@@ -38,8 +37,11 @@ final class NbtCleaner {
      * @param onIllegalTag  called with the key of every removed blacklisted tag
      * @param onIllegalText called with the key and the value of every removed string tag
      */
-    NbtCleaner(Set<String> nbtBlacklist, Set<String> textBlacklist,
-               Consumer<String> onIllegalTag, BiConsumer<String, String> onIllegalText) {
+    NbtCleaner(
+            Set<String> nbtBlacklist,
+            Set<String> textBlacklist,
+            Consumer<String> onIllegalTag,
+            BiConsumer<String, String> onIllegalText) {
         this.nbtBlacklist = nbtBlacklist;
         this.textBlacklist = textBlacklist;
         this.onIllegalTag = onIllegalTag;

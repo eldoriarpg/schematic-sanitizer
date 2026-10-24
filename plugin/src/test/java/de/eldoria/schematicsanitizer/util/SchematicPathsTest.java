@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.util;
 
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SchematicPathsTest {
-    private static final Path FOLDER = Path.of("plugins", "FastAsyncWorldEdit", "schematics").toAbsolutePath();
+    private static final Path FOLDER =
+            Path.of("plugins", "FastAsyncWorldEdit", "schematics").toAbsolutePath();
 
     @Test
     void resolvesFilesInsideTheFolder() {
-        assertEquals(FOLDER.resolve("builds/old castle.schem"),
+        assertEquals(
+                FOLDER.resolve("builds/old castle.schem"),
                 SchematicPaths.resolve(FOLDER, "builds/old\\_castle.schem").orElseThrow());
     }
 
@@ -30,13 +31,16 @@ class SchematicPathsTest {
 
     @Test
     void refusesAbsolutePathsOutsideTheFolder() {
-        assertTrue(SchematicPaths.resolve(FOLDER, FOLDER.getRoot().resolve("etc/passwd").toString()).isEmpty());
+        assertTrue(SchematicPaths.resolve(
+                        FOLDER, FOLDER.getRoot().resolve("etc/passwd").toString())
+                .isEmpty());
     }
 
     @Test
     void acceptsPlainSiblingNames() {
         Path original = FOLDER.resolve("builds/castle.schem");
-        assertEquals(FOLDER.resolve("builds/clean.schem"),
+        assertEquals(
+                FOLDER.resolve("builds/clean.schem"),
                 SchematicPaths.sibling(FOLDER, original, "clean.schem").orElseThrow());
     }
 
@@ -45,6 +49,7 @@ class SchematicPathsTest {
         Path original = FOLDER.resolve("builds/castle.schem");
         assertTrue(SchematicPaths.sibling(FOLDER, original, "../clean.schem").isEmpty());
         assertTrue(SchematicPaths.sibling(FOLDER, original, "sub/clean.schem").isEmpty());
-        assertTrue(SchematicPaths.sibling(FOLDER, original, "../../../../plugins/evil.jar").isEmpty());
+        assertTrue(SchematicPaths.sibling(FOLDER, original, "../../../../plugins/evil.jar")
+                .isEmpty());
     }
 }

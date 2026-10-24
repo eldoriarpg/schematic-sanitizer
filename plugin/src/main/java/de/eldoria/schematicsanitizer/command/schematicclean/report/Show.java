@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.command.schematicclean.report;
 
 import de.eldoria.eldoutilities.commands.command.AdvancedCommand;
@@ -21,13 +20,13 @@ public class Show extends AdvancedCommand implements ITabExecutor {
     private final Report report;
 
     public Show(Plugin plugin, Report report) {
-        super(plugin, CommandMeta.builder("show")
-                .build());
+        super(plugin, CommandMeta.builder("show").build());
         this.report = report;
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args)
+            throws CommandException {
         ReportRenderer renderer = report.get(sender);
         if (renderer == null) {
             throw CommandException.message("No report available");

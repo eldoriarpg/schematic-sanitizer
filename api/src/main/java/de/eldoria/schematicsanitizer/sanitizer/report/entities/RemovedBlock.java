@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.report.entities;
 
 import com.sk89q.worldedit.math.BlockVector3;
@@ -17,7 +16,4 @@ import de.eldoria.schematicsanitizer.sanitizer.report.cause.BlockRemovalCause;
  * @param type         block type
  * @param removalCause reason why it was removed
  */
-public record RemovedBlock(BlockVector3 location,
-                           BlockType type,
-                           BlockRemovalCause removalCause) {
-}
+public record RemovedBlock(BlockVector3 location, BlockType type, BlockRemovalCause removalCause) {}

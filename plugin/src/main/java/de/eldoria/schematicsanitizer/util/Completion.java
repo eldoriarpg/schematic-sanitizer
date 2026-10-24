@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.util;
 
 import java.io.IOException;
@@ -35,7 +34,8 @@ public final class Completion {
         return complete(Completion::fileList, Completion::fileList, base, search);
     }
 
-    private static List<String> complete(BiFunction<Path, String, List<Path>> map, Function<Path, List<Path>> mapEmpty, Path base, String search) {
+    private static List<String> complete(
+            BiFunction<Path, String, List<Path>> map, Function<Path, List<Path>> mapEmpty, Path base, String search) {
         var prefix = base.toAbsolutePath().toString();
         Path searchDir;
         try {
@@ -46,7 +46,11 @@ public final class Completion {
         if (search.endsWith("/") || search.isBlank()) {
             return clean(mapEmpty.apply(searchDir), prefix);
         }
-        return clean(map.apply(searchDir.getParent(), searchDir.getFileName().toString().toLowerCase()), prefix);
+        return clean(
+                map.apply(
+                        searchDir.getParent(),
+                        searchDir.getFileName().toString().toLowerCase()),
+                prefix);
     }
 
     private static Path buildPath(Path base, String search) throws InvalidPathException {
@@ -79,8 +83,7 @@ public final class Completion {
 
     private static List<Path> list(Path path, Predicate<Path> test) {
         try (var files = Files.list(path)) {
-            return files.filter(test)
-                    .toList();
+            return files.filter(test).toList();
         } catch (IOException e) {
             return Collections.emptyList();
         }

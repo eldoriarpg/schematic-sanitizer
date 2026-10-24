@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer;
 
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -125,7 +124,8 @@ public class Sanitizer {
     private SanitizerExtent sanitize() throws IOException {
         try (Clipboard clipboard = WorldEditUtil.loadSchematic(path)) {
             SanitizerExtent sanitizerExtent = new SanitizerExtent(path, clipboard, settings);
-            ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
+            ForwardExtentCopy copy = new ForwardExtentCopy(
+                    clipboard, clipboard.getRegion(), sanitizerExtent, clipboard.getMinimumPoint());
             Operations.completeBlindly(copy);
             return sanitizerExtent;
         }

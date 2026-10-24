@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer;
 
 import com.sk89q.jnbt.CompoundTag;
@@ -109,7 +108,7 @@ public class SanitizerExtent extends BlockArrayClipboard {
     @SuppressWarnings("deprecation")
     @Override
     public boolean setTile(int x, int y, int z, CompoundTag tag) {
-        //TODO not sure what to do here
+        // TODO not sure what to do here
         return super.setTile(x, y, z, tag);
     }
 
@@ -166,7 +165,9 @@ public class SanitizerExtent extends BlockArrayClipboard {
     private <B extends BlockStateHolder<B>> boolean allowedBlock(int x, int y, int z, B block) {
         BlockFilter blockFilter = settings.filter().blockFilter();
         if (blockFilter.isBlacklisted(block.getBlockType())) {
-            report.block().removed(new RemovedBlock(BlockVector3.at(x, y, z), block.getBlockType(), BlockRemovalCause.BLACKLIST));
+            report.block()
+                    .removed(new RemovedBlock(
+                            BlockVector3.at(x, y, z), block.getBlockType(), BlockRemovalCause.BLACKLIST));
             return false;
         }
         return true;
@@ -241,19 +242,24 @@ public class SanitizerExtent extends BlockArrayClipboard {
         return true;
     }
 
-
-    private <B extends BlockStateHolder<B>> LinCompoundTag cleanBlockNBT(BlockVector3 vector3, B block, LinCompoundTag nbt) {
-        return NbtCleaner.of(settings.filter(),
-                tag -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
-                (key, value) -> report.blockNbt().removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value)
-        ).clean(nbt);
+    private <B extends BlockStateHolder<B>> LinCompoundTag cleanBlockNBT(
+            BlockVector3 vector3, B block, LinCompoundTag nbt) {
+        return NbtCleaner.of(
+                        settings.filter(),
+                        tag -> report.blockNbt()
+                                .removed(vector3, block.getBlockType(), NbtRemovalCause.ILLEGAL_TAG, tag),
+                        (key, value) -> report.blockNbt()
+                                .removed(vector3, block.getBlockType(), NbtRemovalCause.TEXT_BLACKLIST, key, value))
+                .clean(nbt);
     }
 
     private LinCompoundTag cleanEntityNBT(Location location, BaseEntity entity, LinCompoundTag nbt) {
-        return NbtCleaner.of(settings.filter(),
-                tag -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, tag),
-                (tag, text) -> report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text)
-        ).clean(nbt);
+        return NbtCleaner.of(
+                        settings.filter(),
+                        tag -> report.entityNbt().removed(location, entity, NbtRemovalCause.ILLEGAL_TAG, tag),
+                        (tag, text) ->
+                                report.entityNbt().removed(location, entity, NbtRemovalCause.TEXT_BLACKLIST, tag, text))
+                .clean(nbt);
     }
 
     private BaseEntity cleanEntity(Location location, BaseEntity entity) {

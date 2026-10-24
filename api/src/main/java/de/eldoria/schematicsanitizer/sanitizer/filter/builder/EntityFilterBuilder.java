@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.filter.builder;
 
 import com.sk89q.worldedit.world.entity.EntityType;
@@ -18,7 +17,6 @@ import java.util.Set;
 /**
  * A class for building an EntityFilter object.
  */
-
 public class EntityFilterBuilder {
     private final Set<EntityType> entityBlacklist = new HashSet<>();
     private boolean removeCreature = false;
@@ -53,7 +51,8 @@ public class EntityFilterBuilder {
      * @return the EntityFilterBuilder instance with the updated entity blacklist
      */
     public EntityFilterBuilder withEntityBlacklist(EntityType... entities) {
-        return withEntityBlacklist(Arrays.stream(entities).filter(Objects::nonNull).toList());
+        return withEntityBlacklist(
+                Arrays.stream(entities).filter(Objects::nonNull).toList());
     }
 
     /**

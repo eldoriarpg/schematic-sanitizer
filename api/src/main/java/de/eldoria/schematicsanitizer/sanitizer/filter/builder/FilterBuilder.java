@@ -1,9 +1,8 @@
 /*
  *     SPDX-License-Identifier: LGPL-3.0-or-later
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.sanitizer.filter.builder;
 
 import de.eldoria.schematicsanitizer.sanitizer.filter.Filter;
@@ -19,7 +18,6 @@ import java.util.function.Consumer;
  * The FilterBuilder class is responsible for creating and configuring filters for block and entity data.
  * It allows for the creation of a filter with a block filter, entity filter, text blacklist, and NBT(blacklist).
  */
-
 public class FilterBuilder {
     private final BlockFilterBuilder blockFilter = new BlockFilterBuilder();
     private final EntityFilterBuilder entityFilter = new EntityFilterBuilder();
@@ -48,7 +46,6 @@ public class FilterBuilder {
         filter.accept(entityFilter);
         return this;
     }
-
 
     /**
      * Sets the text blacklist for filtering.
@@ -101,6 +98,4 @@ public class FilterBuilder {
     public Filter build() {
         return new Filter(blockFilter.build(), entityFilter.build(), textBlacklist, nbtBlacklist);
     }
-
-
 }

@@ -1,9 +1,8 @@
 /*
- *     SPDX-License-Identifier: LGPL-3.0-or-later
+ *     SPDX-License-Identifier: AGPL-3.0-only
  *
- *     Copyright (C) RainbowDashLabs and Contributor
+ *     Copyright (C) EldoriaRPG Team and Contributor
  */
-
 package de.eldoria.schematicsanitizer.rendering.entities;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -18,9 +17,19 @@ public record RemovedEntityNbtRenderer(RemovedEntityNbt entity) implements Compo
     @Override
     public String component() {
         if (value() == null) {
-            return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(Text.escape(tag())));
+            return "%s %s %s: %s"
+                    .formatted(
+                            coords(location()),
+                            name(BukkitAdapter.adapt(type().getType()), type().getType()),
+                            cause(removalCause()),
+                            meta(Text.escape(tag())));
         }
-        return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(Text.escape("{%s:%s}".formatted(tag(), value()))));
+        return "%s %s %s: %s"
+                .formatted(
+                        coords(location()),
+                        name(BukkitAdapter.adapt(type().getType()), type().getType()),
+                        cause(removalCause()),
+                        meta(Text.escape("{%s:%s}".formatted(tag(), value()))));
     }
 
     public Location location() {

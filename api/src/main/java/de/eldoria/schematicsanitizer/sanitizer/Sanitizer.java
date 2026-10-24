@@ -118,7 +118,9 @@ public class Sanitizer {
      * @return the name of the file without the file extension.
      */
     public String name() {
-        return path.toFile().getName().split("\\.")[0];
+        String fileName = path.getFileName().toString();
+        int extension = fileName.lastIndexOf('.');
+        return extension > 0 ? fileName.substring(0, extension) : fileName;
     }
 
     private SanitizerExtent sanitize() throws IOException {

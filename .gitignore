@@ -4,6 +4,7 @@
 \~/
 
 .gradle
+.kotlin/
 **/build/
 !src/**/build/
 build.properties

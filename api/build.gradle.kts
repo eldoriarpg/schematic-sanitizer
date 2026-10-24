@@ -1,5 +1,5 @@
 plugins {
-    id("publishing-conventions")
+    id("schematic-sanitizer.publishing-conventions")
 }
 
 dependencies {

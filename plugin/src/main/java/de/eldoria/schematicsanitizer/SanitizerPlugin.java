@@ -89,7 +89,7 @@ public class SanitizerPlugin extends EldoPlugin {
     @Override
     public void onPostStart() throws Throwable {
         configuration.settings();
-        configuration.save(Configuration.SETTINGS);
+        configuration.saveSettings();
 
         String collect = EntityType.REGISTRY.getMap().values().stream()
                 .map(EntityType::getId)

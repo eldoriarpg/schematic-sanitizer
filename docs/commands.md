@@ -19,6 +19,7 @@ All commands work for players and from the console.
 | `/schematicsanitizer report load <path>` | one of the three above | Open the full report of a file from a batch. |
 | `/schematicsanitizer debug` | `schematicsanitizer.admin` | Upload a debug report for support. |
 | `/schematicsanitizer about` | none | Show the plugin version and links. |
+| `/schematicsanitizer:eldo-update <action>` | `schematicsanitizer.updates` | Download a new version or decide about auto update. |
 
 `/schematicsanitizer` on its own lists the sub-commands.
 
@@ -83,6 +84,25 @@ See [The report](./checking-and-fixing.md#the-report).
 
 Uploads a debug report and shows you a link to it. See [Debug reports](./updates-and-support.md#debug-reports).
 
+### eldo-update
+
+```text
+/schematicsanitizer:eldo-update <download|enable-auto|later|never>
+```
+
+This command belongs to the update offer in chat. You normally use it by clicking an option in that offer. Only
+the console, operators and players with `schematicsanitizer.updates` can use it. It exists once a new version was
+found.
+
+| Action | What it does |
+|---|---|
+| `download` | Downloads the new version into the server's update folder. It is installed on the next restart. A new major version asks you to confirm with `download confirm`. |
+| `enable-auto` | Turns on `updates.autoUpdate`. |
+| `later` | Asks again after the next manual update. |
+| `never` | Stops asking. This sets `updates.askForAutoUpdate` to `false`. |
+
+See [Update check](./updates-and-support.md#update-check).
+
 ## Permissions
 
 | Permission | What it allows |
@@ -91,10 +111,11 @@ Uploads a debug report and shows you a link to it. See [Debug reports](./updates
 | `schematicsanitizer.fix.use` | Use `fix` and `report`. |
 | `schematicsanitizer.fix.batch` | Use `fixbatch` and `report`. |
 | `schematicsanitizer.admin` | Use `debug`. |
-| `eldoutilitites.debug` | Use `debug`. This is a shared permission of Eldoria plugins. |
+| `schematicsanitizer.updates` | Get the update notice on join and use `eldo-update`. |
+| `schematicsanitizer.*` | All of the above. |
+| `eldoutilities.debug` | Use `debug`. This is a shared permission of Eldoria plugins. |
 
-The plugin does not set default permissions. Operators have all of them. Everyone else needs them from your
-permission plugin.
+All permissions are given to operators by default. Everyone else needs them from your permission plugin.
 
 :::warning Files on your server
 `fix` and `fixbatch` write files on your server. Give these permissions only to staff you trust.

@@ -6,11 +6,24 @@ sidebar_position: 5
 
 ## Update check
 
-When `updateCheck` in `config.yml` is `true`, the plugin asks [Lyna](https://lyna.eldoria.de/products/32) whether a
-newer version exists. It checks right after the server starts and then every 6 hours.
+The plugin asks [Lyna](https://lyna.eldoria.de/products/32) whether a newer version exists. It checks right after the
+server starts and then every 6 hours. The settings are in the `updates` section of `config.yml`, see
+[Configuration](./configuration.md#configyml).
 
-When a new version is out, the console shows a short note with the new version, your version and when each was
-published. Set `updateCheck: false` to turn the check off.
+When a new version is out and `updates.notice` is `true`:
+
+- The console shows a short note with the new version, your version and when each was published. A new major version
+  also gets a warning that it may need changes on your side.
+- Operators and players with `schematicsanitizer.updates` get the same note when they join.
+- The note has a **Download** button. With `updates.askForAutoUpdate` on, it also offers to turn on automatic updates.
+  Your choice is saved to `config.yml`. The buttons use
+  [`/schematicsanitizer:eldo-update`](./commands.md#eldo-update).
+
+A download goes into the server's update folder and is installed on the next restart. With `updates.autoUpdate` on,
+new stable releases of the same major version are downloaded on their own. A new major version is never installed on
+its own.
+
+Set both `updates.notice` and `updates.autoUpdate` to `false` to turn the check off.
 
 ## Debug reports
 
@@ -21,7 +34,7 @@ Run:
 /schematicsanitizer debug
 ```
 
-You need `schematicsanitizer.admin` or `eldoutilitites.debug`.
+You need `schematicsanitizer.admin` or `eldoutilities.debug`.
 
 The first time, the plugin explains what will be uploaded and asks you to agree. Run the command again to agree and
 upload. You are asked only once. Your answer is saved in `plugins/EldoUtilities/config.yml`.

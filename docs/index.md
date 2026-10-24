@@ -40,16 +40,17 @@ schematic folder on its own.
 
 | What | Version |
 |---|---|
-| Server | Paper 1.21 up to 26.2 |
-| Java | 21 or newer |
+| Server | Paper 1.21.11 or newer |
+| Java | 25 |
 | FastAsyncWorldEdit | required |
+| Internet | On the first start, to download the libraries |
 
 Plain WorldEdit is not enough. The plugin needs FastAsyncWorldEdit.
 
 ## Installation
 
-1. Download the plugin from [Lyna](https://lyna.eldoria.de/products/32) or from
-   [Hangar](https://hangar.papermc.io/Eldoria/SchematicSanitizer).
+1. Download the plugin from [Lyna](https://lyna.eldoria.de/products/32),
+   [Modrinth](https://modrinth.com/plugin/fPX2XM5q) or [Hangar](https://hangar.papermc.io/Eldoria/SchematicSanitizer).
 2. Make sure FastAsyncWorldEdit is installed.
 3. Put the Schematic Sanitizer jar into your `plugins` folder.
 4. Start the server. The plugin creates its folder `plugins/SchematicSanitizer` with its configuration files.

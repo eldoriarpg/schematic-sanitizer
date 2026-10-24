@@ -2,70 +2,93 @@ name: Publish
 
 on:
   push:
-    branches:
-      - main
-      - dev*
-      - feature/*
-      - fix/*
-    tags:
-      - v*
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  JAVA_VERSION: 25
 
 jobs:
   verify:
     uses: ./.github/workflows/verify.yml
 
   publish:
+    name: Publish to EldoNexus
     needs: verify
-    environment: build
     runs-on: ubuntu-latest
-
+    environment: build
     steps:
-      - uses: actions/checkout@v7
-      - name: Set up JDK 25
-        uses: actions/setup-java@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 25
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-      - name: Publish to EldoNexus
-        run: ./gradlew publishAllPublicationsToEldoNexusRepository
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew publishChannel -x test
         env:
           ORG_GRADLE_PROJECT_EldoNexusUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_EldoNexusPassword: ${{ secrets.NEXUS_PASSWORD }}
-      - name: Publish release to Hangar
-        if: github.ref_type == 'tag'
-        run: ./gradlew publishAllPublicationsToHangar
+
+  hangar:
+    name: Publish to Hangar
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: build
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew publishAllPublicationsToHangar -x test
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           HANGAR_CHANNEL: Release
-      - name: Publish dev build to Hangar
-        if: startsWith(github.ref_name, 'dev')
-        run: ./gradlew publishAllPublicationsToHangar
-        env:
-          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
-          HANGAR_CHANNEL: Development
+          PUBLIC_BUILD: "true"
 
-  javadocs:
-    needs: verify
-    if: github.ref_type == 'tag'
+  modrinth:
+    name: Publish to Modrinth
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: publish
     runs-on: ubuntu-latest
-
+    environment: build
     steps:
-      - uses: actions/checkout@v7
-      - name: Set up JDK 25
-        uses: actions/setup-java@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Read the release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for _ in $(seq 1 30); do
+            if gh release view "$GITHUB_REF_NAME" --json body --jq .body > "$RUNNER_TEMP/changelog.md"; then
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "No GitHub release for $GITHUB_REF_NAME" >&2
+          exit 1
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 25
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
-      - name: Build Javadocs
-        run: |
-          ./gradlew api:javadoc
-          touch api/build/docs/javadoc/.nojekyll
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: api/build/docs/javadoc
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew modrinth modrinthSyncBody -x test
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_CHANGELOG_FILE: ${{ runner.temp }}/changelog.md
+          PUBLIC_BUILD: "true"

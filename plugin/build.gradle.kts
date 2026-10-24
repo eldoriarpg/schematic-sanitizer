@@ -1,10 +1,12 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import java.util.Properties
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
+import net.minecrell.pluginyml.paper.PaperPluginDescription.RelativeLoadOrder
 
 plugins {
     id("schematic-sanitizer.publishing-conventions")
     alias(libs.plugins.shadow)
-    alias(libs.plugins.pluginyml)
+    alias(libs.plugins.pluginyml.paper)
     alias(libs.plugins.hangar)
     alias(libs.plugins.runpaper)
 }
@@ -39,8 +41,8 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     testImplementation(libs.paper)
 
-    bukkitLibrary(libs.bundles.utilities)
-    bukkitLibrary(libs.bundles.jackson)
+    paperLibrary(libs.bundles.utilities)
+    paperLibrary(libs.bundles.jackson)
     testImplementation(libs.bundles.utilities)
     testImplementation(libs.bundles.jackson)
 }
@@ -98,17 +100,53 @@ tasks {
     }
 }
 
-bukkit {
+paper {
     name = "SchematicSanitizer"
     main = "de.eldoria.schematicsanitizer.SanitizerPlugin"
-    apiVersion = "1.21"
+    loader = "de.eldoria.schematicsanitizer.SanitizerPluginLoader"
+    generateLibrariesJson = true
+    apiVersion = "1.21.11"
     version = project.version.toString()
-    website = "https://github.com/eldoriarpg/schematic-sanitizer"
-    depend = listOf("FastAsyncWorldEdit")
+    description = "Checks schematics and removes unwanted blocks, entities and NBT."
+    authors = listOf("RainbowDashLabs")
+    website = "https://docs.eldoria.de/schematic-sanitizer"
 
-    commands {
-        register("schematicsanitizer") {
-            aliases = listOf("schemsan", "sanitizer")
+    serverDependencies {
+        register("FastAsyncWorldEdit") {
+            load = RelativeLoadOrder.BEFORE
+        }
+    }
+
+    permissions {
+        register("schematicsanitizer.*") {
+            description = "All permissions of Schematic Sanitizer"
+            children = listOf(
+                "schematicsanitizer.check.use",
+                "schematicsanitizer.fix.use",
+                "schematicsanitizer.fix.batch",
+                "schematicsanitizer.admin",
+                "schematicsanitizer.updates",
+            )
+        }
+        register("schematicsanitizer.check.use") {
+            description = "Check schematics and show reports"
+            default = OP
+        }
+        register("schematicsanitizer.fix.use") {
+            description = "Fix single schematics and show reports"
+            default = OP
+        }
+        register("schematicsanitizer.fix.batch") {
+            description = "Fix every schematic in a folder and show reports"
+            default = OP
+        }
+        register("schematicsanitizer.admin") {
+            description = "Upload debug reports"
+            default = OP
+        }
+        register("schematicsanitizer.updates") {
+            description = "Hear about new versions on join and download them"
+            default = OP
         }
     }
 }

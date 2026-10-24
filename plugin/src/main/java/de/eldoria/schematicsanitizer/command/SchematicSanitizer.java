@@ -22,6 +22,7 @@ public class SchematicSanitizer extends AdvancedCommand {
         super(plugin);
         Report report = new Report(plugin, configuration);
         meta(CommandMeta.builder("schematicsanitizer")
+                .addAlias("schemsan", "sanitizer")
                 .withSubCommand(new Check(plugin, report, configuration))
                 .withSubCommand(new Fix(plugin, report, configuration))
                 .withSubCommand(new FixBatch(plugin, configuration, report))

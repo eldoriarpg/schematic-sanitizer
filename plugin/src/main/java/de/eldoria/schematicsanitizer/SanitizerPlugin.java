@@ -14,11 +14,9 @@ import de.eldoria.eldoutilities.localization.ILocalizer;
 import de.eldoria.eldoutilities.localization.Localizer;
 import de.eldoria.eldoutilities.messages.MessageSender;
 import de.eldoria.eldoutilities.plugin.EldoPlugin;
-import de.eldoria.eldoutilities.updater.Updater;
-import de.eldoria.eldoutilities.updater.lynaupdater.LynaUpdateData;
 import de.eldoria.schematicsanitizer.command.SchematicSanitizer;
 import de.eldoria.schematicsanitizer.configuration.Configuration;
-import de.eldoria.schematicsanitizer.util.Permissions;
+import de.eldoria.schematicsanitizer.updates.Updates;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -44,11 +42,10 @@ import static de.eldoria.schematicsanitizer.util.Colors.VALUE;
 
 @SuppressWarnings("unused")
 public class SanitizerPlugin extends EldoPlugin {
-    private static final int LYNA_PRODUCT_ID = 32;
     private final Configuration configuration;
+    private Updates updates;
 
     public SanitizerPlugin() {
-        // Create base configuration
         configuration = new Configuration(this);
     }
 
@@ -77,20 +74,22 @@ public class SanitizerPlugin extends EldoPlugin {
                 .register();
 
         registerCommand(new SchematicSanitizer(this, configuration));
+
+        configuration.main();
+        configuration.save();
+        updates = new Updates(this, configuration);
+        updates.apply();
+    }
+
+    @Override
+    public void onPluginDisable() {
+        if (updates != null) updates.stop();
     }
 
     @Override
     public void onPostStart() throws Throwable {
         configuration.settings();
-        configuration.save();
         configuration.save(Configuration.SETTINGS);
-
-        if (configuration.main().updateCheck()) {
-            Updater.lyna(LynaUpdateData.builder(this, LYNA_PRODUCT_ID)
-                            .notifyPermission(Permissions.UPDATE_NOTIFY)
-                            .build())
-                    .start();
-        }
 
         String collect = EntityType.REGISTRY.getMap().values().stream()
                 .map(EntityType::getId)

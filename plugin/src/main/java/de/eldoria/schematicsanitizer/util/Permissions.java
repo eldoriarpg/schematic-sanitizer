@@ -8,7 +8,7 @@ package de.eldoria.schematicsanitizer.util;
 public final class Permissions {
     private static final String BASE = "schematicsanitizer";
     public static final String DEBUG = String.join(".", BASE, "admin");
-    public static final String UPDATE_NOTIFY = DEBUG;
+    public static final String UPDATES = String.join(".", BASE, "updates");
 
     private Permissions() {
         throw new UnsupportedOperationException("This is a utility class.");

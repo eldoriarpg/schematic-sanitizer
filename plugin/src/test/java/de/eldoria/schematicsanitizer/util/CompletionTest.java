@@ -18,17 +18,17 @@ class CompletionTest {
     private static final Path util = Path.of("src", "main", "java", "de", "eldoria", "schematicsanitizer", "util");
 
     @Test
-    void completeEmptyDirectory() {
+    void completeEmptyDirectory() throws IOException {
         List<String> strings = Completion.completeDirectories(root, "");
         Assertions.assertTrue(strings.contains("command/"));
-        Assertions.assertEquals(4, strings.size());
+        Assertions.assertEquals(directoriesIn(root), strings.size());
     }
 
     @Test
-    void completeEmptyDirectorySlash() {
+    void completeEmptyDirectorySlash() throws IOException {
         List<String> strings = Completion.completeDirectories(root, "/");
         Assertions.assertTrue(strings.contains("command/"));
-        Assertions.assertEquals(4, strings.size());
+        Assertions.assertEquals(directoriesIn(root), strings.size());
     }
 
     @Test
@@ -57,6 +57,12 @@ class CompletionTest {
         List<String> strings = Completion.completeFiles(util, "Com");
         Assertions.assertTrue(strings.contains("Completion.java"));
         Assertions.assertEquals(1, strings.size());
+    }
+
+    private static long directoriesIn(Path dir) throws IOException {
+        try (var files = Files.list(dir)) {
+            return files.filter(Files::isDirectory).count();
+        }
     }
 
     private static long filesIn(Path dir) throws IOException {

@@ -5,6 +5,7 @@ import net.minecrell.pluginyml.paper.PaperPluginDescription.RelativeLoadOrder
 
 plugins {
     id("schematic-sanitizer.publishing-conventions")
+    id("de.chojo.publishdata.manifest")
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml.paper)
     alias(libs.plugins.hangar)
@@ -19,6 +20,11 @@ publishData {
     buildData {
         put("lynaProduct", "32")
     }
+}
+
+pluginManifest {
+    platforms("paper")
+    requires("FastAsyncWorldEdit") { modrinth("fastasyncworldedit") }
 }
 
 publishing {

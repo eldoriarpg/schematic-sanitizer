@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.shadow)
     alias(libs.plugins.pluginyml)
     alias(libs.plugins.hangar)
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
 }
 
 publishData {
@@ -21,7 +21,7 @@ dependencies {
         exclude("org.jetbrains")
     }
     compileOnly(libs.bundles.fawe)
-    compileOnly("org.jetbrains:annotations:24.1.0")
+    compileOnly("org.jetbrains:annotations:26.1.0")
 
     bukkitLibrary(libs.jacksonyaml)
     bukkitLibrary(libs.bundles.eldoutil)

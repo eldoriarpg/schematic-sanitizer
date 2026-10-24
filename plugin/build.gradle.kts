@@ -9,8 +9,27 @@ plugins {
     alias(libs.plugins.runpaper)
 }
 
+description = "Paper plugin that checks schematics and removes blocks, entities and NBT from them."
+
 publishData {
-    buildData()
+    eldoNexus(dev = false)
+    component = "shadow"
+    buildData {
+        put("lynaProduct", "32")
+    }
+}
+
+publishing {
+    publications.withType<MavenPublication>().configureEach {
+        pom {
+            licenses {
+                license {
+                    name = "AGPL-3.0-only"
+                    url = "https://github.com/eldoriarpg/schematic-sanitizer/blob/main/LICENSE.md"
+                }
+            }
+        }
+    }
 }
 
 dependencies {

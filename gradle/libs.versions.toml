@@ -2,7 +2,7 @@
 eldoutil = "2.2.0"
 fawe = "2.16.1"
 palantir = "2.102.0"
-publishdata = "2.0.0"
+publishdata = "2.2.0"
 spotless = "8.10.4"
 
 [libraries]

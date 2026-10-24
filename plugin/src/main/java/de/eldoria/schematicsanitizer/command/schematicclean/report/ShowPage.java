@@ -44,7 +44,7 @@ public class ShowPage extends AdvancedCommand implements ITabExecutor {
         if (sized.isEmpty()) {
             throw CommandException.message("No page available. 0 results.");
         }
-        if (page < 0 || page > sized.pages(SIZE)) {
+        if (page < 0 || page >= sized.pages(SIZE)) {
             throw CommandException.message("Invalid page.");
         }
         String component = sanitizerReport.pageComponent(map, page, SIZE);

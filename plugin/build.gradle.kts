@@ -18,6 +18,7 @@ dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.bundles.fawe)
     compileOnly(libs.jetbrains.annotations)
+    testImplementation(libs.paper)
 
     bukkitLibrary(libs.adventure.bukkit) {
         exclude("org.jetbrains")

@@ -16,13 +16,13 @@ import de.eldoria.schematicsanitizer.configuration.Configuration;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.util.Completion;
+import de.eldoria.schematicsanitizer.util.SchematicPaths;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -41,14 +41,11 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
-        Path path;
-        try {
-            path = worldEdit().getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
-        } catch (InvalidPathException e) {
-            throw CommandException.message("Invalid path");
-        }
+        Path path = SchematicPaths.resolve(worldEdit().getSchematicsFolderPath(), args.asString(0))
+                .orElseThrow(() -> CommandException.message("Invalid path"));
         if (!path.toFile().exists()) throw CommandException.message("Unknown file");
         if (path.toFile().isDirectory()) throw CommandException.message("Only a single file can be processed.");
+        checkArguments(path, args);
 
         Sanitizer sanitizer;
         try {
@@ -75,6 +72,15 @@ public abstract class SanitizeBase extends AdvancedCommand implements ITabExecut
         }
         return Collections.emptyList();
     }
+
+    /**
+     * Checks the arguments after the schematic before any work starts.
+     *
+     * @param path the schematic, already checked to be inside the schematic folder
+     * @param args the command arguments
+     * @throws CommandException when an argument is not acceptable
+     */
+    protected void checkArguments(Path path, Arguments args) throws CommandException {}
 
     protected abstract SanitizerReport report(Sanitizer sanitizer, Arguments args) throws IOException;
 

@@ -9,6 +9,8 @@ package de.eldoria.schematicsanitizer.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -58,18 +60,24 @@ class CompletionTest {
         Assertions.assertEquals(1, strings.size());
     }
 
-    @Test
-    void completeEmptyFile() {
-        List<String> strings = Completion.completeFiles(util, "");
-        Assertions.assertTrue(strings.contains("Completion.java"));
-        Assertions.assertEquals(4, strings.size());
+    private static long filesIn(Path dir) throws IOException {
+        try (var files = Files.list(dir)) {
+            return files.filter(Files::isRegularFile).count();
+        }
     }
 
     @Test
-    void completeEmptyFileSlash() {
+    void completeEmptyFile() throws IOException {
+        List<String> strings = Completion.completeFiles(util, "");
+        Assertions.assertTrue(strings.contains("Completion.java"));
+        Assertions.assertEquals(filesIn(util), strings.size());
+    }
+
+    @Test
+    void completeEmptyFileSlash() throws IOException {
         List<String> strings = Completion.completeFiles(util, "/");
         Assertions.assertTrue(strings.contains("Completion.java"));
-        Assertions.assertEquals(4, strings.size());
+        Assertions.assertEquals(filesIn(util), strings.size());
     }
 
     @Test

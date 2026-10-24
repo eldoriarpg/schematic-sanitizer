@@ -17,6 +17,8 @@ import de.eldoria.schematicsanitizer.rendering.ReportRenderer;
 import de.eldoria.schematicsanitizer.sanitizer.Sanitizer;
 import de.eldoria.schematicsanitizer.sanitizer.report.SanitizerReport;
 import de.eldoria.schematicsanitizer.util.Completion;
+import de.eldoria.schematicsanitizer.util.SchematicPaths;
+import de.eldoria.schematicsanitizer.util.Text;
 import de.eldoria.schematicsanitizer.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -24,9 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -48,28 +48,22 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String alias, @NotNull Arguments args) throws CommandException {
-        Path path;
-        try {
-            path = worldEdit().getSchematicsFolderPath().resolve(args.asString(0).replace("\\_", " "));
-        } catch (InvalidPathException e) {
-            throw CommandException.message("Invalid path");
-        }
-
-        if (!path.toAbsolutePath().startsWith(worldEdit().getSchematicsFolderPath().toAbsolutePath())) {
-            throw CommandException.message("Invalid directory");
-        }
+        Path path = SchematicPaths.resolve(worldEdit().getSchematicsFolderPath(), args.asString(0))
+                .orElseThrow(() -> CommandException.message("Invalid directory"));
         if (!path.toFile().exists()) throw CommandException.message("Directory does not exist");
         if (!path.toFile().isDirectory()) throw CommandException.message("Not a directory");
 
         var newPath = path.getParent().resolve(path.getFileName() + "_new");
-
-        try {
-            Files.createDirectories(newPath);
-        } catch (FileAlreadyExistsException e) {
-            // ignore
-        } catch (IOException e) {
-            plugin().getLogger().log(Level.SEVERE, "Could not create directory", e);
-            throw CommandException.message("Could not create new directory");
+        if (!args.flags().has("o")) {
+            if (!SchematicPaths.isInside(worldEdit().getSchematicsFolderPath(), newPath)) {
+                throw CommandException.message("Choose a folder inside the schematic folder, or add -o");
+            }
+            try {
+                if (!Files.isDirectory(newPath)) Files.createDirectories(newPath);
+            } catch (IOException e) {
+                plugin().getLogger().log(Level.SEVERE, "Could not create directory", e);
+                throw CommandException.message("Could not create new directory");
+            }
         }
 
         try (var files = Files.list(path)) {
@@ -83,13 +77,13 @@ public class FixBatch extends AdvancedCommand implements ITabExecutor {
             plugin().getServer().getScheduler().runTaskAsynchronously(plugin(), () -> {
                 messageSender().sendMessage(sender, "Starting batch. Processing %d files".formatted(list.size()));
                 for (Path curr : list) {
-                    messageSender().sendMessage(sender, "Checking <value>" + curr.getFileName());
+                    messageSender().sendMessage(sender, "Checking <value>" + Text.escape(curr.getFileName().toString()));
                     Sanitizer sanitizer;
                     try {
                         sanitizer = Sanitizer.create(curr, configuration.settings());
                     } catch (Throwable e) {
                         plugin().getLogger().log(Level.SEVERE, "Could not load schematic.", e);
-                        handleCommandError(sender, CommandException.message("Could not load schematic " + curr));
+                        handleCommandError(sender, CommandException.message("Could not load schematic " + Text.escape(curr.toString())));
                         continue;
                     }
                     try {

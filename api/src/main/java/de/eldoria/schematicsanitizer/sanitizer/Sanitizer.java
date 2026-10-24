@@ -72,12 +72,29 @@ public class Sanitizer {
     /**
      * Executes the fix process using the specified newName and returns the resulting SanitizerReport.
      *
-     * @param newName the name of the fixed file
+     * @param newName the name of the fixed file, written in the folder of the original file
      * @return the SanitizerReport containing the results of the fix process
-     * @throws IOException if an I/O error occurs during the fix process
+     * @throws IOException              if an I/O error occurs during the fix process
+     * @throws IllegalArgumentException if the name is not a plain file name, for example because it contains a folder
      */
     public SanitizerReport fix(String newName) throws IOException {
-        return fix(path.getParent().resolve(newName + (newName.endsWith(".schem") || newName.endsWith(".schematic") ? "" : ".schem")));
+        Path folder = path.toAbsolutePath().normalize().getParent();
+        Path newPath = folder.resolve(fileName(newName)).normalize();
+        if (!folder.equals(newPath.getParent())) {
+            throw new IllegalArgumentException("Not a plain file name: " + newName);
+        }
+        return fix(newPath);
+    }
+
+    /**
+     * The file name {@link #fix(String)} writes to: the name itself when it ends in {@code .schem} or
+     * {@code .schematic}, otherwise the name with {@code .schem} added.
+     *
+     * @param newName the requested name
+     * @return the file name that is written
+     */
+    public static String fileName(String newName) {
+        return newName + (newName.endsWith(".schem") || newName.endsWith(".schematic") ? "" : ".schem");
     }
 
     /**

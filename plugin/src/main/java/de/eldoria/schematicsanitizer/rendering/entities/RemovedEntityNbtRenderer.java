@@ -11,15 +11,16 @@ import com.sk89q.worldedit.entity.BaseEntity;
 import com.sk89q.worldedit.util.Location;
 import de.eldoria.schematicsanitizer.sanitizer.report.cause.NbtRemovalCause;
 import de.eldoria.schematicsanitizer.sanitizer.report.entities.RemovedEntityNbt;
+import de.eldoria.schematicsanitizer.util.Text;
 import org.jetbrains.annotations.Nullable;
 
 public record RemovedEntityNbtRenderer(RemovedEntityNbt entity) implements ComponentEntityRenderer {
     @Override
     public String component() {
         if (value() == null) {
-            return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(tag()));
+            return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(Text.escape(tag())));
         }
-        return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta("{%s:%s}".formatted(tag(), value())));
+        return "%s %s %s: %s".formatted(coords(location()), name(BukkitAdapter.adapt(type().getType()), type().getType()), cause(removalCause()), meta(Text.escape("{%s:%s}".formatted(tag(), value()))));
     }
 
     public Location location() {

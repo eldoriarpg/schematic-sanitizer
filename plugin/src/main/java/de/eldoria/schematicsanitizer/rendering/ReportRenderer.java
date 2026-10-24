@@ -21,7 +21,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Function;
 
+import static de.eldoria.schematicsanitizer.util.Text.escape;
 import static de.eldoria.schematicsanitizer.util.Text.numbers;
+import static de.eldoria.schematicsanitizer.util.Text.quoted;
 
 public record ReportRenderer(SanitizerReport report, Settings settings, EntityRenderer entities, BlockRenderer blocks,
                              EntityNbtRenderer entitiesNbt, BlockNbtRenderer blocksNbt, LimitRenderer limits) {
@@ -47,7 +49,7 @@ public record ReportRenderer(SanitizerReport report, Settings settings, EntityRe
                 <section>Removed Content:<default>
                 %s
                 """.stripIndent()
-                .formatted(path(), limits().summary(settings), summary().indent(2));
+                .formatted(quoted(escape(path().toString())), limits().summary(settings), summary().indent(2));
     }
 
     public String shortComponent(String regPath) {
@@ -72,7 +74,7 @@ public record ReportRenderer(SanitizerReport report, Settings settings, EntityRe
         }
 
         if (!errors.isEmpty())
-            errors.add("<click:run_command:'/schematicsanitizer report load %s'><interact>[Full report]</click>".formatted(regPath));
+            errors.add("<click:run_command:'/schematicsanitizer report load %s'><interact>[Full report]</click>".formatted(quoted(regPath)));
         return errors.isEmpty() ? "<good>No problems found!" : String.join("\n", errors);
     }
 

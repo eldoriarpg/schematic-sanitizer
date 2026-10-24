@@ -43,7 +43,7 @@ The file is not changed. See [Check](./checking-and-fixing.md#check).
 | Argument | Required | What it means |
 |---|---|---|
 | `schematic` | yes | Path of the file inside the schematic folder, with its extension. Write spaces as `\_`. |
-| `new name` | no | Name of the clean copy, saved in the same folder. Without it the copy is called `<name>_new.schem`. |
+| `new name` | no | Name of the clean copy, saved in the same folder. It must be a plain file name, without folders. Without it the copy is called `<name>_new.schem`. |
 | `-o` | no | Overwrite the original file. Put it at the end. |
 
 See [Fix](./checking-and-fixing.md#fix).

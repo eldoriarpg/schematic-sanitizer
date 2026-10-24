@@ -7,6 +7,7 @@
 package de.eldoria.schematicsanitizer.util;
 
 import de.eldoria.schematicsanitizer.sanitizer.report.subreports.sized.SizedReport;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Text {
     /**
@@ -51,5 +52,27 @@ public class Text {
      */
     public static String hovered(String text, String hoverText) {
         return "<hover:show_text:'<default>%s'>%s</hover>".formatted(hoverText, text);
+    }
+
+    /**
+     * Escapes text that comes from a schematic or a file name, so MiniMessage shows it as it is instead of reading
+     * tags from it.
+     *
+     * @param text untrusted text
+     * @return the text with every tag escaped
+     */
+    public static String escape(String text) {
+        return MiniMessage.miniMessage().escapeTags(text);
+    }
+
+    /**
+     * Prepares text for a single-quoted tag argument, such as the command of a click or the text of a hover. Quotes
+     * and backslashes are escaped so the text cannot end the argument.
+     *
+     * @param text untrusted text
+     * @return the text, safe inside {@code '…'}
+     */
+    public static String quoted(String text) {
+        return text.replace("\\", "\\\\").replace("'", "\\'");
     }
 }

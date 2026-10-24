@@ -10,7 +10,8 @@ This page explains what happens when you check or fix a schematic. The exact com
 ## Where the files come from
 
 All commands work inside the schematic folder of FastAsyncWorldEdit. You give the path of a file or folder relative
-to that folder, for example `castle.schem` or `builds/castle.schem`.
+to that folder, for example `castle.schem` or `builds/castle.schem`. Paths that lead out of the schematic folder, for
+example with `..`, are refused.
 
 - Type the full file name, including `.schem` or `.schematic`. Tab completion helps you find it.
 - Write a space in a name as `\_`. For example `old castle.schem` becomes `old\_castle.schem`.
@@ -30,7 +31,7 @@ Use it to see what a schematic contains before you paste it or hand it out.
 
 - Without a new name, the clean copy is saved next to the original as `<name>_new.schem`.
 - With a new name, the clean copy gets that name, in the same folder as the original. `.schem` is added when the name
-  does not end in `.schem` or `.schematic`.
+  does not end in `.schem` or `.schematic`. The name cannot contain folders.
 - Add `-o` at the end to overwrite the original file instead.
 
 A file that already exists under the new name is overwritten.
@@ -44,7 +45,8 @@ Subfolders are not included.
 
 - The clean files go into a new folder next to it, named after the folder with `_new` added. For `builds` that is
   `builds_new`. Each file is saved as `<name>.schem`.
-- Add `-o` at the end to overwrite the original files instead.
+- Add `-o` at the end to overwrite the original files instead. No `_new` folder is created then.
+- To clean the schematic folder itself, add `-o`. Its `_new` folder would be outside the schematic folder.
 
 For each file you get a short summary in chat. It lists the limits the file goes over and how many blocks, entities
 and data tags were removed, or says that no problems were found. Click **[Full report]** to open the full report of

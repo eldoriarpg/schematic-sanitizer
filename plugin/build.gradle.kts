@@ -51,13 +51,13 @@ hangarPublish {
     publications.register("plugin") {
         version = project.version.toString()
         id = "SchematicSanitizer"
-        channel = System.getenv("HANGAR_CHANNEL")
+        channel = System.getenv("HANGAR_CHANNEL") ?: "Release"
         apiKey = System.getenv("HANGAR_KEY")
 
         platforms {
             register(Platforms.PAPER) {
                 jar = tasks.shadowJar.flatMap { it.archiveFile }
-                platformVersions = listOf("1.21-26.2")
+                platformVersions = listOf("1.21.11-26.3")
                 dependencies {
                     hangar("FastAsyncWorldEdit") {
                         required = true
@@ -89,10 +89,14 @@ tasks {
 
     shadowJar {
         archiveBaseName = "schematic-sanitizer"
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        mergeServiceFiles()
+        addMultiReleaseAttribute = false
+        exclude("META-INF/versions/**")
     }
 
     runServer {
-        minecraftVersion("26.2")
+        minecraftVersion("26.3")
         downloadPlugins {
             modrinth("fastasyncworldedit", libs.versions.fawe.get())
         }

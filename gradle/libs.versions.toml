@@ -1,10 +1,10 @@
 [versions]
-utilities = "3.6.0"
+utilities = "3.7.0"
 jackson = "3.2.4"
 jackson-annotations = "2.22"
 fawe = "2.16.1"
 palantir = "2.102.0"
-publishdata = "2.2.0"
+publishdata = "2.3.0"
 spotless = "8.10.4"
 
 [libraries]

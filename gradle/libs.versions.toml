@@ -1,11 +1,11 @@
 [versions]
 utilities = "3.7.0"
-jackson = "3.2.4"
-jackson-annotations = "2.22"
+jackson = "3.3.0"
+jackson-annotations = "2.23"
 fawe = "2.16.2"
 palantir = "2.102.0"
 publishdata = "2.3.0"
-spotless = "8.10.4"
+spotless = "8.11.0"
 
 [libraries]
 eldoutil-plugin = { module = "de.eldoria.util:plugin", version.ref = "utilities" }
